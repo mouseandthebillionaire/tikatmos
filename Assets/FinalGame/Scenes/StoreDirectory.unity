@@ -181,7 +181,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 70c16312ff07ab347aa9eda986939893, type: 3}
     m_FontSize: 42
     m_FontStyle: 0
     m_BestFit: 0
@@ -205,10 +205,10 @@ MonoBehaviour:
     E352 854-9850\r\nBrookstone S282 858-8848\r\nCheese Brothers E278 854-1240\r\nCustom
     Design Clothing Level 1, North\r\nDebut N125\r\n House of Talents @ Debut N125A\r\nHumble
     Apparel Co. @ Debut N125B\r\n Love Your Melon @ Debut N125C\r\n My Sister @ Debut
-    N125D\r\n Northern Glasses @ Debut N125E\r\n Pab\u2019s Packs @ Debut N125F\r\n
-    Roma Boots @ Debut N125G\r\n Smile Network @ Debut N125H\r\n Still Kickin @ Debut
-    N125I\r\n Through Jimmy\u2019s Eyes @ Debut N125J\r\n Twill @ Debut N125K\r\n
-    Wears Woody @ Debut N125L\r\n Woodchuck @ Debut N125M\r\n Yoobi @ Debut N125N\r\nEagle
+    N125D\r\n Northern Glasses @ Debut N125E\r\n Pab\u2019s Packs @ Debut N125F\r\nRoma
+    Boots @ Debut N125G\r\n Smile Network @ Debut N125H\r\n Still Kickin @ Debut
+    N125I\r\n Through Jimmy\u2019s Eyes @ Debut N125J\r\n Twill @ Debut N125K\r\nWears
+    Woody @ Debut N125L\r\n Woodchuck @ Debut N125M\r\n Yoobi @ Debut N125N\r\nEagle
     Anime N365 612-293-8697\r\nFidget Spinners Level 1, North\r\nFidget Spinners
     Level 1, North\r\nGreater Good S236 612-524-6830\r\nHallmark N308 858-9455\r\nHappy
     Pets Level 1, West\r\nHollywood Hair Level 2, West 952-583-4515\r\nI Love Minnesota
@@ -931,7 +931,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 70c16312ff07ab347aa9eda986939893, type: 3}
     m_FontSize: 42
     m_FontStyle: 0
     m_BestFit: 0
