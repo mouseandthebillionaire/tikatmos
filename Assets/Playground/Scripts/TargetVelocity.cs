@@ -18,6 +18,8 @@ public class TargetVelocity : MonoBehaviour
 
     private float time = 0.0f;
 
+    private float previousTheta;
+
     private bool stopped;
 
     // Start is called before the first frame update
@@ -26,13 +28,34 @@ public class TargetVelocity : MonoBehaviour
         rb = person.gameObject.GetComponent<Rigidbody2D>();
 
         // Choose a random location for the person
-        person.transform.position = new Vector3(Random.Range(xBounds, -xBounds), Random.Range(yBounds, -yBounds), 0);
+        StartCoroutine(RandomSpawn());
 
         // Choose a random location for the target
         target.transform.position = new Vector3(Random.Range(xBounds, -xBounds), Random.Range(yBounds, -yBounds), 0);
 
         // Choose a random velocity for the person
         rb.velocity = new Vector3(Random.Range(-maxVelocity, maxVelocity), Random.Range(-maxVelocity, maxVelocity), 0);
+    }
+
+    
+
+    // Choose a new random location for the person to spawn in
+    IEnumerator RandomSpawn() {
+        yield return new WaitForSeconds(0);
+
+        // Determine a random spawn location
+        float newX = Random.Range(xBounds, -xBounds);
+        float newY = Random.Range(yBounds, -yBounds);
+
+        // Check to see if the person will collide with something else
+        if (CheckOverlap(person, newX, newY)) StartCoroutine(RandomSpawn());
+        else {
+            // Move the person to that new location
+            person.transform.position = new Vector3(newX, newY, 0);
+
+            // Turn on that person's sprite
+            person.GetComponent<SpriteRenderer>().enabled = true;
+        }
     }
 
     void FixedUpdate()
@@ -106,12 +129,14 @@ public class TargetVelocity : MonoBehaviour
             yield return new WaitForSeconds(0);
 
             // Determine a random location that is a fixed radius away from the "path" object
-            float theta = Random.Range(0,360);
+            float theta = Random.Range(previousTheta - Mathf.PI/4, previousTheta + Mathf.PI/4);
+            previousTheta = theta;
+
             xTarget = Mathf.Cos(theta) * pathRadius;
             yTarget = Mathf.Sin(theta) * pathRadius;
 
             // Check to see if the target will collide with something else
-            if (CheckOverlap(xPrediction + xTarget, yPrediction + yTarget)) StartCoroutine(RandomLocation());
+            if (CheckOverlap(target, xPrediction + xTarget, yPrediction + yTarget)) StartCoroutine(RandomLocation());
             else {
                 // Move the target to that new location
                 Vector3 targetLocation = new Vector3(xPrediction + xTarget, yPrediction + yTarget, 0);
@@ -121,7 +146,7 @@ public class TargetVelocity : MonoBehaviour
     }
 
     // Check to see if any targets are overlapping with terrain
-    public bool CheckOverlap(float x, float y)
+    public bool CheckOverlap(GameObject target, float x, float y)
     {
         Collider2D[] colliders;
         colliders = Physics2D.OverlapCircleAll(new Vector2(x,y),target.GetComponent<SpriteRenderer>().bounds.extents.x/2);
