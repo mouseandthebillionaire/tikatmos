@@ -17,7 +17,7 @@ public class TunerManager : MonoBehaviour
     public float rAmt, gAmt; 
     
     // Text Sprites
-    public SpriteRenderer tuning;
+    public SpriteRenderer tuning, ready;
 
     // Sound Control Variables
     public AudioSource voice, noise;
@@ -59,13 +59,6 @@ public class TunerManager : MonoBehaviour
         
         if (Input.GetKey(GlobalVariables.S.knobLeft) && (knobVal > 0)) knobVal -= .001f;
         if (Input.GetKey(GlobalVariables.S.knobRight) && (knobVal < 1)) knobVal += .001f;
-
-        if (Input.anyKey) {
-            tuning.color = new Color(.93f, .98f, .37f);
-        }
-        else {
-            tuning.color = new Color(1, 1, 1);
-        }
 
     }
     
@@ -118,11 +111,16 @@ public class TunerManager : MonoBehaviour
 
         DrawSine();
 
-        if (noiseAmt < 0.3f) {
-            tuning.enabled = false;
+        // Text Boxes
+        if (noiseAmt < 0.2f) {
+            ready.color = new Color(1f, 1f, 1f);
+            tuning.color = new Color(.4f, .2f, .4f);
         }
         else {
-            tuning.enabled = true;
+            if (Input.anyKey) tuning.color = new Color(.93f, .98f, .37f);
+            else tuning.color = new Color(1, 1, 1);
+            
+            ready.color = new Color(.4f, .2f, .4f);
         } 
 
     }
