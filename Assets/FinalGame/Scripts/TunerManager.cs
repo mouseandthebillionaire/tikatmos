@@ -6,15 +6,19 @@ public class TunerManager : MonoBehaviour
 {
     // Variables for the WaveDisplays
     // One for now, but possible add more later
-    public LineRenderer noiseDisplay;
+    public LineRenderer[] tuningDisplays;
     public int points;
     public float amplitude = 1;
     public float freq = 1;
-    
+    public float moveSpeed;
+
     // Circle Image
-    public SpriteRenderer indicator;
+    public SpriteRenderer[] indicators;
     public float rAmt, gAmt; 
     
+    // Text Sprites
+    public SpriteRenderer tuning;
+
     // Sound Control Variables
     public AudioSource voice, noise;
     public float pitch, filter, distortion, noiseAmt;
@@ -41,19 +45,27 @@ public class TunerManager : MonoBehaviour
         
         // assign random number to the crank
         crankVal = UnityEngine.Random.Range(0, 1f);
+        tuning.enabled = true;
     }
 
     // Get Inputs from Device
     public void GetInputs()
     {
-        if (Input.GetKey(GlobalVariables.S.leftSlider) && (sliderVal > 0)) sliderVal -= .01f;
-        if (Input.GetKey(GlobalVariables.S.rightSlider) && (sliderVal < 1)) sliderVal += .01f;
+        if (Input.GetKey(GlobalVariables.S.leftSlider) && (sliderVal > 0)) sliderVal -= .001f;
+        if (Input.GetKey(GlobalVariables.S.rightSlider) && (sliderVal < 1)) sliderVal += .001f;
 
-        if (Input.GetKey(GlobalVariables.S.upCrank) && (crankVal > 0)) crankVal -= .01f;
-        if (Input.GetKey(GlobalVariables.S.downCrank) && (crankVal < 1)) crankVal += .01f;
+        if (Input.GetKey(GlobalVariables.S.upCrank) && (crankVal > 0)) crankVal -= .001f;
+        if (Input.GetKey(GlobalVariables.S.downCrank) && (crankVal < 1)) crankVal += .001f;
         
-        if (Input.GetKey(GlobalVariables.S.knobLeft) && (knobVal > 0)) knobVal -= .01f;
-        if (Input.GetKey(GlobalVariables.S.knobRight) && (knobVal < 1)) knobVal += .01f;
+        if (Input.GetKey(GlobalVariables.S.knobLeft) && (knobVal > 0)) knobVal -= .001f;
+        if (Input.GetKey(GlobalVariables.S.knobRight) && (knobVal < 1)) knobVal += .001f;
+
+        if (Input.anyKey) {
+            tuning.color = new Color(.93f, .98f, .37f);
+        }
+        else {
+            tuning.color = new Color(1, 1, 1);
+        }
 
     }
     
@@ -64,13 +76,14 @@ public class TunerManager : MonoBehaviour
         float Tau = 2 * Mathf.PI;
         float xFinish = Tau;
 
-        noiseDisplay.positionCount = points;
-        for (int i = 0; i < points; i++)
-        {
-            float progress = (float) i / (points - 1);
-            float x = Mathf.Lerp(xStart, xFinish, progress);
-            float y = amplitude * Mathf.Sin((Tau * freq * x) + Time.time);
-            noiseDisplay.SetPosition(i, new Vector3(x, y, 0));
+        for (int i = 0; i < tuningDisplays.Length; i++) {
+            tuningDisplays[i].positionCount = points;
+            for (int j = 0; j < points; j++) {
+                float progress = (float) j / (points - 1);
+                float x        = Mathf.Lerp(xStart, xFinish, progress);
+                float y        = amplitude * Mathf.Sin((Tau * freq * x * (i + 1)) + Time.time * moveSpeed );
+                tuningDisplays[i].SetPosition(j, new Vector3(x, y, 0));
+            }
         }
     }
 
@@ -79,18 +92,14 @@ public class TunerManager : MonoBehaviour
         GetInputs();
         
         // Update SineWaves
-        amplitude = sliderVal * 4f;
-        freq = crankVal * 4f;
+        amplitude = sliderVal * 3f;
+        freq = crankVal * 2f;
+        moveSpeed = 1 + (20 * knobVal);
         
         // Update Noise Amounts Via Input Positions
         noiseAmts[0] = Mathf.Abs(sliderVal - noiseLocs[0]);
         noiseAmts[1] = Mathf.Abs(crankVal - noiseLocs[1]);
         noiseAmts[2] = Mathf.Abs(knobVal - noiseLocs[2]);
-        
-        // Update the Indicator
-        //rAmt = noiseAmt[0] * 1;
-        //gAmt = 1 - noiseAmt[1];
-        //indicator.color = new Color(rAmt, 0, gAmt);
 
         // Update Sounds
         hpf.cutoffFrequency = noiseAmts[0] * 2200;
@@ -102,7 +111,19 @@ public class TunerManager : MonoBehaviour
         noiseAmt = (noiseAmts[0] + noiseAmts[1] + noiseAmts[2]);
         noise.volume = noiseAmt;
         
+        // Update the Indicators
+        for (int i = 0; i < indicators.Length; i++) {
+            indicators[i].color = new Color(1 - noiseAmts[i], 1 - noiseAmts[i], 01 - noiseAmts[i]);
+        }
+
         DrawSine();
+
+        if (noiseAmt < 0.3f) {
+            tuning.enabled = false;
+        }
+        else {
+            tuning.enabled = true;
+        } 
 
     }
 }
