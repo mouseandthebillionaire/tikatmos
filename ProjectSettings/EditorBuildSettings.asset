@@ -6,6 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Playground/TunerTest.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/FinalGame/Scenes/_Main.unity
+    guid: f3aa764848e8b4076b69a9f62a241500
+  - enabled: 1
+    path: Assets/FinalGame/Scenes/DeviceManager.unity
+    guid: 9c71d404959a340fe84b66ba80d86f2b
+  - enabled: 1
+    path: Assets/FinalGame/Scenes/GameCredits.unity
+    guid: 8ab10c6acff224cd89258249ea977cb0
+  - enabled: 0
+    path: Assets/FinalGame/Scenes/DeviceTestScene.unity
+    guid: 433d0fbfa5c0b4c308908badcd222c82
+  - enabled: 1
+    path: Assets/FinalGame/Scenes/PlantCare.unity
+    guid: d7d789432dfb247539ddd963bb6c4b40
+  - enabled: 1
+    path: Assets/FinalGame/Scenes/Map.unity
+    guid: 65d03ecc3c372416ca2beedd9462a2f1
   m_configObjects: {}
