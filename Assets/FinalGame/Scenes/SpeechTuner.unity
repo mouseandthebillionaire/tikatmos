@@ -626,14 +626,6 @@ MonoBehaviour:
   filter: 0
   distortion: 0
   noiseAmt: 0
-  noiseLocs:
-  - 0
-  - 0
-  - 0
-  noiseAmts:
-  - 0
-  - 0
-  - 0
 --- !u!4 &787241469
 Transform:
   m_ObjectHideFlags: 0
@@ -646,7 +638,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &812272920
 GameObject:
@@ -1482,7 +1474,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1597902894
 GameObject:

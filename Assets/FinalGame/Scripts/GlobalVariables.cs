@@ -14,8 +14,11 @@ public class GlobalVariables : MonoBehaviour
     public KeyCode deviceButton = KeyCode.Space;
 
     // We also need to keep track of constants from the Device & Window
-    // Speech Tuning Constants
     
+    // Speech Tuning Constants
+    // Have we successfully tuned to the customer's language
+    public bool tuned;
+
     
     // Plant Care Constants?
     

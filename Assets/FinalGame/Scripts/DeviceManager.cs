@@ -11,13 +11,21 @@ public class DeviceManager : MonoBehaviour
     // Scene Names for the Device Apps
     public string[] appNames;
     
+    // Load App GAMEOBJECTS rather than scenes
+    public GameObject[] apps;
+    
     
     // Start is called before the first frame update
     void Start()
     {
         currApp = 0;
-        DontDestroyOnLoad(this);
-        SceneManager.LoadScene(appNames[currApp]);
+        // DontDestroyOnLoad(this);
+        // SceneManager.LoadScene(appNames[currApp]);
+        
+        LoadNextApp();
+
+        // Activate the default app
+        apps[currApp].SetActive(true);
     }
 
     // Update is called once per frame
@@ -25,8 +33,16 @@ public class DeviceManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
-            currApp = (currApp + 1) % appNames.Length;
-            SceneManager.LoadScene(appNames[currApp]);
+            currApp = (currApp + 1) % apps.Length;
+            LoadNextApp();
+            //SceneManager.LoadScene(appNames[currApp]);
+        }
+    }
+
+    public void LoadNextApp() {
+        for (int i = 0; i < apps.Length; i++) {
+            if(i==currApp) apps[i].SetActive(true);
+            else apps[i].SetActive(false);
         }
     }
 }

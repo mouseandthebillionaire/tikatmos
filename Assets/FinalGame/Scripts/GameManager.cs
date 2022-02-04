@@ -29,4 +29,8 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    public void NewCustomer() {
+        GlobalVariables.S.tuned = false;
+    }
 }

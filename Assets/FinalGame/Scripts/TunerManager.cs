@@ -39,8 +39,6 @@ public class TunerManager : MonoBehaviour
         noise.volume = 1;
         for (int i = 0; i < noiseLocs.Length; i++) {
             noiseLocs[i] = UnityEngine.Random.Range(0, 1f);
-            //sliders[i].value = UnityEngine.Random.Range(0, 1f);
-            // Eventually set waves to random value based on this
         }
         
         // assign random number to the crank
@@ -112,7 +110,12 @@ public class TunerManager : MonoBehaviour
 
         // Text Boxes
         if (noiseAmt < 0.2f) {
+            // We are tuned
             activeBox.transform.position = new Vector3(0, 0, 0);
+            // Press the button to make it official?
+            if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) GlobalVariables.S.tuned = true;
+            // Do we want to do any kind of visual change to show that we are tuned? 
+
         }
         else {
             if (Input.anyKey) activeBox.transform.position = new Vector3(-5, 0, 0);
