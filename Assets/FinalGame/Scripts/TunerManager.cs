@@ -17,7 +17,7 @@ public class TunerManager : MonoBehaviour
     public float rAmt, gAmt; 
     
     // Text Sprites
-    public SpriteRenderer tuning, ready;
+    public SpriteRenderer activeBox;
 
     // Sound Control Variables
     public AudioSource voice, noise;
@@ -45,7 +45,6 @@ public class TunerManager : MonoBehaviour
         
         // assign random number to the crank
         crankVal = UnityEngine.Random.Range(0, 1f);
-        tuning.enabled = true;
     }
 
     // Get Inputs from Device
@@ -85,9 +84,9 @@ public class TunerManager : MonoBehaviour
         GetInputs();
         
         // Update SineWaves
-        amplitude = sliderVal * 3f;
-        freq = crankVal * 2f;
-        moveSpeed = 1 + (20 * knobVal);
+        amplitude = ((sliderVal * .2f) + (crankVal * .3f) + (knobVal * .5f)) * 3f;
+        freq = ((sliderVal * .3f) + (crankVal * .5f) + (knobVal * .2f)) * 2f;
+        moveSpeed = 1 + (20 * ((sliderVal * .5f) + (crankVal * .2f) + (knobVal * .3f)));
         
         // Update Noise Amounts Via Input Positions
         noiseAmts[0] = Mathf.Abs(sliderVal - noiseLocs[0]);
@@ -113,14 +112,11 @@ public class TunerManager : MonoBehaviour
 
         // Text Boxes
         if (noiseAmt < 0.2f) {
-            ready.color = new Color(1f, 1f, 1f);
-            tuning.color = new Color(.4f, .2f, .4f);
+            activeBox.transform.position = new Vector3(0, 0, 0);
         }
         else {
-            if (Input.anyKey) tuning.color = new Color(.93f, .98f, .37f);
-            else tuning.color = new Color(1, 1, 1);
-            
-            ready.color = new Color(.4f, .2f, .4f);
+            if (Input.anyKey) activeBox.transform.position = new Vector3(-5, 0, 0);
+            else activeBox.transform.position = new Vector3(-10, 0, 0);
         } 
 
     }
