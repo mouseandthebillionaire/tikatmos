@@ -1,52 +1,78 @@
-#N canvas 587 64 638 494 12;
-#X obj 93 90 soundfiler;
+#N canvas 587 64 781 738 12;
+#X obj 80 124 soundfiler;
 #X obj 26 6 loadbang;
-#X obj 118 443 dac~;
+#X obj 103 650 dac~;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array channelL 100 float 3;
-#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0;
-#X coords 0 1 100 -1 200 140 1;
-#X restore 394 35 graph;
+#X array channelL 1.4112e+06 float 2;
+#X coords 0 1 1.4112e+06 -1 200 140 1;
+#X restore 491 33 graph;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array channelR 100 float 3;
-#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0;
-#X coords 0 1 100 -1 200 140 1 0 0;
-#X restore 393 197 graph;
-#X floatatom 135 117 12 0 0 0 - - -;
-#X obj 94 167 expr 44100 / $f1;
-#X obj 136 142 s sampleSize;
-#X floatatom 117 199 12 0 0 0 - - -;
-#X obj 97 230 phasor~;
-#X obj 96 283 *~;
-#X obj 112 257 r sampleSize;
-#X obj 98 316 tabread4~ channelL;
-#X obj 117 347 tabread4~ channelR;
-#X obj 112 409 *~ 0.5;
-#X obj 166 409 *~ 0.5;
+#X array channelR 1.4112e+06 float 2;
+#X coords 0 1 1.4112e+06 -1 200 140 1 0 0;
+#X restore 490 195 graph;
+#X floatatom 123 154 12 0 0 0 - - -;
+#X obj 81 201 expr 44100 / $f1;
+#X obj 123 176 s sampleSize;
+#X floatatom 104 233 12 0 0 0 - - -;
+#X obj 84 264 phasor~;
+#X obj 83 317 *~;
+#X obj 99 291 r sampleSize;
+#X obj 83 523 tabread4~ channelL;
+#X obj 102 554 tabread4~ channelR;
+#X obj 97 616 *~ 0.5;
+#X obj 151 616 *~ 0.5;
 #X obj 176 22 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X msg 27 36 track2.wav;
-#X msg 93 64 read -resize \$1 channelL channelR;
+#X obj 214 37 openpanel;
+#X obj 341 27 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 341 47 \; pd dsp \$1;
+#X obj 157 370 snapshot~;
+#X obj 155 344 metro 50;
+#X obj 152 321 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X floatatom 158 399 12 0 0 0 - - -;
+#X obj 159 431 /;
+#X obj 204 431 r sampleSize;
+#X floatatom 161 457 5 0 0 0 - - -;
+#X obj 2 151 hsl 2 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X obj 493 352 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 4225 1;
+#X obj 268 255 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 6800 1;
+#X floatatom 265 275 5 0 0 0 - - -;
+#X text 262 223 playback speed;
+#X msg 31 238 0;
+#X msg 80 99 read -resize Track2.wav channelL channelR;
+#X obj 279 185 r sliderValue;
 #X connect 0 0 5 0;
 #X connect 0 0 6 0;
-#X connect 1 0 17 0;
+#X connect 1 0 33 0;
 #X connect 5 0 7 0;
 #X connect 6 0 8 0;
 #X connect 6 0 9 0;
 #X connect 9 0 10 0;
 #X connect 10 0 12 0;
 #X connect 10 0 13 0;
+#X connect 10 0 20 0;
 #X connect 11 0 10 1;
 #X connect 12 0 14 0;
 #X connect 13 0 15 0;
 #X connect 14 0 2 0;
 #X connect 15 0 2 1;
-#X connect 16 0 18 0;
-#X connect 17 0 18 0;
-#X connect 18 0 0 0;
+#X connect 16 0 17 0;
+#X connect 17 0 33 0;
+#X connect 18 0 19 0;
+#X connect 20 0 23 0;
+#X connect 21 0 20 0;
+#X connect 22 0 21 0;
+#X connect 23 0 24 0;
+#X connect 24 0 26 0;
+#X connect 25 0 24 1;
+#X connect 26 0 28 0;
+#X connect 29 0 30 0;
+#X connect 30 0 9 0;
+#X connect 32 0 9 0;
+#X connect 33 0 0 0;
+#X connect 34 0 29 0;
