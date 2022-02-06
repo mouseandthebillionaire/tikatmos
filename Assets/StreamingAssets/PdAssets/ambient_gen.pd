@@ -76,7 +76,7 @@
 #X obj 155 532 sel 1;
 #X obj 156 560 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 155 584 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 155 584 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 155 604 send chord;
 #X obj 43 523 receive on;
@@ -138,7 +138,7 @@
 #X obj 470 688 r~ ambient_pad;
 #X obj 514 852 dac~;
 #X obj 661 466 Chords_Scales;
-#X obj 976 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 976 314 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X floatatom 976 392 5 0 0 0 - - -;
 #X obj 978 494 phasor~;
@@ -218,6 +218,8 @@
 #X floatatom 736 354 5 0 0 0 - - -;
 #X obj 736 329 % 5;
 #X obj 651 254 loadbang 0;
+#X obj 211 548 r sliderValue;
+#X obj 250 640 print;
 #X connect 1 0 145 0;
 #X connect 2 0 149 0;
 #X connect 3 0 4 0;
@@ -406,3 +408,6 @@
 #X connect 194 0 170 1;
 #X connect 195 0 194 0;
 #X connect 196 0 194 0;
+#X connect 197 0 198 0;
+#X connect 197 0 177 1;
+#X connect 197 0 189 1;

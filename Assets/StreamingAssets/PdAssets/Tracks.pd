@@ -1,0 +1,52 @@
+#N canvas 587 64 638 494 12;
+#X obj 93 90 soundfiler;
+#X obj 26 6 loadbang;
+#X obj 118 443 dac~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array channelL 100 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0;
+#X coords 0 1 100 -1 200 140 1;
+#X restore 394 35 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array channelR 100 float 3;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0;
+#X coords 0 1 100 -1 200 140 1 0 0;
+#X restore 393 197 graph;
+#X floatatom 135 117 12 0 0 0 - - -;
+#X obj 94 167 expr 44100 / $f1;
+#X obj 136 142 s sampleSize;
+#X floatatom 117 199 12 0 0 0 - - -;
+#X obj 97 230 phasor~;
+#X obj 96 283 *~;
+#X obj 112 257 r sampleSize;
+#X obj 98 316 tabread4~ channelL;
+#X obj 117 347 tabread4~ channelR;
+#X obj 112 409 *~ 0.5;
+#X obj 166 409 *~ 0.5;
+#X obj 176 22 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 27 36 track2.wav;
+#X msg 93 64 read -resize \$1 channelL channelR;
+#X connect 0 0 5 0;
+#X connect 0 0 6 0;
+#X connect 1 0 17 0;
+#X connect 5 0 7 0;
+#X connect 6 0 8 0;
+#X connect 6 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 12 0;
+#X connect 10 0 13 0;
+#X connect 11 0 10 1;
+#X connect 12 0 14 0;
+#X connect 13 0 15 0;
+#X connect 14 0 2 0;
+#X connect 15 0 2 1;
+#X connect 16 0 18 0;
+#X connect 17 0 18 0;
+#X connect 18 0 0 0;
