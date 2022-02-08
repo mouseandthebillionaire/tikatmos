@@ -8,8 +8,10 @@ public class MusicManip : MonoBehaviour
     public LibPdInstance pdPatch;
     public Slider mainSlider;
 
-    public void Start()
-    {
+    public static MusicManip S;
+
+    public void Start() {
+        S = this;
         //Adds a listener to the main slider and invokes a method when the value changes.
         mainSlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
     }
@@ -19,8 +21,12 @@ public class MusicManip : MonoBehaviour
         pdPatch.SendFloat("sliderValue", mainSlider.value);
     }
 
-    void OnMouseDown ()
-    {
-    	pdPatch.SendBang("knobOn");
+    void OnMouseDown () {
+
+        MusicShift();
+    }
+
+    public void MusicShift() {
+        pdPatch.SendBang("knobOn");
     }
 }
