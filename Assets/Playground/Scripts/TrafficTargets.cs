@@ -2,25 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetVelocity : MonoBehaviour
+public class TrafficTargets : MonoBehaviour
 {
     public GameObject person;
     public GameObject target;
-    public GameObject path;
+
+    public GameObject[] targetZones;
 
     private Rigidbody2D rb;
 
     public float xBounds, yBounds;
-    public float minVelocity, maxVelocity;
-    public float pathDistance;
-    public float pathRadius;
+    public float maxVelocity;
     public float minTargetTime, maxTargetTime;
+    public float targetDistance;
+
+    public float minZoneTime, maxZoneTime;
+    public float zonePadding;
 
     private float time = 0.0f;
 
-    private float previousTheta;
+    private float zoneTime = 0.0f;
+    private float zoneTimer;
 
-    private bool stopped;
+    private int currentZone;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +34,11 @@ public class TargetVelocity : MonoBehaviour
         // Choose a random location for the person
         StartCoroutine(RandomSpawn());
 
+        // Choose a random target zone
+        currentZone = Random.Range(0, targetZones.Length);
+
         // Choose a random location for the target
-        target.transform.position = new Vector3(Random.Range(xBounds, -xBounds), Random.Range(yBounds, -yBounds), 0);
+        StartCoroutine(RandomLocation());
 
         // Choose a random velocity for the person
         rb.velocity = new Vector3(Random.Range(-maxVelocity, maxVelocity), Random.Range(-maxVelocity, maxVelocity), 0);
@@ -65,7 +72,7 @@ public class TargetVelocity : MonoBehaviour
         float yDistance = target.transform.position.y - person.transform.position.y;
         float hypotenuse = Mathf.Sqrt(xDistance*xDistance + yDistance*yDistance);
 
-        VelocityToTarget(xDistance, yDistance, hypotenuse);
+        VelocityToTarget();
 
         // Set a maximum velocity for the person
         float xVelocity = rb.velocity.x;
@@ -81,67 +88,72 @@ public class TargetVelocity : MonoBehaviour
 
         rb.velocity = new Vector3(xVelocity, yVelocity, 0);
 
-        // Stop the person for a while if their velocity is slow enough
-        if (Mathf.Abs(xVelocity) < minVelocity && Mathf.Abs(yVelocity) < minVelocity) stopped = true;
-        if (time == 0) stopped = false;
-
-        if (stopped) rb.velocity = new Vector3(0, 0, 0);
+        // Stop the person when they've reached their target
+        //if (hypotenuse <= targetDistance) rb.velocity = new Vector3(0, 0, 0);
     }
 
-    void VelocityToTarget(float xDistance, float yDistance, float hypotenuse) {
-    
-        // A prediction of where the person will move to based on its current velocity
-        float scaleFactor = pathDistance/hypotenuse;
-
-        float xPrediction = person.transform.position.x + xDistance*scaleFactor;
-        float yPrediction = person.transform.position.y + yDistance*scaleFactor;
-
-        // Display the "path" object at the predicted location
-        Vector3 predictedLocation = new Vector3(xPrediction, yPrediction, 0);
-        path.transform.position = predictedLocation;
+    void VelocityToTarget() {
 
         // Update time counter
-        time = time + Time.fixedDeltaTime;
+        time += Time.fixedDeltaTime;
 
         float targetTime = Random.Range(minTargetTime,maxTargetTime);
 
+        // Determine if a new target zone needs to be chosen
+        NewZone();
+
         // Determine if a new target location needs to be chosen
         if (time >= targetTime) {
-            RandomTargetLocation(xPrediction, yPrediction);
+            StartCoroutine(RandomLocation());
             time = 0;
         }
 
-        // Chage the velocity of the person to aim for the target
-        xDistance = target.transform.position.x - person.transform.position.x;
-        yDistance = target.transform.position.y - person.transform.position.y;
+        // Change the velocity of the person to aim for the target
+        float xDistance = target.transform.position.x - person.transform.position.x;
+        float yDistance = target.transform.position.y - person.transform.position.y;
 
         Vector2 newVelocity = new Vector2(xDistance, yDistance);
 
         rb.AddForce(newVelocity);
     }
 
-    void RandomTargetLocation(float xPrediction, float yPrediction) {
-        float xTarget, yTarget;
+    void NewZone() {
+        // Determine how long before a new zone is chosen
+        if (zoneTime == 0) zoneTimer = Random.Range(minZoneTime, maxZoneTime);
 
-        StartCoroutine(RandomLocation());
+        // Update time counter
+        zoneTime += Time.fixedDeltaTime;
 
-        IEnumerator RandomLocation() {
-            yield return new WaitForSeconds(0);
+        if (zoneTime >= zoneTimer) {
+            // Generate a new random target zone
+            currentZone = Random.Range(0, targetZones.Length);
+            zoneTime = 0;
+        }
+    }
 
-            // Determine a random location that is a fixed radius away from the "path" object
-            float theta = Random.Range(previousTheta - Mathf.PI/4, previousTheta + Mathf.PI/4);
-            previousTheta = theta;
+    IEnumerator RandomLocation() {
+        yield return new WaitForSeconds(0);
 
-            xTarget = Mathf.Cos(theta) * pathRadius;
-            yTarget = Mathf.Sin(theta) * pathRadius;
+        GameObject zone = targetZones[currentZone];
 
-            // Check to see if the target will collide with something else
-            if (CheckOverlap(target, xPrediction + xTarget, yPrediction + yTarget)) StartCoroutine(RandomLocation());
-            else {
-                // Move the target to that new location
-                Vector3 targetLocation = new Vector3(xPrediction + xTarget, yPrediction + yTarget, 0);
-                target.transform.position = targetLocation;
-            }
+        // Determine a random location within the chosen target zone
+        float xExtent = zone.GetComponent<SpriteRenderer>().bounds.extents.x;
+        float yExtent = zone.GetComponent<SpriteRenderer>().bounds.extents.y;
+
+        float xMin = zone.transform.position.x - xExtent + zonePadding;
+        float xMax = zone.transform.position.x + xExtent - zonePadding;
+        float yMin = zone.transform.position.y - yExtent + zonePadding;
+        float yMax = zone.transform.position.y + yExtent - zonePadding;
+
+        float xTarget = Random.Range(xMin, xMax);
+        float yTarget = Random.Range(yMin,yMax);
+
+        // Check to see if the target will collide with something else
+        if (CheckOverlap(target, xTarget, yTarget)) StartCoroutine(RandomLocation());
+        else {
+            // Move the target to that location
+            Vector3 targetLocation = new Vector3(xTarget, yTarget, 0);
+            target.transform.position = targetLocation;
         }
     }
 

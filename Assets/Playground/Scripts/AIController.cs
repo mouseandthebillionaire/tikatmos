@@ -11,6 +11,8 @@ public class AIController : MonoBehaviour
 
     private int child;
 
+    public bool isWaldo;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,10 +28,13 @@ public class AIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Generate a random number
-        child = Random.Range(0,people.Length - 1);
+        // Generate special people for the player to search for
+        if (isWaldo) {
+            // Generate a random number
+            child = Random.Range(0,people.Length - 1);
 
-        // Change the color of the child person
-        people[child].gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(255,165,0);
+            // Change the color of the child person
+            people[child].gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(255,165,0);
+        }
     }
 }
