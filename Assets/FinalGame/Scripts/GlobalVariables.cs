@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GlobalVariables : MonoBehaviour
 {
+    // Input Constants
     public KeyCode upCrank = KeyCode.UpArrow;
     public KeyCode downCrank = KeyCode.DownArrow;
     public KeyCode leftSlider = KeyCode.LeftArrow;
@@ -12,6 +13,16 @@ public class GlobalVariables : MonoBehaviour
     public KeyCode knobRight = KeyCode.Period;
     public KeyCode deviceButton = KeyCode.Space;
 
+    // We also need to keep track of constants from the Device & Window
+    
+    // Speech Tuning Constants
+    // Have we successfully tuned to the customer's language
+    public bool tuned;
+
+    
+    // Plant Care Constants?
+    
+    // Singleton
     public static GlobalVariables S;
     
     
