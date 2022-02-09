@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
+    public GameObject player;
     public float xBounds, yBounds;
     public float speed;
 
     public float zoomMax, zoomMin;
     public float zoomSpeed;
-
-    public GameObject player;
+    public float minPlayerSize, maxPlayerSize;
 
     // Start is called before the first frame update
     void Start()
@@ -26,20 +26,20 @@ public class CameraScript : MonoBehaviour
 
         // Move the camera UP
         if (Input.GetKey(KeyCode.UpArrow)) {
-            if (yPos <= yBounds && !CheckOverlap(Vector2.up)) yPos += speed;
+            if (yPos <= yBounds) yPos += speed;
         }
         // Move the camera DOWN
         if (Input.GetKey(KeyCode.DownArrow)) {
-            if (yPos >= -yBounds && !CheckOverlap(Vector2.down)) yPos -= speed;
+            if (yPos >= -yBounds) yPos -= speed;
         }
 
         // Move the camera LEFT
         if (Input.GetKey(KeyCode.LeftArrow)) {
-            if (xPos >= -xBounds && !CheckOverlap(Vector2.left)) xPos -= speed;
+            if (xPos >= -xBounds) xPos -= speed;
         }
         // Move the camera RIGHT
         if (Input.GetKey(KeyCode.RightArrow)) {
-            if (xPos <= xBounds && !CheckOverlap(Vector2.right)) xPos += speed;
+            if (xPos <= xBounds) xPos += speed;
         }
 
         float zoom = GetComponent<Camera>().orthographicSize;
@@ -56,18 +56,20 @@ public class CameraScript : MonoBehaviour
 
         GetComponent<Camera>().orthographicSize = zoom;
 
-        // Change the position of the player and the camera
-        player.transform.position = new Vector3 (xPos, yPos, 0);
+        // Change the size of the player based on the camera's zoom
+        float newSize = map(zoom, zoomMin, zoomMax, maxPlayerSize, minPlayerSize);
+        player.transform.localScale = new Vector3(newSize, newSize, 1);
+
+        // Change the position of the camera
         transform.position = new Vector3(xPos, yPos, transform.position.z);
     }
 
-    bool CheckOverlap(Vector2 direction) {
-        float rayDistance = player.GetComponent<CircleCollider2D>().bounds.extents.x;
-        RaycastHit2D[] hit = Physics2D.RaycastAll(transform.position, transform.TransformDirection(direction), rayDistance);
-
-        for (int i = 0; i < hit.Length; i++) {
-            if (hit[i].collider.gameObject.layer != 6) return true;
-        }
-        return false;
-    }
+    public float map(float value, float oldMin, float oldMax, float newMin, float newMax){
+ 
+    float oldRange = (oldMax - oldMin);
+    float newRange = (newMax - newMin);
+    float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
+ 
+    return(newValue);
+}
 }
