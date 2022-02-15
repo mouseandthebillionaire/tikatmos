@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - SecondaryCamera
+  - Goal
   layers:
   - Default
   - TransparentFX

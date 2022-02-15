@@ -16,6 +16,8 @@ public class WaldoTargets : MonoBehaviour
     public float pathRadius;
     public float minTargetTime, maxTargetTime;
 
+    public float minSize, maxSize;
+
     private float time = 0.0f;
 
     private float previousTheta;
@@ -35,6 +37,10 @@ public class WaldoTargets : MonoBehaviour
 
         // Choose a random velocity for the person
         rb.velocity = new Vector3(Random.Range(-maxVelocity, maxVelocity), Random.Range(-maxVelocity, maxVelocity), 0);
+
+        // Choose a random size for the person
+        float randomSize = Random.Range(minSize, maxSize);
+        person.transform.localScale = new Vector3(randomSize, randomSize, randomSize);
     }
 
     

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AIController : MonoBehaviour
 {
     public GameObject person;
+    public Text goalMessage;
     private GameObject[] people;
 
     public int numberOfPeople;
@@ -12,6 +14,8 @@ public class AIController : MonoBehaviour
     private int child;
 
     public bool isWaldo;
+
+    public Color[] goals;
 
 
     // Start is called before the first frame update
@@ -33,8 +37,14 @@ public class AIController : MonoBehaviour
             // Generate a random number
             child = Random.Range(0,people.Length - 1);
 
+            // Change the tag of the object
+            people[child].gameObject.transform.GetChild(0).tag = "Goal";
+
             // Change the color of the child person
-            people[child].gameObject.GetComponentInChildren<SpriteRenderer>().color = new Color(255,165,0);
+            people[child].gameObject.GetComponentInChildren<SpriteRenderer>().color = goals[0];
+
+            // Change the text goal
+            goalMessage.color = goals[0];
         }
     }
 }
