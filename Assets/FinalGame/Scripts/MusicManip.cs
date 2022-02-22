@@ -9,6 +9,7 @@ public class MusicManip : MonoBehaviour
     public LibPdInstance ambientPatch;
     public Slider mainSlider;
     public Slider volume;
+    public Slider filter;
 
     public static MusicManip S;
 
@@ -17,6 +18,7 @@ public class MusicManip : MonoBehaviour
         //Adds a listener to the main slider and invokes a method when the value changes.
         mainSlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
         volume.onValueChanged.AddListener(delegate {ValueChangeCheckVolume(); });
+        filter.onValueChanged.AddListener(delegate {ValueChangeCheckFilter(); });
     }
 
     public void ValueChangeCheck()
@@ -29,6 +31,12 @@ public class MusicManip : MonoBehaviour
     {
         trackPatch.SendFloat("sliderValue", volume.value);
         ambientPatch.SendFloat("sliderValue2", volume.value);
+    }
+
+     public void ValueChangeCheckFilter()
+    {
+        trackPatch.SendFloat("filterValue", filter.value);
+        ambientPatch.SendFloat("filterValue2", filter.value);
     }
 
     void OnMouseDown () {

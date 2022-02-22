@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public bool customer;
+    
+    // Screen UI Elements
+    public GameObject customerNotification, customerRequest;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -22,12 +28,51 @@ public class GameManager : MonoBehaviour
         // Load the Device Manager as a secondary scene (to force on second display)
         SceneManager.LoadScene("DeviceManager", LoadSceneMode.Additive);
 
+        customer = false;
+        customerNotification.SetActive(false);
+        
+        // Start the Game
+        StartCoroutine(GameLoop());
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private IEnumerator GameLoop()
+    {
+        // not currently helping anyone
+        if (!customer)
+        {
+            // wait between one and three minutes
+            // float waitTime = Random.Range(60, 180);
+            // Quicker for testing
+            float waitTime = Random.Range(6, 18);
+            yield return new WaitForSeconds(waitTime);
+
+            // Start the customer interaction
+            StartCoroutine(Customer());
+        }
+    }
+
+    private IEnumerator Customer()
+    {
+        customer = true;
+        // display that a customer is present
+        customerNotification.SetActive(true);
+        
+        // wait for the tuner to be tuned
+        while (!GlobalVariables.S.tuned)
+        {
+            yield return null;
+        }
+        // Present the customer's request
+        Debug.Log("I lost my pet catalog");
+
+        yield return null;
     }
 
     public void NewCustomer() {

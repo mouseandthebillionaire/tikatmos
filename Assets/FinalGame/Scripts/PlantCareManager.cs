@@ -43,7 +43,7 @@ public class PlantCareManager : MonoBehaviour
         // set the light source to a random location and the arrow to start in the middle
         sunRot = Random.Range(-80f, 80f);
         sun.transform.Rotate(0f, 0f, sunRot);
-        Debug.Log("sun start rotation = " + sunRot);
+        //Debug.Log("sun start rotation = " + sunRot);
         arrow.transform.Rotate(0f, 0f, 0f);
 
         StartCoroutine(RotateSun());
@@ -90,7 +90,7 @@ public class PlantCareManager : MonoBehaviour
             Debug.Log("Add water");
             currentLevel += waterRefillAmount;
             waterLevel.fillAmount = currentLevel;
-            Debug.Log("current water level = " + currentLevel);
+            //Debug.Log("current water level = " + currentLevel);
         }
 
         // if the water is full, turn on a plant heart
@@ -127,7 +127,7 @@ public class PlantCareManager : MonoBehaviour
                 // subtract a bit from the water interface
                 waterLevel.fillAmount = currentLevel;
 
-                Debug.Log("current water level = " + currentLevel);
+                //Debug.Log("current water level = " + currentLevel);
 
                 if (currentLevel < 0)
                 {
@@ -180,7 +180,7 @@ public class PlantCareManager : MonoBehaviour
          {
              // set a rotation for the sun to go to
              sunRotGoal = Random.Range(-80, 80);
-             Debug.Log("sun goal rotation = " + sunRotGoal);
+             //Debug.Log("sun goal rotation = " + sunRotGoal);
              
              bool stillRotating = true;
              
@@ -202,7 +202,7 @@ public class PlantCareManager : MonoBehaviour
                      {
                          sunRot -= 360f;
                      }
-                     Debug.Log(sunRotGoal +" > "+ sunRot);
+                     //Debug.Log(sunRotGoal +" > "+ sunRot);
                      
                      yield return new WaitForSeconds(0.01f);
                  }
@@ -215,13 +215,13 @@ public class PlantCareManager : MonoBehaviour
                      {
                          sunRot -= 360f;
                      }
-                     Debug.Log(sunRotGoal +" < "+ sunRot);
+                     //Debug.Log(sunRotGoal +" < "+ sunRot);
                      
                      yield return new WaitForSeconds(0.01f);
                  }
              }
              
-             Debug.Log("waiting to move the sun again");
+             //Debug.Log("waiting to move the sun again");
              yield return new WaitForSeconds(5f);
 
              // re-enter the coroutine
