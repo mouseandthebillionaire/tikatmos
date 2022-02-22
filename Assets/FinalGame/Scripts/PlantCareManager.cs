@@ -215,7 +215,7 @@ public class PlantCareManager : MonoBehaviour
                      {
                          sunRot -= 360f;
                      }
-                     Debug.Log(sunRotGoal +" < "+ sunRot);
+                     //Debug.Log(sunRotGoal +" < "+ sunRot);
                      
                      yield return new WaitForSeconds(0.01f);
                  }

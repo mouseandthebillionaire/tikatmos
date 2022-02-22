@@ -39,6 +39,6 @@ public class GlobalVariables : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log(tuned);
     }
 }
