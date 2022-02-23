@@ -19,6 +19,9 @@ public class MusicManip : MonoBehaviour
         mainSlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
         volume.onValueChanged.AddListener(delegate {ValueChangeCheckVolume(); });
         filter.onValueChanged.AddListener(delegate {ValueChangeCheckFilter(); });
+        
+        // MRB - Let's see if we can dynamically find our PD instances in the Main scene
+        ambientPatch = GameObject.Find("Ambient_Background").GetComponent<LibPdInstance>();
     }
 
     public void ValueChangeCheck()

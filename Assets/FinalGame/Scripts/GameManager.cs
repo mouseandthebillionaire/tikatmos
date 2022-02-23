@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public bool customer;
     
+    [Header("in DevMode we don't autoload the DeviceManager")]
+    public bool devMode;
+    
     // Screen UI Elements
     public GameObject customerNotification, customerRequest;
     
@@ -24,9 +27,12 @@ public class GameManager : MonoBehaviour
         
         // Make this Screen Permanent
         DontDestroyOnLoad(this);
-        
-        // Load the Device Manager as a secondary scene (to force on second display)
-        SceneManager.LoadScene("DeviceManager", LoadSceneMode.Additive);
+
+        if (!devMode)
+        {
+            // Load the Device Manager as a secondary scene (to force on second display)
+            SceneManager.LoadScene("DeviceManager", LoadSceneMode.Additive);
+        }
 
         customer = false;
         customerNotification.SetActive(false);
