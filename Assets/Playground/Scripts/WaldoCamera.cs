@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CameraScript : MonoBehaviour
+public class WaldoCamera : MonoBehaviour
 {
-    public GameObject magnifyingGlass, recording;
+    public GameObject magnifyingGlass, recording, battery;
     public GameObject[] batteryBars = new GameObject[5];
     public GameObject catchTime;
+
+    public Image cameraOff;
 
     public Image cameraPosition;
 
     public Image cameraZoom;
 
     public float xBounds, yBounds;
-    public float speed;
+    [SerializeField] [Range(0f, 5f)] float lerpSpeed;
+    public float cameraSpeed;
 
     public float zoomMax, zoomMin;
     public float zoomSpeed;
@@ -22,13 +25,9 @@ public class CameraScript : MonoBehaviour
 
     private float recordingTimer = 0f;
     public float blinkRate;
-
-    private float batteryTimer = 0f;
+    public float timer;
+    private float startTime = 0f;
     private int currentBar;
-    public float batteryLife;
-
-    public float catchTimer;
-    public float timerResetRate;
 
     public float xMin, xMax;
     public float yMin, yMax;
@@ -42,7 +41,14 @@ public class CameraScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        startTime = Time.time;
+
+        // Reset the battery
+        for (int i = 0; i < batteryBars.Length; i++) {
+            batteryBars[i].GetComponent<Image>().enabled = true;
+            batteryBars[i].GetComponent<Image>().color = hiPower;
+            currentBar = batteryBars.Length;
+        }
     }
 
     // Update is called once per frame
@@ -52,32 +58,32 @@ public class CameraScript : MonoBehaviour
         float yPos = transform.position.y;
 
         // Move the camera UP
-        if (Input.GetKey(GlobalVariables.S.upCrank)) {
-            if (yPos <= yBounds) yPos += speed;
+        if (Input.GetKeyDown(GlobalVariables.S.upCrank)) {
+            if (yPos <= yBounds) yPos += cameraSpeed;
         }
         // Move the camera DOWN
-        if (Input.GetKey(GlobalVariables.S.downCrank)) {
-            if (yPos >= -yBounds) yPos -= speed;
+        if (Input.GetKeyDown(GlobalVariables.S.downCrank)) {
+            if (yPos >= -yBounds) yPos -= cameraSpeed;
         }
 
         // Move the camera LEFT
-        if (Input.GetKey(GlobalVariables.S.knobLeft)) {
-            if (xPos >= -xBounds) xPos -= speed;
+        if (Input.GetKeyDown(GlobalVariables.S.knobLeft)) {
+            if (xPos >= -xBounds) xPos -= cameraSpeed;
         }
         // Move the camera RIGHT
-        if (Input.GetKey(GlobalVariables.S.knobRight)) {
-            if (xPos <= xBounds) xPos += speed;
+        if (Input.GetKeyDown(GlobalVariables.S.knobRight)) {
+            if (xPos <= xBounds) xPos += cameraSpeed;
         }
 
         float zoom = GetComponent<Camera>().orthographicSize;
 
         // Zoom OUT the camera
-        if (Input.GetKey(GlobalVariables.S.leftSlider)) {
+        if (Input.GetKeyDown(GlobalVariables.S.leftSlider)) {
             if (zoom <= zoomMax) zoom += zoomSpeed;
         }
 
         // Zoom IN the camera
-        if (Input.GetKey(GlobalVariables.S.rightSlider)) {
+        if (Input.GetKeyDown(GlobalVariables.S.rightSlider)) {
             if (zoom >= zoomMin) zoom -= zoomSpeed;
         }
 
@@ -91,14 +97,17 @@ public class CameraScript : MonoBehaviour
         float zoomLevel = map(zoom, zoomMin, zoomMax, zoomedOut, zoomedIn);
         cameraZoom.rectTransform.anchoredPosition = new Vector3(cameraZoom.rectTransform.anchoredPosition.x, zoomLevel, 1);
 
+
         // Change the position of the camera
-        transform.position = new Vector3(xPos, yPos, transform.position.z);
+        Vector3 targetPosition = new Vector3(xPos, yPos, transform.position.z);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed * Time.deltaTime);
 
         // Move the position of the camera indicator to reflect the camera position
         float xLoc = map(xPos, -xBounds, xBounds, xMin, xMax);
         float yLoc = map(yPos, -yBounds, yBounds, yMin, yMax);
-        
-        cameraPosition.rectTransform.anchoredPosition = new Vector3(xLoc, yLoc, 1);
+        Vector3 oldPosition = cameraPosition.rectTransform.anchoredPosition;
+        Vector3 newPosition = new Vector3(xLoc, yLoc, 1);
+        cameraPosition.rectTransform.anchoredPosition = Vector3.Lerp(oldPosition, newPosition, lerpSpeed * Time.deltaTime);
 
         CameraUI();
     }
@@ -113,13 +122,16 @@ public class CameraScript : MonoBehaviour
     }
 
     void CameraUI() {
-        // Display the timer for how long you need to have the magnifying glass over a person
-        float time = catchTimer*100;
-        catchTime.GetComponent<Text>().text = time.ToString("#00:00:00");
-        CheckOverlap();
+        // Display the timer
+        float currentTime = timer - (Time.time - startTime);
+        if (currentTime > 0) {
+            int minutes = (int)(currentTime / 60);
+            int seconds  = (int)(currentTime % 60);
+            int fraction = (int)((currentTime * 100) % 100);
 
-        // When the timer reaches 0
-        if (catchTimer <= 0) catchTimer = 0;
+            catchTime.GetComponent<Text>().text = string.Format ("{0:00}:{1:00}:{2:00}", minutes, seconds, fraction);
+        } 
+        CheckOverlap();
 
 
         // Blink the recording light
@@ -130,23 +142,20 @@ public class CameraScript : MonoBehaviour
 
             // Turn the recording indicator on or off
             recording.GetComponent<Image>().enabled = !recording.GetComponent<Image>().enabled;
-        }
 
-
-        // Reset the battery
-        if (batteryTimer == 0) for (int i = 0; i < batteryBars.Length; i++) {
-            batteryBars[i].GetComponent<Image>().enabled = true;
-            batteryBars[i].GetComponent<Image>().color = hiPower;
-            currentBar = batteryBars.Length;
+            // If low battery, start blinking the battery
+            if (currentTime <= 10f) {
+                batteryBars[0].GetComponent<Image>().enabled = !batteryBars[0].GetComponent<Image>().enabled;
+                battery.GetComponent<Image>().enabled = !battery.GetComponent<Image>().enabled;
+            }
         }
 
         // Decrease the battery life
-        batteryTimer += Time.fixedDeltaTime;
-        float barLife = batteryLife/batteryBars.Length;
+        float barLife = timer/batteryBars.Length;
 
-        for (int i = 1; i <= batteryBars.Length; i++) {
-            if (batteryTimer >= barLife*i) {
-                Image bar = batteryBars[batteryBars.Length - i].GetComponent<Image>();
+        for (int i = batteryBars.Length - 1; i >= 0; i--) {
+            if (currentTime <= barLife*i) {
+                Image bar = batteryBars[i].GetComponent<Image>();
 
                 if (bar.enabled) currentBar--;
                 bar.enabled = false;
@@ -160,6 +169,11 @@ public class CameraScript : MonoBehaviour
                 for (int j = 0; j <= 1; j++) batteryBars[j].GetComponent<Image>().color = lowPower;
             }
         }
+
+        // The battery has run out of power
+        if (currentTime < 0) {
+            cameraOff.gameObject.SetActive(true);
+        }
     }
 
     // Check to see if the magnifying glass is on a person
@@ -170,7 +184,12 @@ public class CameraScript : MonoBehaviour
         Collider2D[] colliders;
         colliders = Physics2D.OverlapCircleAll(position, magnifyingGlass.GetComponent<CircleCollider2D>().bounds.extents.x);
         for (int i = 0; i < colliders.Length; i++) {
-            if (colliders[i].gameObject.layer == 6 && colliders[i].gameObject.tag == "Goal") catchTimer -= Time.deltaTime;
+            if (colliders[i].gameObject.layer == 6 && colliders[i].gameObject.tag == "Goal") {
+                if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) {
+                    // Goal was completed
+
+                }
+            }
         }
     }
 }

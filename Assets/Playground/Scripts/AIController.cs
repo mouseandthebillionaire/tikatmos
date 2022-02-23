@@ -35,7 +35,7 @@ public class AIController : MonoBehaviour
         // Generate special people for the player to search for
         if (isWaldo) {
             // Generate a random number
-            child = Random.Range(0,people.Length - 1);
+            child = Random.Range(0,people.Length);
 
             // Change the tag of the object
             people[child].gameObject.transform.GetChild(0).tag = "Goal";
