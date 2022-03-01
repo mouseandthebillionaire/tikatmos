@@ -11,52 +11,72 @@ public class FloorManager : MonoBehaviour
     public GameObject person;
 
     public int numberOfFloors;
-    public float distBetweenFloors;
 
-    public float distBetweenEscalators;
+    public static float distBetweenFloors = 5;
+    public static float distBetweenEscalators = 1;
+    public static int maxPeopleOnFloor = 100;
+    public static int floorThreshold = 30;
 
     public float personSpeed;
 
     public float[] personSpawnRate = new float[2];
 
     public int[] escalatorsPerFloor = new int[2];
-    public int[] peoplePerFloor = new int[2];
 
-    private GameObject[] floors = new GameObject[0];
-    private GameObject[] escalators = new GameObject[0];
-    private GameObject[] people = new GameObject[0];
 
-    private bool[] escalatorsActive = new bool[0];
+    public static List<GameObject> floors = new List<GameObject>();
+    public static List<GameObject> escalators = new List<GameObject>();
+    private List<GameObject> people = new List<GameObject>();
+    public static List<int> peopleOnFloors = new List<int>();
 
-    private int[] peopleOnFloors;
+    public float maxPercentActivated;
+    public static float percentActivated = 0.45f;
 
     private float spawnWaitTime;
     private float time;
-
     private int currentPerson;
 
-    private int[] startFloor = new int[0];
+    public Camera mainCamera;
+    public Canvas canvas;
+    public Image floorNumber;
+
+    private List<Image> floorNumbers = new List<Image>();
+
+    private int currentEscalator = 0;
+    private int currentFloor = 0;
+    private bool goingDown = true;
     private int[] escalatorsOnFloor = new int[0];
+    public static bool[] upIsActive = new bool[0];
+    public static bool[] downIsActive = new bool[0];
+
+    public Color active, inactive, selected;
 
     // Start is called before the first frame update
     void Start()
     {
         // Spawn Floors
-        Array.Resize(ref floors, numberOfFloors);
-        Array.Resize(ref escalatorsOnFloor, numberOfFloors);
-
         for (int i = 0; i < numberOfFloors; i++) {
             float yLoc = distBetweenFloors * i;
             Vector3 loc = new Vector3(0, yLoc, 0);
 
-            floors[i] = Instantiate(floor, loc, Quaternion.identity);
+            floors.Add(Instantiate(floor, loc, Quaternion.identity));
+
+            // Spawn the numbers for each floor
+            float floorNumberY = floorNumber.transform.position.y + (distBetweenFloors * i);
+            Vector3 floorNumberPosition = new Vector3(0, floorNumberY, 0);
+            floorNumbers.Add(Instantiate(floorNumber, floorNumberPosition, Quaternion.identity));
+
+            floorNumbers[i].transform.SetParent(canvas.transform);
+            floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + (i+1);
+
+            // Determine how many people are on each floor
+            peopleOnFloors.Add(UnityEngine.Random.Range(0, maxPeopleOnFloor));
         }
 
         // Spawn escalators 
-        int currentEscalator = 0;
-        for (int i = 0; i < floors.Length - 1; i++) {
+        Array.Resize(ref escalatorsOnFloor, floors.Count - 1);
+        for (int i = 0; i < floors.Count - 1; i++) {
             int numberOfEscalators = UnityEngine.Random.Range(escalatorsPerFloor[0], escalatorsPerFloor[1] + 1);
-            escalatorsOnFloor[i] = numberOfEscalators;
 
             // Generate the escalators for each floor
             for (int j = 0; j < numberOfEscalators; j++) {
@@ -66,39 +86,65 @@ public class FloorManager : MonoBehaviour
                 float yLoc = (distBetweenFloors * i) + distBetweenFloors/2;
                 Vector3 loc = new Vector3(xLoc, yLoc, 0);
 
-                if (j == 0) {
-                    int newSize = escalators.Length + numberOfEscalators;
-                    Array.Resize(ref escalators, newSize);
-                }
-
-                escalators[currentEscalator] = Instantiate(escalator, loc, Quaternion.identity); 
-                currentEscalator++;
+                escalators.Add(Instantiate(escalator, loc, Quaternion.identity)); 
             }
-        }
-        Array.Resize(ref escalatorsActive, escalators.Length);
-        for (int i = 0; i < escalatorsActive.Length; i++) escalatorsActive[i] = true;
 
-        // Determine how many people are on each floor
-        Array.Resize(ref peopleOnFloors, numberOfFloors);
-        for (int i = 0; i < numberOfFloors; i++) {
-            int randomInt = UnityEngine.Random.Range(peoplePerFloor[0], peoplePerFloor[1] + 1);
-            peopleOnFloors[i] = randomInt;
+            // Keep track of how many escalators are on each floor
+            escalatorsOnFloor[i] = numberOfEscalators;
+        }
+
+        // Keep track of all deactive escalators
+        Array.Resize(ref upIsActive, escalators.Count);
+        Array.Resize(ref downIsActive, escalators.Count);
+        for (int i = 0; i < escalators.Count; i++) {
+            upIsActive[i] = false;
+            downIsActive[i] = false;
+        }
+
+        // Randomly activate some of the escalators
+        int maxActivated = upIsActive.Length + downIsActive.Length;
+        for (int i = 0; i < percentActivated * maxActivated; i++) {
+            int randomEscalator = UnityEngine.Random.Range(0, escalators.Count);
+
+            // Randomly choose whether to activate the up or down escalator
+            int choice = UnityEngine.Random.Range(0, 2);
+            if (choice == 0) {
+                if (!upIsActive[randomEscalator]) upIsActive[randomEscalator] = true;
+                else downIsActive[randomEscalator] = true;
+            } else {
+                if (!downIsActive[randomEscalator]) downIsActive[randomEscalator] = true;
+                else upIsActive[randomEscalator] = true;
+            }
         }
 
         floor.SetActive(false);
         escalator.SetActive(false);
+        floorNumber.gameObject.SetActive(false);
         //person.SetActive(false); 
     }
 
     // Update is called once per frame
     void Update()
     {
+        ManageEscalators();
+
+        // Change the color of the floor depending on how many people it has
+        for (int i = 0; i < peopleOnFloors.Count; i++) {
+            floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + (i+1);
+            floorNumbers[i].fillAmount = (float) peopleOnFloors[i]/100;
+
+            if (peopleOnFloors[i] >= maxPeopleOnFloor - floorThreshold) floorNumbers[i].color = Color.green;
+            else if (peopleOnFloors[i] <= floorThreshold) floorNumbers[i].color = Color.red;
+            else floorNumbers[i].color = Color.yellow;
+        }
+
+        // Increment the timer
         if (time == 0) spawnWaitTime = UnityEngine.Random.Range(personSpawnRate[0], personSpawnRate[1]);
         time += Time.deltaTime;
-        if (time >= spawnWaitTime) {
-            // Spawn a person moving to another floor
-            int randomEscalator = UnityEngine.Random.Range(0, escalators.Length);
 
+        // Spawn a person moving to another floor
+        if (time >= spawnWaitTime) {
+            int randomEscalator = UnityEngine.Random.Range(0, escalators.Count);
             float xLoc = escalators[randomEscalator].gameObject.transform.position.x;
             float yLoc = escalators[randomEscalator].gameObject.transform.position.y;
             float speed = personSpeed;
@@ -118,69 +164,114 @@ public class FloorManager : MonoBehaviour
                 speed = -speed;
             }
             
-            Vector3 spawnLoc = new Vector3(xLoc, yLoc, 0);
-            Array.Resize(ref people, people.Length + 1);
-            people[currentPerson] = Instantiate(person, spawnLoc, Quaternion.identity);
-            people[currentPerson].GetComponent<Rigidbody2D>().AddForce(new Vector2(0, speed), ForceMode2D.Impulse);
+            // Spawn the person if the escalator is active
+            if ((choice == 0 && upIsActive[randomEscalator]) || (choice != 0 && downIsActive[randomEscalator])) {
+                Vector3 spawnLoc = new Vector3(xLoc, yLoc, 0);
+                people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
+                people[currentPerson].GetComponent<Rigidbody2D>().AddForce(new Vector2(0, speed), ForceMode2D.Impulse);            
 
-            // Keep track of what floor the person started on
-            Array.Resize(ref startFloor, people.Length);
-            int start = 0;
-            for(int i = 0; i < numberOfFloors; i++) if (floors[i].gameObject.transform.position.y == yLoc) start = i;
-            startFloor[currentPerson] = start;
+                currentPerson++;
+            }
 
-            currentPerson++;
             time = 0;
         }
+    }
 
-        // If the person has moved beyond their start floor
-        for (int i = 0; i < people.Length; i++) {
-            if (people[i] != null) {
-                // Check to see what floor the person is currently on
-                float currentY = people[i].transform.position.y;
-                int currentFloor = startFloor[i];
+    void ManageEscalators() {
 
-                float startY = floors[startFloor[i]].gameObject.transform.position.y;
+        // Display the total number of active escalators
+        int upActive = 0, downActive = 0;
+        for (int i = 0; i < upIsActive.Length; i++) {
+            if (upIsActive[i]) upActive++;
+            if (downIsActive[i]) downActive++;
+        }
+        float maxActivated = (int) ((upIsActive.Length + downIsActive.Length) * maxPercentActivated);
+        float current = upActive + downActive;
+        percentActivated = (float) current/maxActivated;
 
-                // If the person has travelled up one floor
-                if (currentY >= startY + distBetweenFloors) currentFloor++;
-                // If the person has travelled down one floor
-                else if (currentY <= startY - distBetweenFloors) currentFloor--;
+        // Activate/Deactivate an (escalator)
+        if (SerialScript.S.deviceButton) {
 
-                // The person is out of bounds
-                if (currentFloor < 0 || currentFloor > numberOfFloors) people[i].SetActive(false);
-                else {
-                    // Decide whether to remove the person or let them keep going
-                    if (currentFloor != startFloor[i]) {
-                        int choice = UnityEngine.Random.Range(0,2);
+            if (!goingDown) upIsActive[currentEscalator] = !upIsActive[currentEscalator];
+            else downIsActive[currentEscalator] = !downIsActive[currentEscalator];
 
-                        people[i].SetActive(false);
+            // Can't activate any more escalators
+            if (percentActivated == 1) {
+                if (!goingDown && upIsActive[currentEscalator]) upIsActive[currentEscalator] = false;
+                if (goingDown && downIsActive[currentEscalator]) downIsActive[currentEscalator] = false;
+            }
+        }
 
-                        /*
-                        if (choice == 0);
-                        else {
-                            int floorNumber = currentFloor;
-                            if (currentFloor < startFloor[i] && currentFloor >= 1) floorNumber = currentFloor - 1;
+        // Deselect all escalators
+        for (int i = 0; i < escalators.Count; i++) {
+            escalators[i].GetComponentsInChildren<SpriteRenderer>()[0].color = active;
+            escalators[i].GetComponentsInChildren<SpriteRenderer>()[1].color = active;
+        }
 
-                            // Determine the x location of the person based on the number of escalators
-                            float xLoc = people[i].transform.position.x;
-                            float xStart = -floors[0].GetComponent<SpriteRenderer>().bounds.extents.x;
-                            float xJump = Mathf.Abs((xStart * 2) / (escalatorsOnFloor[floorNumber] + 1));
+        // Check to see which escalators are turned off
+        for (int i = 0; i < escalators.Count; i++) {
+            // Set an escalator to deactivate
+            if (!upIsActive[i]) escalators[i].GetComponentsInChildren<SpriteRenderer>()[1].color = inactive;
+            if (!downIsActive[i]) escalators[i].GetComponentsInChildren<SpriteRenderer>()[0].color = inactive;
+        }
+        
+        // Check to see what floor the currently selected escalator is on
+        for (int i = 0; i < escalatorsOnFloor.Length; i++) {
+            int escalatorsBelow = 0;
+            for (int j = 0; j < i; j++) escalatorsBelow += escalatorsOnFloor[j];
+            if (currentEscalator >= escalatorsBelow) currentFloor = i;
+        }
 
-                            float minDistance = Mathf.Abs(xLoc - xStart);
-                            int timesMultiplied = 0;
+        // Check to see what the range of escalators that can be selected is
+        int lowerLimit = 0, upperLimit = 0;
+        for (int i = 0; i < currentFloor; i++) lowerLimit += escalatorsOnFloor[i];
+        for (int i = 0; i <= currentFloor; i++) upperLimit += escalatorsOnFloor[i];
 
-                            for (int j = 1; j <= escalatorsOnFloor[floorNumber]; j++) {
-                                if (Mathf.Abs(xLoc - (xStart + (xJump * i))) <= minDistance) timesMultiplied = i;
-                            }
 
-                            Vector3 loc = new Vector3(xStart + (xJump * timesMultiplied), people[i].transform.position.y, 0);
-                            people[i].transform.position = loc;
-                        }
-                        */
-                    }
+        // Check to see if the selected escalator was changed
+        if (SerialScript.S.knobLeft) {
+            if (!goingDown) goingDown = true;
+            else {
+                if (currentEscalator > lowerLimit) {
+                    currentEscalator--;
+                    goingDown = false;
                 }
             }
         }
+        if (SerialScript.S.knobRight) {
+            if (goingDown) goingDown = false;
+            else {
+                if (currentEscalator < upperLimit - 1) {
+                    currentEscalator++;
+                    goingDown = true;
+                }
+            }
+        }
+
+        // Check to see if the selected floor was changed
+        int oldFloor = currentFloor;
+        if (SerialScript.S.knobDown) if (currentFloor > 0) currentFloor--;
+        if (SerialScript.S.knobUp) if (currentFloor < escalatorsOnFloor.Length - 1) currentFloor++;
+
+        if (oldFloor != currentFloor) {
+            currentEscalator = 0;
+            goingDown = true;
+            for (int i = 0; i < currentFloor; i++) {
+                currentEscalator += escalatorsOnFloor[i];
+            }
+        }
+
+        // Highlight the currently selected escalator
+        if (goingDown) escalators[currentEscalator].GetComponentsInChildren<SpriteRenderer>()[0].color = selected;
+        else escalators[currentEscalator].GetComponentsInChildren<SpriteRenderer>()[1].color = selected;
+    }
+
+    public float map(float value, float oldMin, float oldMax, float newMin, float newMax){
+ 
+        float oldRange = (oldMax - oldMin);
+        float newRange = (newMax - newMin);
+        float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
+    
+        return(newValue);
     }
 }

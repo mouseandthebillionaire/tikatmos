@@ -16,7 +16,7 @@ public class WaldoCamera : MonoBehaviour
     public Image cameraZoom;
 
     public float xBounds, yBounds;
-    [SerializeField] [Range(0f, 5f)] float lerpSpeed;
+    public float lerpSpeed;
     public float cameraSpeed;
 
     public float zoomMax, zoomMin;
@@ -25,7 +25,6 @@ public class WaldoCamera : MonoBehaviour
 
     private float recordingTimer = 0f;
     public float blinkRate;
-    public float timer;
     private float startTime = 0f;
     private int currentBar;
 
@@ -37,6 +36,8 @@ public class WaldoCamera : MonoBehaviour
     public Color hiPower, midPower, lowPower;
 
     public static bool catchingPerson = false;
+
+    public float timer;
 
     // Start is called before the first frame update
     void Start()
@@ -58,32 +59,32 @@ public class WaldoCamera : MonoBehaviour
         float yPos = transform.position.y;
 
         // Move the camera UP
-        if (Input.GetKeyDown(GlobalVariables.S.upCrank)) {
+        if (SerialScript.S.knobUp) {
             if (yPos <= yBounds) yPos += cameraSpeed;
         }
         // Move the camera DOWN
-        if (Input.GetKeyDown(GlobalVariables.S.downCrank)) {
+        if (SerialScript.S.knobDown) {
             if (yPos >= -yBounds) yPos -= cameraSpeed;
         }
 
         // Move the camera LEFT
-        if (Input.GetKeyDown(GlobalVariables.S.knobLeft)) {
+        if (SerialScript.S.knobLeft) {
             if (xPos >= -xBounds) xPos -= cameraSpeed;
         }
         // Move the camera RIGHT
-        if (Input.GetKeyDown(GlobalVariables.S.knobRight)) {
+        if (SerialScript.S.knobRight) {
             if (xPos <= xBounds) xPos += cameraSpeed;
         }
 
         float zoom = GetComponent<Camera>().orthographicSize;
 
         // Zoom OUT the camera
-        if (Input.GetKeyDown(GlobalVariables.S.leftSlider)) {
+        if (SerialScript.S.crankUp) {
             if (zoom <= zoomMax) zoom += zoomSpeed;
         }
 
         // Zoom IN the camera
-        if (Input.GetKeyDown(GlobalVariables.S.rightSlider)) {
+        if (SerialScript.S.crankDown) {
             if (zoom >= zoomMin) zoom -= zoomSpeed;
         }
 
@@ -100,14 +101,14 @@ public class WaldoCamera : MonoBehaviour
 
         // Change the position of the camera
         Vector3 targetPosition = new Vector3(xPos, yPos, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed * Time.deltaTime);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed);
 
         // Move the position of the camera indicator to reflect the camera position
         float xLoc = map(xPos, -xBounds, xBounds, xMin, xMax);
         float yLoc = map(yPos, -yBounds, yBounds, yMin, yMax);
         Vector3 oldPosition = cameraPosition.rectTransform.anchoredPosition;
         Vector3 newPosition = new Vector3(xLoc, yLoc, 1);
-        cameraPosition.rectTransform.anchoredPosition = Vector3.Lerp(oldPosition, newPosition, lerpSpeed * Time.deltaTime);
+        cameraPosition.rectTransform.anchoredPosition = Vector3.Lerp(oldPosition, newPosition, lerpSpeed);
 
         CameraUI();
     }
@@ -185,9 +186,9 @@ public class WaldoCamera : MonoBehaviour
         colliders = Physics2D.OverlapCircleAll(position, magnifyingGlass.GetComponent<CircleCollider2D>().bounds.extents.x);
         for (int i = 0; i < colliders.Length; i++) {
             if (colliders[i].gameObject.layer == 6 && colliders[i].gameObject.tag == "Goal") {
-                if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) {
+                if (SerialScript.S.deviceButton) {
                     // Goal was completed
-
+                    
                 }
             }
         }
