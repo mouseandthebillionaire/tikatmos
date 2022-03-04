@@ -14,17 +14,27 @@ The music manipulation scene gets it's visual style from the sort of retro music
 
 
 ## 02.28.22 - First Character Assets!
+Building on the character sketches from last week, we wanted to push a few of them to the level of actual game assets so below we have the segway mall cop, regular and on alert, a stressed chair, and the first buff teddy bear. There are still more characters to both sketch and polish, but it feels good to finally see some of the crazy characters that will be inhabiting our space mall!
 
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-SegwayMallCop00.png" width="40%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-SegwayMallCop01.png" width="40%">
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Chair01.png" width="40%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-StronkTeddyBear01.png" width="40%">
 
 
 
 ## 02.22.22 - Twos-day Character Sketches!
+Now that we are starting to get towards the main game loop, we need to start thinking about the kinds of characters that will come up to your mall info kiosk. We had previously talked about a few ideas including a mall cop segway, a stressed mom stroller, and a buff teddy bear that might attend the build-a-bear gym. Along with these more specific characters we wanted to flesh out some of the other more general ideas including furniture objects like chairs, house hold objects big and small, and a few other ideas we had been tossing around. There is still more sketching to do as far as the range of character that might appear in the mall asking for assistance, but this should provide a decent place to start
 
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/CharacterExploration-Chair.png" width="60%">
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/CharacterExploration-HouseholdObjects.png" width="45%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/CharacterExploration-OtherCharacters.png" width="45%">
 
 
 
 ## 02.12.22 - Mall Directory Scene Implementation
+Another scene we want to have on the display interface is a directory list of all the stores in the mall and their location code. For now, the text in the scene is place holder, snagged from the directory list of an actual mall in Denver. We want to store the directory information in a text file that we can edit and pull from, so all the places and codes are being stored there, and linked into the text visual through a simple script. The location codes will reference the actual location on the mall map which is still in development. We want the crank to control the directory so you are cranking all the way up and down the list. 
 
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Scene-MallDirectory-Interaction.gif" width="60%">
 
 
 
@@ -33,7 +43,7 @@ Moving forward with the interface mockups, we have digitized the ideas for the p
 
 The plant care scene has an empty spot for a slider interaction, a draining water meter that can be partially replenished with a button press, a rotating light source that you have to line up to the direction of your plant, a growth meter, and a variety of other less functional interface bibs and bobs. 
 
-<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Scene-PlantCare-MockUp.png" width="60%">
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Scene-PlantCare-Interaction.gif" width="60%">
 
 The audio tuner scene will allow the player to tune to the right frequency in order to understand the being that has appeared at the information booth. There are three frequencies that need to be tuned into and there is color feedback for each about how close you are to the target.
 
