@@ -2416,6 +2416,8 @@ MonoBehaviour:
   arrow: {fileID: 1223729099}
   arrowSpeed: 5
   sun: {fileID: 656231279}
+  sunSpeedWaitTime: 0.05
+  sunPauseTime: 5
   plantHeart1: {fileID: 1379684752}
   waterLevel: {fileID: 382376375}
   plantHeart2: {fileID: 1551415464}

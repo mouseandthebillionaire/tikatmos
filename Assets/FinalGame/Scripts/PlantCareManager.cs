@@ -14,6 +14,8 @@ public class PlantCareManager : MonoBehaviour
     public float arrowSpeed;
     private float arrowMovement;
     public GameObject sun;
+    public float sunSpeedWaitTime;
+    public float sunPauseTime;
     private float sunRot;
     private float sunRotGoal;
     private float anglePadding = 5f;
@@ -204,7 +206,7 @@ public class PlantCareManager : MonoBehaviour
                      }
                      //Debug.Log(sunRotGoal +" > "+ sunRot);
                      
-                     yield return new WaitForSeconds(0.01f);
+                     yield return new WaitForSeconds(sunSpeedWaitTime);
                  }
                  // if the rotation goal is < current rotation
                  else if (sunRotGoal < sunRot)
@@ -217,12 +219,12 @@ public class PlantCareManager : MonoBehaviour
                      }
                      //Debug.Log(sunRotGoal +" < "+ sunRot);
                      
-                     yield return new WaitForSeconds(0.01f);
+                     yield return new WaitForSeconds(sunSpeedWaitTime);
                  }
              }
              
              //Debug.Log("waiting to move the sun again");
-             yield return new WaitForSeconds(5f);
+             yield return new WaitForSeconds(sunPauseTime);
 
              // re-enter the coroutine
              StartCoroutine(RotateSun()); 
