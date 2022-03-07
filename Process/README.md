@@ -1,5 +1,14 @@
 # Process Documentation
 
+## 03.06.22 - More Character Explorations!
+
+Seeing as we probably need more objects to occupy the mall, we wanted to continue to explore the possible characters that could be in the game, as well as continue to crank out assets for them. The crowd favorite, a mom stroller with baby strollers had to be digitized, so we have that update this week. As well as another character exploration sheet and a fun set of silverware characters! 
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Stroller01.png" width="40%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/CharacterExploration-MiscCharacters.png" width="40%">
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Fork01.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Spoon01.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Knife01.png" width="30%">
+
+
 ## 03.03.22 - More Interface Display Graphic Mockups
 The next set of interface display scenes that are moving forward in the visual design process are the music manipulation and where's waldo scenes. 
 
