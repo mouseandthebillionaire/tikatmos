@@ -11,6 +11,11 @@ public class TrafficPerson : MonoBehaviour
 
     public float xBounds;
 
+    public float[] timeOnFloor = new float[2];
+
+    // This is not racist, I'm only sorting people by color
+    public Color[] colors;
+
     private Vector3 startPosition;
 
     private int startFloor;
@@ -20,7 +25,7 @@ public class TrafficPerson : MonoBehaviour
 
     private bool leftStartFloor = false;
 
-    private float wandertimer = 0f;
+    private bool changedFloors = false;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +38,10 @@ public class TrafficPerson : MonoBehaviour
         }
 
         currentFloor = startFloor;
+
+        // Randomly choose a color for the person
+        int randomIndex = UnityEngine.Random.Range(0, colors.Length);
+        this.GetComponent<SpriteRenderer>().color = colors[randomIndex];
     }
 
     // Update is called once per frame
@@ -48,12 +57,20 @@ public class TrafficPerson : MonoBehaviour
                 currentFloor--; 
                 goingDown = true;
             }
+
+            changedFloors = false;
         }  
-        else NewFloor();
+        else {
+            if (!changedFloors) {
+                // Determine how long the person stays on the floor
+                float waitTime = UnityEngine.Random.Range(timeOnFloor[0], timeOnFloor[1]);
+                StartCoroutine(ChangeFloors(waitTime));
+            }
+        }
 
         // Check if the person has left their starting floor
         if (!leftStartFloor) {
-            if (transform.position.y < startPosition.y - yOffset || transform.position.y > startPosition.y + yOffset) {
+            if (transform.position.y < startPosition.y  - yOffset || transform.position.y > startPosition.y + yOffset) {
                 // Update the floor's counter
                 FloorManager.peopleOnFloors[startFloor]--;
                 leftStartFloor = true;
@@ -71,16 +88,30 @@ public class TrafficPerson : MonoBehaviour
         }
     }
 
-    void NewFloor() {
+    IEnumerator ChangeFloors(float waitTime) {
+
         // Update the floor's counter
         FloorManager.peopleOnFloors[currentFloor]++;
-        leftStartFloor = false;
+        changedFloors = true;
 
-        // Determine whether the person stays on the floor or leaves
-        int choice = UnityEngine.Random.Range(0, despawnChance);
-        if (choice == 0) this.gameObject.SetActive(false);
+        // Set the person's velocity to 0
+        this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0,0,0);
+        
+        // Stay on the floor for a while before moving on
+        yield return new WaitForSeconds(waitTime);
 
         List<GameObject> availableEscalators = new List<GameObject>(0);
+
+        // Determine whether the person is going up or down
+        int choice = UnityEngine.Random.Range(0, 2);
+        if (choice == 0) {
+            if (currentFloor > 0) goingDown = true;
+            else goingDown = false;
+        }
+        else {
+            if (currentFloor < FloorManager.floors.Count - 1) goingDown = false;
+            else goingDown = true;
+        }
 
         // Find which escalators the person can go onto
         for (int i = 0; i < FloorManager.escalators.Count; i++) {
@@ -97,8 +128,14 @@ public class TrafficPerson : MonoBehaviour
             }
         }
 
+        // Check to see if the floor can hold more people
+        bool floorFull = false;
+        bool floorEmpty = false;
+        if (FloorManager.peopleOnFloors[currentFloor] >= FloorManager.maxPeopleOnFloor - 1) floorFull = true;
+        if (FloorManager.peopleOnFloors[currentFloor] <= 0) floorEmpty = true;
+
         // If there are any available escalators
-        if (availableEscalators.Count >= 1) {
+        if (availableEscalators.Count >= 1 && !floorFull && !floorEmpty) {
             // Randomly choose an escalator to go onto
             int randomEscalator = UnityEngine.Random.Range(0, availableEscalators.Count);
 
@@ -110,7 +147,11 @@ public class TrafficPerson : MonoBehaviour
 
             startFloor = currentFloor;
             startPosition = transform.position;
+            leftStartFloor = false;
+
+            // Add velocity to the person
+            if (goingDown) this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, -FloorManager.personSpeed, 0);
+            else this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, FloorManager.personSpeed, 0);
         } 
-        else this.gameObject.SetActive(false);
     }
 }

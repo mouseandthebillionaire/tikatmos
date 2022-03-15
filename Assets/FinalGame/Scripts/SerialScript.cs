@@ -95,22 +95,22 @@ public class SerialScript : MonoBehaviour
                     if (parsedData[1] == "down") crankDown = true;
                     break;
 
-                case "horizontalKnob":
+                case "knob1":
                     if (parsedData[1] == "up") knobLeft = true;
                     if (parsedData[1] == "down") knobRight = true;
                     break;
 
-                case "verticalKnob":
+                case "knob2":
                     if (parsedData[1] == "up") knobUp = true;
                     if (parsedData[1] == "down") knobDown = true;
                     break;
 
                 case "button":
-                    deviceButton = true;
+                    if (parsedData[1] == "on") deviceButton = true;
                     break;
             }
 
-            if (parsedData.Length > 1 && (parsedData[1] == "up" || parsedData[1] == "down")) serialReceived = true;
+            if (parsedData.Length > 1 && (parsedData[1] == "up" || parsedData[1] == "down" || parsedData[1] == "on" )) serialReceived = true;
         }
     }
 }

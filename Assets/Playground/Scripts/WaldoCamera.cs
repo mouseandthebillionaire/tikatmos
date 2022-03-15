@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class WaldoCamera : MonoBehaviour
 {
-    public GameObject magnifyingGlass, recording, battery;
+    public GameObject magnifyingGlass, recording, battery, temperature;
     public GameObject[] batteryBars = new GameObject[5];
     public GameObject catchTime;
 
@@ -123,6 +123,8 @@ public class WaldoCamera : MonoBehaviour
     }
 
     void CameraUI() {
+        CheckOverlap();
+
         // Display the timer
         float currentTime = timer - (Time.time - startTime);
         if (currentTime > 0) {
@@ -132,8 +134,6 @@ public class WaldoCamera : MonoBehaviour
 
             catchTime.GetComponent<Text>().text = string.Format ("{0:00}:{1:00}:{2:00}", minutes, seconds, fraction);
         } 
-        CheckOverlap();
-
 
         // Blink the recording light
         recordingTimer += Time.fixedDeltaTime;
@@ -145,11 +145,18 @@ public class WaldoCamera : MonoBehaviour
             recording.GetComponent<Image>().enabled = !recording.GetComponent<Image>().enabled;
 
             // If low battery, start blinking the battery
-            if (currentTime <= 10f) {
+            if (currentTime <= (timer/batteryBars.Length)/2) {
                 batteryBars[0].GetComponent<Image>().enabled = !batteryBars[0].GetComponent<Image>().enabled;
                 battery.GetComponent<Image>().enabled = !battery.GetComponent<Image>().enabled;
             }
         }
+
+        // Change the temperature level
+        float xDistance = this.transform.position.x - AIController.goalX;
+        float yDistance = this.transform.position.y - AIController.goalY;
+        float distance = Mathf.Sqrt((xDistance*xDistance) + (yDistance*yDistance));
+        float maxDistance = Mathf.Sqrt(((xBounds*2)*(xBounds*2)) + ((yBounds*2)*(yBounds*2)));
+        temperature.GetComponent<Image>().fillAmount = map(distance, 0, maxDistance, 1, 0);
 
         // Decrease the battery life
         float barLife = timer/batteryBars.Length;
@@ -173,7 +180,8 @@ public class WaldoCamera : MonoBehaviour
 
         // The battery has run out of power
         if (currentTime < 0) {
-            cameraOff.gameObject.SetActive(true);
+            //cameraOff.gameObject.SetActive(true);
+            for (int i = 0; i < AIController.goalsCompleted.Count; i++) AIController.goalsCompleted[i] = 0;
         }
     }
 
@@ -188,7 +196,20 @@ public class WaldoCamera : MonoBehaviour
             if (colliders[i].gameObject.layer == 6 && colliders[i].gameObject.tag == "Goal") {
                 if (SerialScript.S.deviceButton) {
                     // Goal was completed
-                    
+                    AIController.goalCompleted = true;
+
+                    print("Found Waldo");
+
+                    // Reset the timer
+                    startTime = Time.time;
+
+                    // Reset the battery
+                    for (int j = 0; j < batteryBars.Length; j++) {
+                        batteryBars[j].GetComponent<Image>().enabled = true;
+                        battery.GetComponent<Image>().enabled = true;
+                        batteryBars[j].GetComponent<Image>().color = hiPower;
+                        currentBar = batteryBars.Length;
+                    }
                 }
             }
         }

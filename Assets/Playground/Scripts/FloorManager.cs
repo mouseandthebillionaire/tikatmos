@@ -15,9 +15,8 @@ public class FloorManager : MonoBehaviour
     public static float distBetweenFloors = 5;
     public static float distBetweenEscalators = 1;
     public static int maxPeopleOnFloor = 100;
-    public static int floorThreshold = 30;
 
-    public float personSpeed;
+    public static float personSpeed = 1;
 
     public float[] personSpawnRate = new float[2];
 
@@ -57,13 +56,13 @@ public class FloorManager : MonoBehaviour
         // Spawn Floors
         for (int i = 0; i < numberOfFloors; i++) {
             float yLoc = distBetweenFloors * i;
-            Vector3 loc = new Vector3(0, yLoc, 0);
+            Vector3 loc = new Vector3(floor.transform.position.x, yLoc, 0);
 
             floors.Add(Instantiate(floor, loc, Quaternion.identity));
 
             // Spawn the numbers for each floor
             float floorNumberY = floorNumber.transform.position.y + (distBetweenFloors * i);
-            Vector3 floorNumberPosition = new Vector3(0, floorNumberY, 0);
+            Vector3 floorNumberPosition = new Vector3(floorNumber.transform.position.x, floorNumberY, 0);
             floorNumbers.Add(Instantiate(floorNumber, floorNumberPosition, Quaternion.identity));
 
             floorNumbers[i].transform.SetParent(canvas.transform);
@@ -82,7 +81,7 @@ public class FloorManager : MonoBehaviour
             for (int j = 0; j < numberOfEscalators; j++) {
                 float xDistance = floors[i].GetComponent<SpriteRenderer>().bounds.extents.x;
                 float xDiff = xDistance * 2 / (numberOfEscalators + 1);
-                float xLoc = -xDistance + (xDiff * (j+1));
+                float xLoc = -xDistance + (xDiff * (j+1)) + floor.transform.position.x;
                 float yLoc = (distBetweenFloors * i) + distBetweenFloors/2;
                 Vector3 loc = new Vector3(xLoc, yLoc, 0);
 
@@ -129,13 +128,14 @@ public class FloorManager : MonoBehaviour
         ManageEscalators();
 
         // Change the color of the floor depending on how many people it has
-        for (int i = 0; i < peopleOnFloors.Count; i++) {
-            floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + (i+1);
-            floorNumbers[i].fillAmount = (float) peopleOnFloors[i]/100;
+        for (int i = 0; i < peopleOnFloors.Count; i++)
+        {
+            floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + (i + 1);
+            floorNumbers[i].fillAmount = (float)peopleOnFloors[i] / 100;
 
-            if (peopleOnFloors[i] >= maxPeopleOnFloor - floorThreshold) floorNumbers[i].color = Color.green;
-            else if (peopleOnFloors[i] <= floorThreshold) floorNumbers[i].color = Color.red;
-            else floorNumbers[i].color = Color.yellow;
+            if (peopleOnFloors[i] <= maxPeopleOnFloor * TrafficCamera.S.dangerThreshold) floorNumbers[i].color = TrafficCamera.S.danger;
+            else if (peopleOnFloors[i] <= maxPeopleOnFloor * TrafficCamera.S.mediumThreshold) floorNumbers[i].color = TrafficCamera.S.medium;
+            else floorNumbers[i].color = TrafficCamera.S.safe;
         }
 
         // Increment the timer
@@ -143,34 +143,54 @@ public class FloorManager : MonoBehaviour
         time += Time.deltaTime;
 
         // Spawn a person moving to another floor
-        if (time >= spawnWaitTime) {
+        if (time >= spawnWaitTime)
+        {
             int randomEscalator = UnityEngine.Random.Range(0, escalators.Count);
             float xLoc = escalators[randomEscalator].gameObject.transform.position.x;
             float yLoc = escalators[randomEscalator].gameObject.transform.position.y;
             float speed = personSpeed;
 
             // Determine whether the person is going up or down
-            int choice = UnityEngine.Random.Range(0,2);
+            int choice = UnityEngine.Random.Range(0, 2);
 
             // The person is going up
-            if (choice == 0) {
-                xLoc += distBetweenEscalators/2;
-                yLoc -= distBetweenFloors/2;
+            if (choice == 0)
+            {
+                xLoc += distBetweenEscalators / 2;
+                yLoc -= distBetweenFloors / 2;
             }
             // the person is going down
-            else {
-                xLoc -= distBetweenEscalators/2;
-                yLoc += distBetweenFloors/2;
+            else
+            {
+                xLoc -= distBetweenEscalators / 2;
+                yLoc += distBetweenFloors / 2;
                 speed = -speed;
             }
-            
-            // Spawn the person if the escalator is active
-            if ((choice == 0 && upIsActive[randomEscalator]) || (choice != 0 && downIsActive[randomEscalator])) {
-                Vector3 spawnLoc = new Vector3(xLoc, yLoc, 0);
-                people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
-                people[currentPerson].GetComponent<Rigidbody2D>().AddForce(new Vector2(0, speed), ForceMode2D.Impulse);            
 
-                currentPerson++;
+            int spawnFloor = 0;
+            // Determine what floor the person will spawn on
+            for (int i = 0; i < floors.Count; i++)
+            {
+                if (floors[i].transform.position.y == yLoc) spawnFloor = i;
+            }
+
+            // Check to see if the floor can hold more people
+            bool floorFull = false;
+            bool floorEmpty = false;
+            if (peopleOnFloors[spawnFloor] >= maxPeopleOnFloor - 1) floorFull = true;
+            if (peopleOnFloors[spawnFloor] <= 0) floorEmpty = true;
+
+            // Spawn the person if the escalator is active and the floor can hold more people
+            if ((choice == 0 && upIsActive[randomEscalator]) || (choice != 0 && downIsActive[randomEscalator]))
+            {
+                if (!floorFull && !floorEmpty)
+                {
+                    Vector3 spawnLoc = new Vector3(xLoc, yLoc, 0);
+                    people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
+                    people[currentPerson].GetComponent<Rigidbody2D>().AddForce(new Vector2(0, speed), ForceMode2D.Impulse);
+
+                    currentPerson++;
+                }
             }
 
             time = 0;
