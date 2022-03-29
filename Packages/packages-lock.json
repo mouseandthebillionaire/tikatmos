@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.facebook.witai": {
+      "version": "https://github.com/wit-ai/wit-unity.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "8ed59904463d25f1b21488eaae474981c9692473"
+    },
     "com.unity.2d.animation": {
       "version": "6.0.3",
       "depth": 0,

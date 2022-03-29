@@ -1,5 +1,9 @@
 # Process Documentation
 
+## 03.29.22 - Wit: Great Power...
+
+After trying out coqui for a few weeks, we tried out a new Speech to Text implementation. Facebook's Wit.io seems like a great resource, easy to implement and easy to train. But we shall see!
+
 ## 03.06.22 - More Character Explorations!
 
 Seeing as we probably need more objects to occupy the mall, we wanted to continue to explore the possible characters that could be in the game, as well as continue to crank out assets for them. The crowd favorite, a mom stroller with baby strollers had to be digitized, so we have that update this week. As well as another character exploration sheet and a fun set of silverware characters! 
