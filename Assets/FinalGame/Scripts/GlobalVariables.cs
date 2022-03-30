@@ -19,8 +19,8 @@ public class GlobalVariables : MonoBehaviour
     // Have we successfully tuned to the customer's language
     public bool tuned;
 
-    
-    // Plant Care Constants?
+    // Is there currently a customer
+    public bool customerActive;
     
     // Singleton
     public static GlobalVariables S;
@@ -34,11 +34,5 @@ public class GlobalVariables : MonoBehaviour
         } else {
             DestroyObject(gameObject);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Debug.Log(tuned);
     }
 }

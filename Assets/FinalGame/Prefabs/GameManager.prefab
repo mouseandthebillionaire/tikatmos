@@ -197,8 +197,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customer: 0
-  customerNotification: {fileID: 0}
-  customerRequest: {fileID: 0}
+  devMode: 0
+  customerUI: {fileID: 0}
 --- !u!1 &8111755964970899219
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,15 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public bool customer;
-    
     [Header("in DevMode we don't autoload the DeviceManager")]
     public bool devMode;
-    
-    // Screen UI Elements
-    public GameObject customerNotification, customerRequest;
-    
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,24 +28,17 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("DeviceManager", LoadSceneMode.Additive);
         }
 
-        customer = false;
-        customerNotification.SetActive(false);
+        GlobalVariables.S.customerActive = false;
         
         // Start the Game
         StartCoroutine(GameLoop());
-
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+    private IEnumerator GameLoop() {
+        Debug.Log("running");
         
-    }
-
-    private IEnumerator GameLoop()
-    {
         // not currently helping anyone
-        if (!customer)
+        if (!GlobalVariables.S.customerActive)
         {
             // wait between one and three minutes
             // float waitTime = Random.Range(60, 180);
@@ -59,29 +46,18 @@ public class GameManager : MonoBehaviour
             float waitTime = Random.Range(6, 18);
             yield return new WaitForSeconds(waitTime);
 
-            // Start the customer interaction
-            StartCoroutine(Customer());
+            // Reset the tuner
+            GlobalVariables.S.tuned = false;
+            
+            // And start the customer interaction
+            Customer.S.InitializeCustomer();
+            StartCoroutine(GameLoop());
         }
-    }
-
-    private IEnumerator Customer()
-    {
-        customer = true;
-        // display that a customer is present
-        customerNotification.SetActive(true);
+        else {
+            // We're dealing with a customer. Check back every 30 seconds to see if they've left
+            yield return new WaitForSeconds(30);
+            StartCoroutine(GameLoop());
+        }
         
-        // wait for the tuner to be tuned
-        while (!GlobalVariables.S.tuned)
-        {
-            yield return null;
-        }
-        // Present the customer's request
-        Debug.Log("I lost my pet catalog");
-
-        yield return null;
-    }
-
-    public void NewCustomer() {
-        GlobalVariables.S.tuned = false;
     }
 }
