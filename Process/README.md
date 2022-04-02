@@ -1,5 +1,11 @@
 # Process Documentation
 
+## 04.02.22 - Window Activated!
+
+Implemented the window kiosk overlay. We've also got the voice recognition working with wit.io, and have the whole core game loop running. Lastly, we created a <a href="https://docs.google.com/spreadsheets/d/1tGc6KPbSOPDsjxxMaBgKS6yINaMUH0e9Hox9kDeORi4/edit#gid=1067057013">spreadsheet</a> to start filling out for all of the character interactions. <a href="https://www.youtube.com/watch?v=x_7wtEIPI0w">Everything is coming up Space Mall!</a>
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/window.png" width="60%">
+
 ## 03.29.22 - Wit: Great Power...
 
 After trying out coqui for a few weeks, we tried out a new Speech to Text implementation. Facebook's Wit.io seems like a great resource, easy to implement and easy to train. But we shall see!
