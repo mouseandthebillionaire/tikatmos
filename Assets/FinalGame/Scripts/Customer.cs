@@ -40,7 +40,7 @@ public class Customer : MonoBehaviour
     // Load the customer to be served and display the tuning dialogue
     public void InitializeCustomer()
     {
-        currCustomer = 1; //Random.Range(0, customerList.Length);
+        Random.Range(0, customerList.Length);
         Sprite s = Resources.Load ("CharacterSprites/" + currCustomer + "/0", typeof(Sprite)) as Sprite;
         customerImage.GetComponent<Image>().sprite = s;
         dialogue.GetComponentInChildren<Text>().text = customerRequests[currCustomer];

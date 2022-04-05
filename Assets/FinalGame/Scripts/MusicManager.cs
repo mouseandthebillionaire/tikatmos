@@ -21,48 +21,48 @@ public class MusicManager : MonoBehaviour
         trackPatch = GameObject.Find("Tracks").GetComponent<LibPdInstance>();
         
         // initialize values to something more interesting later
-        hKnobVal = 0;
-        vKnobVal = 0;
-        crankVal = 0;
+        hKnobVal = 0; //  1-100
+        vKnobVal = 0; //  0-1
+        crankVal = 0; // -200 to 200
     }
 
     public void Update()
     {
-        if (Input.GetKey(GlobalVariables.S.leftSlider) && (hKnobVal > 0))
+        if (Input.GetKey(GlobalVariables.S.leftSlider) && (hKnobVal > 1))
         {
-            hKnobVal -= .001f;
-            ValueChangeCheck(hKnobVal);
+            hKnobVal -= .1f;
+            ValueChangeCheckFilter(hKnobVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.rightSlider) && (hKnobVal < 1))
+        if (Input.GetKey(GlobalVariables.S.rightSlider) && (hKnobVal < 100))
         {
-            hKnobVal += .001f;
-            ValueChangeCheck(hKnobVal);
+            hKnobVal += .1f;
+            ValueChangeCheckFilter(hKnobVal);
         }
 
 
-        if (Input.GetKey(GlobalVariables.S.upCrank) && (crankVal > 0))
+        if (Input.GetKey(GlobalVariables.S.upCrank) && (crankVal > -200))
         {
-            crankVal -= .001f;
-            ValueChangeCheckVolume(crankVal);
+            crankVal -= .1f;
+            ValueChangeCheckTime(crankVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.downCrank) && (crankVal < 1))
+        if (Input.GetKey(GlobalVariables.S.downCrank) && (crankVal < 200))
         {
-            crankVal += .001f;
-            ValueChangeCheckVolume(crankVal);
+            crankVal += .1f;
+            ValueChangeCheckTime(crankVal);
         }
 
         if (Input.GetKey(GlobalVariables.S.knobLeft) && (vKnobVal > 0))
         {
             vKnobVal -= .001f;
-            ValueChangeCheckFilter(vKnobVal);
+            ValueChangeCheckVolume(vKnobVal);
         }
 
         if (Input.GetKey(GlobalVariables.S.knobRight) && (vKnobVal < 1))
         {
             vKnobVal += .001f;
-            ValueChangeCheckFilter(vKnobVal);
+            ValueChangeCheckVolume(vKnobVal);
         }
 
         if (Input.GetKey(GlobalVariables.S.deviceButton))
@@ -73,10 +73,10 @@ public class MusicManager : MonoBehaviour
 
 
 
-    public void ValueChangeCheck(float _value)
+    public void ValueChangeCheckFilter(float _value)
     {
-        trackPatch.SendFloat("crankValue", _value);
-        ambientPatch.SendFloat("crankValue2", _value);
+        trackPatch.SendFloat("filterValue", _value);
+        ambientPatch.SendFloat("filterValue2", _value);
     }
 
     public void ValueChangeCheckVolume(float _value)
@@ -85,10 +85,10 @@ public class MusicManager : MonoBehaviour
         ambientPatch.SendFloat("sliderValue2", _value);
     }
 
-    public void ValueChangeCheckFilter(float _value)
+    public void ValueChangeCheckTime(float _value)
     {
-        trackPatch.SendFloat("filterValue", _value);
-        ambientPatch.SendFloat("filterValue2", _value);
+        trackPatch.SendFloat("crankValue", _value);
+        ambientPatch.SendFloat("crankValue2", _value);
     }
 
     public void MusicShift() {

@@ -18,7 +18,7 @@ public class DeviceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currApp = 0;
+        currApp = 2;
         // DontDestroyOnLoad(this);
         // SceneManager.LoadScene(appNames[currApp]);
         
