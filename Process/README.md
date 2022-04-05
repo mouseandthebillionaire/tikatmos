@@ -51,8 +51,8 @@ Now that we are starting to get towards the main game loop, we need to start thi
 ## 02.18.22 - Pure Data Soundtrack Finished
 The soundtrack for the game consists of two parts. The first was Mallsoft tracks using Ableton and the second is a generative composition created in Pure Data. Both are implemented into Unity via Pure Data. This allows the player to manipulate the music in various ways. 1. Timeshift, slowing down or speeding up the track 2. Crossfade, adjusting volume between Mallsoft and generative music. 3. Filter, changing the frequency of the sounds 4. Scale, cycling through different keys and tracks.
 
-<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/38cd54cbf220b02d3f9224f085d0d75774749289/Process/Media/Ambient%20Generative%20Patch.png" width="45%"> 
-<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/96ecf5ccf4fee68e7fcf9f5f3ca239688f31eb7f/Process/Media/Mallsoft%20Tracks%20Patch.png" width="45%"> 
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/38cd54cbf220b02d3f9224f085d0d75774749289/Process/Media/Ambient%20Generative%20Patch.png" width="55%"> 
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/96ecf5ccf4fee68e7fcf9f5f3ca239688f31eb7f/Process/Media/Mallsoft%20Tracks%20Patch.png" width="55%"> 
 
 
 
