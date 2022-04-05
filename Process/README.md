@@ -95,6 +95,10 @@ These concepts feel in line with the vibe we are going for and have a lot of fun
 
 <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/MallScene-2.png" width="45%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/MallScene-3.png" width="52%"> 
 
+## 1.19.22 - Mall Sounds
+We decided to incoporate a contemporary style of hypnogogic pop music called Mallsoft. It incorporates muzak played throughout malls in the 80s, 90s, and early 2000s. The idea is to recreate something in this style for our game.
+
+<a href="https://www.youtube.com/watch?v=JELt1jxJsHQ">Welcome To The Lobby!</a>
 
 
 ## 01.19.22 - Concept Art Exploration
