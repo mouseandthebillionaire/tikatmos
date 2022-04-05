@@ -13,11 +13,11 @@ public class Customer : MonoBehaviour
     
     // Customer stufffffff
     private int currCustomer;
-    private string[] customerList = new string[2];
-    private string[] customerRequests = new string[2];
-    private string[] info = new string[2];
-    private string[] customerSuccessResponses = new string[2];
-    private string[] customerSorries = new string[2];
+    private string[] customerList = new string[3];
+    private string[] customerRequests = new string[3];
+    private string[] info = new string[3];
+    private string[] customerSuccessResponses = new string[3];
+    private string[] customerSorries = new string[3];
 
     public static Customer S;
 
@@ -38,8 +38,9 @@ public class Customer : MonoBehaviour
     }
 
     // Load the customer to be served and display the tuning dialogue
-    public void InitializeCustomer() {
-        currCustomer        = 0;
+    public void InitializeCustomer()
+    {
+        currCustomer = 1; //Random.Range(0, customerList.Length);
         Sprite s = Resources.Load ("CharacterSprites/" + currCustomer + "/0", typeof(Sprite)) as Sprite;
         customerImage.GetComponent<Image>().sprite = s;
         dialogue.GetComponentInChildren<Text>().text = customerRequests[currCustomer];

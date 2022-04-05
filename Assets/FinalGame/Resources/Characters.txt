@@ -1,2 +1,3 @@
 0	Stronk Teddy Bear	Hey. Yo. What's the store code for the.. uh... Build a Bear gym?	L one A 36	Oh. Perfect! Thanks!	Sorry, can you repeat that?
-0	Stronk Teddy Bear	Hey. Yo. What's the store code for the.. uh... Build a Bear gym?	L one A 36	Oh. Perfect! Thanks!	Sorry, can you repeat that?
+1	Dad Grill	Hello there! Do you know where I might be able to get some briquets to eat?	L 2 F 78	Yummy yum yum. Look out charcoal, here I come!	What was that?
+2	Blender	Excuse me. Is there a bathroom nearby?	On the left	Awesome. Thanks!	Huh?
