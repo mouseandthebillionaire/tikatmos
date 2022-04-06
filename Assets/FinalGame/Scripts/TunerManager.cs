@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TunerManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class TunerManager : MonoBehaviour
 
     // Circle Image
     public SpriteRenderer[] indicators;
+    public Image[] indicatorDials;
     public float rAmt, gAmt; 
     
     // Text Sprites
@@ -104,6 +106,7 @@ public class TunerManager : MonoBehaviour
         // Update the Indicators
         for (int i = 0; i < indicators.Length; i++) {
             indicators[i].color = new Color(1 - noiseAmts[i], 1 - noiseAmts[i], 01 - noiseAmts[i]);
+            indicatorDials[i].fillAmount = 1 - noiseAmts[i];
         }
 
         DrawSine();

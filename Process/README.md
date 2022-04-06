@@ -1,5 +1,9 @@
 # Process Documentation
 
+## 04.06.22 - USE MICROPHONE!
+
+Note: for anyone who ever wants to use microphone control in their game. To make this work you need to go to Player Settings > Configuration > And literally type in "use microphone" into the "Microphone Usage Description" text field. Our work here is done.
+
 ## 04.02.22 - Window Activated!
 
 Implemented the window kiosk overlay. We've also got the voice recognition working with wit.io, and have the whole core game loop running. Lastly, we created a <a href="https://docs.google.com/spreadsheets/d/1tGc6KPbSOPDsjxxMaBgKS6yINaMUH0e9Hox9kDeORi4/edit#gid=1067057013">spreadsheet</a> to start filling out for all of the character interactions. <a href="https://www.youtube.com/watch?v=x_7wtEIPI0w">Everything is coming up Space Mall!</a>
