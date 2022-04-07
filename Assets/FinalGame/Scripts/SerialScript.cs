@@ -7,7 +7,7 @@ using System.Threading;
 public class SerialScript : MonoBehaviour
 {
     // Serial data
-    SerialPort stream = new SerialPort("COM4", 9600);
+    SerialPort stream = new SerialPort("COM5", 9600);
     Thread serialThread;
     string serialData;
     private bool serialReceived = false;
@@ -20,6 +20,8 @@ public class SerialScript : MonoBehaviour
     public bool knobLeft;
     public bool knobRight;
     public bool deviceButton;
+
+    private bool buttonPressed = false;
 
     // Singleton
     public static SerialScript S;
@@ -47,17 +49,7 @@ public class SerialScript : MonoBehaviour
             }
         }
 
-        if (!serialReceived) {
-            // Reset variables
-            if (crankUp) crankUp = false;
-            if (crankDown) crankDown = false;
-            if (knobLeft) knobLeft = false;
-            if (knobRight) knobRight = false;
-            if (knobUp) knobUp = false;
-            if (knobDown) knobDown = false;
-            if (deviceButton) deviceButton = false;
-        }
-        else serialReceived = false;
+        ResetVariables();
 
         // Update the crank
         if (Input.GetKeyDown(KeyCode.Period)) crankUp = true;
@@ -73,6 +65,24 @@ public class SerialScript : MonoBehaviour
 
         // Update the button
         if (Input.GetKeyDown(KeyCode.Space)) deviceButton = true;
+        if (buttonPressed) {
+            deviceButton = true;
+            buttonPressed = false;
+        }
+    }
+
+    void ResetVariables() {
+        if (!serialReceived) {
+            // Reset variables
+            if (crankUp) crankUp = false;
+            if (crankDown) crankDown = false;
+            if (knobLeft) knobLeft = false;
+            if (knobRight) knobRight = false;
+            if (knobUp) knobUp = false;
+            if (knobDown) knobDown = false;
+            if (deviceButton) deviceButton = false;
+        }
+        else serialReceived = false;
     }
 
     void OnApplicationQuit()
@@ -81,6 +91,10 @@ public class SerialScript : MonoBehaviour
             stream.Close();
             serialThread.Abort();
         }
+    }
+
+    void OnApplicationPause() {
+
     }
 
     void ParseData() {
@@ -106,7 +120,9 @@ public class SerialScript : MonoBehaviour
                     break;
 
                 case "button":
-                    if (parsedData[1] == "on") deviceButton = true;
+                    if (parsedData[1] == "on" && !buttonPressed) {
+                        buttonPressed = true;
+                    }
                     break;
             }
 

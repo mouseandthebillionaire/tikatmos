@@ -20,11 +20,11 @@ public class AIController : MonoBehaviour
     public Color[] goals;
     public string[] goalMessages;
 
-    public static List<int> goalsCompleted = new List<int>(0);
+    public static int goalsCompleted = 0;
+
+    public Text goalCounter;
 
     public static float goalX, goalY;
-
-    public Image[] badges;
 
     // Start is called before the first frame update
     void Start()
@@ -41,8 +41,6 @@ public class AIController : MonoBehaviour
         }
 
         person.SetActive(false);
-        
-        for (int i = 0; i < badges.Length; i++) goalsCompleted.Add(0);
     }
 
     // Update is called once per frame
@@ -54,9 +52,9 @@ public class AIController : MonoBehaviour
                 if (people[i].gameObject.transform.GetChild(0).tag == "Goal") lastGoalPerson = i;
             }
 
-            // Show the goal was completed
-            Color personColor = people[lastGoalPerson].gameObject.GetComponentInChildren<SpriteRenderer>().color;
-            for (int i = 0; i < badges.Length; i++) if (badges[i].color == personColor) goalsCompleted[i]++;
+            // Update the goal counter
+            goalCounter.text = "" + goalsCompleted;
+            goalsCompleted++;
 
             CreateGoal();
             goalCompleted = false;
@@ -73,12 +71,6 @@ public class AIController : MonoBehaviour
             }
             goalX = people[currentGoal].gameObject.transform.GetChild(0).transform.position.x;
             goalY = people[currentGoal].gameObject.transform.GetChild(0).transform.position.y;
-        }
-
-        // Update the badges
-        for (int i = 0; i < badges.Length; i++) {
-            badges[i].color = goals[i];
-            badges[i].gameObject.GetComponentInChildren<Text>().text = "" + goalsCompleted[i];
         }
     }
 
@@ -98,7 +90,8 @@ public class AIController : MonoBehaviour
 
         if (somePeople[goalPerson].gameObject.transform.GetChild(0) == people[lastGoalPerson].gameObject.transform.GetChild(0)) {
             if (lastGoalPerson < people.Length - 1) goalPerson++;
-            else goalPerson--;
+            else if (lastGoalPerson > 0) goalPerson--;
+            else goalPerson = lastGoalPerson++;
         }
 
         // Change the tag of the object

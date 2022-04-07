@@ -28,9 +28,7 @@ public class WaldoCamera : MonoBehaviour
     private float startTime = 0f;
     private int currentBar;
 
-    public float xMin, xMax;
-    public float yMin, yMax;
-
+    public float gridBounds;
     public float zoomedOut, zoomedIn;
 
     public Color hiPower, midPower, lowPower;
@@ -104,12 +102,13 @@ public class WaldoCamera : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed);
 
         // Move the position of the camera indicator to reflect the camera position
-        float xLoc = map(xPos, -xBounds, xBounds, xMin, xMax);
-        float yLoc = map(yPos, -yBounds, yBounds, yMin, yMax);
+        float xLoc = map(xPos, -xBounds, xBounds, -gridBounds, gridBounds);
+        float yLoc = map(yPos, -yBounds, yBounds, -gridBounds, gridBounds);
         Vector3 oldPosition = cameraPosition.rectTransform.anchoredPosition;
         Vector3 newPosition = new Vector3(xLoc, yLoc, 1);
         cameraPosition.rectTransform.anchoredPosition = Vector3.Lerp(oldPosition, newPosition, lerpSpeed);
 
+        CheckOverlap();
         CameraUI();
     }
 
@@ -123,7 +122,6 @@ public class WaldoCamera : MonoBehaviour
     }
 
     void CameraUI() {
-        CheckOverlap();
 
         // Display the timer
         float currentTime = timer - (Time.time - startTime);
@@ -146,8 +144,8 @@ public class WaldoCamera : MonoBehaviour
 
             // If low battery, start blinking the battery
             if (currentTime <= (timer/batteryBars.Length)/2) {
-                batteryBars[0].GetComponent<Image>().enabled = !batteryBars[0].GetComponent<Image>().enabled;
-                battery.GetComponent<Image>().enabled = !battery.GetComponent<Image>().enabled;
+                //batteryBars[0].GetComponent<Image>().enabled = !batteryBars[0].GetComponent<Image>().enabled;
+                //battery.GetComponent<Image>().enabled = !battery.GetComponent<Image>().enabled;
             }
         }
 
@@ -170,10 +168,10 @@ public class WaldoCamera : MonoBehaviour
             }
 
             // Conditions for changing the battery color
-            if (currentBar <= 3) {
+            if (currentBar <= 4) {
                 for (int j = 0; j <= 3; j++) batteryBars[j].GetComponent<Image>().color = midPower;
             }
-            if (currentBar <= 1) {
+            if (currentBar <= 2) {
                 for (int j = 0; j <= 1; j++) batteryBars[j].GetComponent<Image>().color = lowPower;
             }
         }
@@ -181,7 +179,7 @@ public class WaldoCamera : MonoBehaviour
         // The battery has run out of power
         if (currentTime < 0) {
             //cameraOff.gameObject.SetActive(true);
-            for (int i = 0; i < AIController.goalsCompleted.Count; i++) AIController.goalsCompleted[i] = 0;
+            AIController.goalsCompleted = 0;
         }
     }
 
@@ -194,11 +192,12 @@ public class WaldoCamera : MonoBehaviour
         colliders = Physics2D.OverlapCircleAll(position, magnifyingGlass.GetComponent<CircleCollider2D>().bounds.extents.x);
         for (int i = 0; i < colliders.Length; i++) {
             if (colliders[i].gameObject.layer == 6 && colliders[i].gameObject.tag == "Goal") {
+
                 if (SerialScript.S.deviceButton) {
                     // Goal was completed
-                    AIController.goalCompleted = true;
-
                     print("Found Waldo");
+
+                    AIController.goalCompleted = true;
 
                     // Reset the timer
                     startTime = Time.time;
