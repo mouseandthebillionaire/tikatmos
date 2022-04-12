@@ -10,6 +10,11 @@ public class DeviceManager : MonoBehaviour
     public int currApp;
     // Scene Names for the Device Apps
     public string[] appNames;
+
+    public KeyCode[] channelCodes = new [] {
+        KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y,
+        KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H
+    };
     
     // Load App GAMEOBJECTS rather than scenes
     public GameObject[] apps;
@@ -36,6 +41,14 @@ public class DeviceManager : MonoBehaviour
             currApp = (currApp + 1) % apps.Length;
             LoadNextApp();
             //SceneManager.LoadScene(appNames[currApp]);
+        }
+
+        for (int i = 0; i < channelCodes.Length; i++) {
+            if(Input.GetKeyDown(channelCodes[i]))
+            {
+                currApp = i;
+                LoadNextApp();
+            }
         }
     }
 

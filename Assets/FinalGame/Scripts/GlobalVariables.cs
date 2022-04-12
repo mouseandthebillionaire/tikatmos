@@ -13,6 +13,15 @@ public class GlobalVariables : MonoBehaviour
     public KeyCode knob1_left = KeyCode.N;
     public KeyCode knob1_right = KeyCode.M;
     public KeyCode deviceButton = KeyCode.Space;
+    
+    // Get rid of these later
+    public KeyCode leftSlider = KeyCode.K;
+    public KeyCode rightSlider = KeyCode.L;
+    public KeyCode knobLeft = KeyCode.N;
+    public KeyCode knobRight = KeyCode.M;
+    
+    // Channel
+    public int deviceChannel;
 
     // We also need to keep track of constants from the Device & Window
     

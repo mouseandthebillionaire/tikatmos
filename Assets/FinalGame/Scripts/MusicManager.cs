@@ -28,13 +28,13 @@ public class MusicManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKey(GlobalVariables.S.leftSlider) && (hKnobVal > 1))
+        if (Input.GetKey(GlobalVariables.S.knob0_left) && (hKnobVal > 1))
         {
             hKnobVal -= .1f;
             ValueChangeCheckFilter(hKnobVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.rightSlider) && (hKnobVal < 100))
+        if (Input.GetKey(GlobalVariables.S.knob0_right) && (hKnobVal < 100))
         {
             hKnobVal += .1f;
             ValueChangeCheckFilter(hKnobVal);
@@ -53,13 +53,13 @@ public class MusicManager : MonoBehaviour
             ValueChangeCheckTime(crankVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.knobLeft) && (vKnobVal > 0))
+        if (Input.GetKey(GlobalVariables.S.knob1_left) && (vKnobVal > 0))
         {
             vKnobVal -= .001f;
             ValueChangeCheckVolume(vKnobVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.knobRight) && (vKnobVal < 1))
+        if (Input.GetKey(GlobalVariables.S.knob1_right) && (vKnobVal < 1))
         {
             vKnobVal += .001f;
             ValueChangeCheckVolume(vKnobVal);
