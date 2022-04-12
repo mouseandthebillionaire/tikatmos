@@ -484,8 +484,8 @@ MonoBehaviour:
   danger: {r: 1, g: 0, b: 0, a: 1}
   medium: {r: 1, g: 0.75950843, b: 0, a: 1}
   safe: {r: 0.05831251, g: 0.735849, b: 0.13260788, a: 1}
-  dangerThreshold: 0.2
-  mediumThreshold: 0.5
+  dangerThreshold: 0.25
+  mediumThreshold: 0.6
 --- !u!1 &387095480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,7 +1295,7 @@ MonoBehaviour:
   - 5
   - 30
   escalatorsPerFloor: 0500000005000000
-  despawnChance: 5
+  despawnChance: 2
   canvas: {fileID: 1875139701}
   floorNumber: {fileID: 505955871}
   active: {r: 1, g: 1, b: 1, a: 1}

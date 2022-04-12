@@ -69,15 +69,13 @@ public class FloorManager : MonoBehaviour
             peopleOnFloors.Add(UnityEngine.Random.Range(0, maxPeopleOnFloor));
             if (i != 0) { 
                 if (peopleOnFloors[i - 1] < maxPeopleOnFloor/2) peopleOnFloors[i] = UnityEngine.Random.Range(maxPeopleOnFloor/2, maxPeopleOnFloor);
-                else peopleOnFloors[i] = UnityEngine.Random.Range(0, maxPeopleOnFloor/2);
+                else peopleOnFloors[i] = UnityEngine.Random.Range(maxPeopleOnFloor/6, maxPeopleOnFloor/2);
             }
 
             // Spawn the people
             for (int j = 0; j < peopleOnFloors[i]; j++) {
                 Vector3 spawnLoc = new Vector3(floors[i].transform.position.x, floors[i].transform.position.y, 0);
                 people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
-
-                currentPerson++;
             }
         }
 
@@ -145,7 +143,7 @@ public class FloorManager : MonoBehaviour
         if (time == 0) spawnWaitTime = UnityEngine.Random.Range(personSpawnRate[0], personSpawnRate[1]);
         time += Time.deltaTime;
 
-        SpawnPerson();
+        //SpawnPerson();
     }
 
     void ManageEscalators() {
@@ -203,9 +201,9 @@ public class FloorManager : MonoBehaviour
         if (time >= spawnWaitTime) {
             if (peopleOnFloors[0] < maxPeopleOnFloor) {
                 // Spawn a person
-                people.Add(Instantiate(person, floors[0].transform.position, Quaternion.identity));
+                Vector3 spawnLoc = new Vector3(floors[0].transform.position.x, floors[0].transform.position.y, 0);
+                people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
                 peopleOnFloors[0]++;
-                currentPerson++;
             }
 
             // Occasionally despawn a person if they are on the Garage level

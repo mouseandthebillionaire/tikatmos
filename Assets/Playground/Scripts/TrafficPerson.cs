@@ -98,7 +98,7 @@ public class TrafficPerson : MonoBehaviour
     IEnumerator ChangeFloors(float waitTime) {
 
         // Update the floor's counter
-        if (!firstSpawn && FloorManager.peopleOnFloors[currentFloor] < FloorManager.maxPeopleOnFloor) FloorManager.peopleOnFloors[currentFloor]++;
+        if (!firstSpawn) FloorManager.peopleOnFloors[currentFloor]++;
         
         firstSpawn = false;
         changedFloors = true;
@@ -143,11 +143,13 @@ public class TrafficPerson : MonoBehaviour
             // Check to see if the floor can hold more people
             bool floorFull = false;
             bool floorEmpty = false;
+            bool currentFloorEmpty = false;
             int nextFloor;
             if (goingDown) nextFloor = currentFloor - 1;
             else nextFloor = currentFloor + 1;
             if (FloorManager.peopleOnFloors[nextFloor] >= FloorManager.maxPeopleOnFloor - 1) floorFull = true;
             if (FloorManager.peopleOnFloors[nextFloor] <= 0) floorEmpty = true;
+            if (FloorManager.peopleOnFloors[currentFloor] <= 0) currentFloorEmpty = true;
 
             // Check if there is already a person on the escalator
             bool anotherPersonOnEscalator = false;
@@ -172,7 +174,7 @@ public class TrafficPerson : MonoBehaviour
             // }
 
             // Change floors if these conditions are met
-            if (!floorEmpty && !floorFull && !anotherPersonOnEscalator) {
+            if (!floorEmpty && !floorFull && !currentFloorEmpty && !anotherPersonOnEscalator) {
 
                 transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
 
