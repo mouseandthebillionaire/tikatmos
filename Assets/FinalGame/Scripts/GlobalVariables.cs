@@ -5,12 +5,13 @@ using UnityEngine;
 public class GlobalVariables : MonoBehaviour
 {
     // Input Constants
-    public KeyCode upCrank = KeyCode.UpArrow;
-    public KeyCode downCrank = KeyCode.DownArrow;
-    public KeyCode leftSlider = KeyCode.LeftArrow;
-    public KeyCode rightSlider = KeyCode.RightArrow;
-    public KeyCode knobLeft = KeyCode.Comma;
-    public KeyCode knobRight = KeyCode.Period;
+    // note: renamed the keys to better fit the actual inputs
+    public KeyCode upCrank = KeyCode.O;
+    public KeyCode downCrank = KeyCode.P;
+    public KeyCode knob0_left = KeyCode.K;
+    public KeyCode knob0_right = KeyCode.L;
+    public KeyCode knob1_left = KeyCode.N;
+    public KeyCode knob1_right = KeyCode.M;
     public KeyCode deviceButton = KeyCode.Space;
 
     // We also need to keep track of constants from the Device & Window

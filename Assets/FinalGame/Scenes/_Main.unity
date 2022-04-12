@@ -1684,6 +1684,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3549319277792187268, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: upCrank
+      value: 111
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549319277792187268, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: knobLeft
+      value: 110
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549319277792187268, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: downCrank
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549319277792187268, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: knobRight
+      value: 109
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549319277792187268, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: leftSlider
+      value: 107
+      objectReference: {fileID: 0}
+    - target: {fileID: 3549319277792187268, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: rightSlider
+      value: 108
+      objectReference: {fileID: 0}
     - target: {fileID: 8111755964417516945, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
       propertyPath: m_TargetDisplay
       value: 1

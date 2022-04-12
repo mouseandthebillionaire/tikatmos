@@ -50,14 +50,14 @@ public class TunerManager : MonoBehaviour
     // Get Inputs from Device
     public void GetInputs()
     {
-        if (Input.GetKey(GlobalVariables.S.leftSlider) && (sliderVal > 0)) sliderVal -= .001f;
-        if (Input.GetKey(GlobalVariables.S.rightSlider) && (sliderVal < 1)) sliderVal += .001f;
+        if (Input.GetKey(GlobalVariables.S.leftSlider) && (sliderVal > 0)) sliderVal -= .01f;
+        if (Input.GetKey(GlobalVariables.S.rightSlider) && (sliderVal < 1)) sliderVal += .01f;
 
-        if (Input.GetKey(GlobalVariables.S.upCrank) && (crankVal > 0)) crankVal -= .001f;
-        if (Input.GetKey(GlobalVariables.S.downCrank) && (crankVal < 1)) crankVal += .001f;
+        if (Input.GetKey(GlobalVariables.S.upCrank) && (crankVal > 0)) crankVal -= .01f;
+        if (Input.GetKey(GlobalVariables.S.downCrank) && (crankVal < 1)) crankVal += .01f;
         
-        if (Input.GetKey(GlobalVariables.S.knobLeft) && (knobVal > 0)) knobVal -= .001f;
-        if (Input.GetKey(GlobalVariables.S.knobRight) && (knobVal < 1)) knobVal += .001f;
+        if (Input.GetKey(GlobalVariables.S.knobLeft) && (knobVal > 0)) knobVal -= .01f;
+        if (Input.GetKey(GlobalVariables.S.knobRight) && (knobVal < 1)) knobVal += .01f;
 
     }
     
