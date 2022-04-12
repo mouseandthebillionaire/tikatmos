@@ -5,15 +5,13 @@ using System;
 
 public class TrafficPerson : MonoBehaviour
 {
-    public int despawnChance;
-
     public float yOffset;
 
     public float xBounds;
 
-    public float[] timeOnFloor = new float[2];
+    public float[] initialWait = new float[2];
 
-    // This is not racist, I'm only sorting people by color
+    public float[] timeOnFloor = new float[2];
     public Color[] colors;
 
     private Vector3 startPosition;
@@ -26,6 +24,8 @@ public class TrafficPerson : MonoBehaviour
     private bool leftStartFloor = false;
 
     private bool changedFloors = false;
+
+    private bool firstSpawn = true;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +42,11 @@ public class TrafficPerson : MonoBehaviour
         // Randomly choose a color for the person
         int randomIndex = UnityEngine.Random.Range(0, colors.Length);
         this.GetComponent<SpriteRenderer>().color = colors[randomIndex];
+
+
+        // Wait before the person leaves the floor
+        float waitTime = UnityEngine.Random.Range(initialWait[0], initialWait[1]);
+        StartCoroutine(ChangeFloors(waitTime));
     }
 
     // Update is called once per frame
@@ -59,14 +64,16 @@ public class TrafficPerson : MonoBehaviour
             }
 
             changedFloors = false;
-        }  
-        else {
+        }  else {
+            // Move the person to another floor
             if (!changedFloors) {
                 // Determine how long the person stays on the floor
                 float waitTime = UnityEngine.Random.Range(timeOnFloor[0], timeOnFloor[1]);
                 StartCoroutine(ChangeFloors(waitTime));
             }
         }
+        
+        
 
         // Check if the person has left their starting floor
         if (!leftStartFloor) {
@@ -78,20 +85,22 @@ public class TrafficPerson : MonoBehaviour
         }
 
         // Check if the person has gone out of bounds
-        if (transform.position.y < FloorManager.floors[0].transform.position.y) {
-            FloorManager.peopleOnFloors[0]++;
-            this.gameObject.SetActive(false);
-        }
-        if (transform.position.y > FloorManager.floors[FloorManager.floors.Count - 1].transform.position.y) {
-            FloorManager.peopleOnFloors[FloorManager.floors.Count - 1]++;
-            this.gameObject.SetActive(false);
-        }
+        // if (transform.position.y < FloorManager.floors[0].transform.position.y) {
+        //     FloorManager.peopleOnFloors[0]++;
+        //     this.gameObject.SetActive(false);
+        // }
+        // if (transform.position.y > FloorManager.floors[FloorManager.floors.Count - 1].transform.position.y) {
+        //     FloorManager.peopleOnFloors[FloorManager.floors.Count - 1]++;
+        //     this.gameObject.SetActive(false);
+        // }
     }
 
     IEnumerator ChangeFloors(float waitTime) {
 
         // Update the floor's counter
-        FloorManager.peopleOnFloors[currentFloor]++;
+        if (!firstSpawn && FloorManager.peopleOnFloors[currentFloor] < FloorManager.maxPeopleOnFloor) FloorManager.peopleOnFloors[currentFloor]++;
+        
+        firstSpawn = false;
         changedFloors = true;
 
         // Set the person's velocity to 0
@@ -100,58 +109,90 @@ public class TrafficPerson : MonoBehaviour
         // Stay on the floor for a while before moving on
         yield return new WaitForSeconds(waitTime);
 
+
         List<GameObject> availableEscalators = new List<GameObject>(0);
-
-        // Determine whether the person is going up or down
-        int choice = UnityEngine.Random.Range(0, 2);
-        if (choice == 0) {
-            if (currentFloor > 0) goingDown = true;
-            else goingDown = false;
-        }
-        else {
-            if (currentFloor < FloorManager.floors.Count - 1) goingDown = false;
-            else goingDown = true;
-        }
-
         // Find which escalators the person can go onto
         for (int i = 0; i < FloorManager.escalators.Count; i++) {
 
-            // Check to see if the person is going up or down
-            float comparison;
-            if (goingDown) comparison = FloorManager.floors[currentFloor - 1].transform.position.y;
-            else comparison = FloorManager.floors[currentFloor].transform.position.y;
+            float floorHeight = FloorManager.floors[currentFloor].transform.position.y;
 
-            // Check to see if any escalators are deactivated
-            if (FloorManager.escalators[i].transform.position.y == comparison + FloorManager.distBetweenFloors/2) {
-                if (goingDown && FloorManager.downIsActive[i]) availableEscalators.Add(FloorManager.escalators[i]);
-                if (!goingDown && FloorManager.upIsActive[i]) availableEscalators.Add(FloorManager.escalators[i]);
+            // Check to see what escalators are available
+            if (FloorManager.escalators[i].transform.position.y == floorHeight + FloorManager.distBetweenFloors/2) {
+                if (!FloorManager.escalatorDirectionDown[i]) availableEscalators.Add(FloorManager.escalators[i]);
+            }
+            else if (FloorManager.escalators[i].transform.position.y == floorHeight - FloorManager.distBetweenFloors/2) {
+                if (FloorManager.escalatorDirectionDown[i]) availableEscalators.Add(FloorManager.escalators[i]);
             }
         }
 
-        // Check to see if the floor can hold more people
-        bool floorFull = false;
-        bool floorEmpty = false;
-        if (FloorManager.peopleOnFloors[currentFloor] >= FloorManager.maxPeopleOnFloor - 1) floorFull = true;
-        if (FloorManager.peopleOnFloors[currentFloor] <= 0) floorEmpty = true;
 
         // If there are any available escalators
-        if (availableEscalators.Count >= 1 && !floorFull && !floorEmpty) {
+        if (availableEscalators.Count >= 1) {
             // Randomly choose an escalator to go onto
             int randomEscalator = UnityEngine.Random.Range(0, availableEscalators.Count);
 
-            // Check to see if the person is going up or down
+            // Check to see if the escalator is going up or down
+            int index = 0;
+            for (int i = 0; i < FloorManager.escalators.Count; i++) { 
+                if (availableEscalators[randomEscalator].transform.position == FloorManager.escalators[i].transform.position) index = i;
+            }
+
+            if (FloorManager.escalatorDirectionDown[index]) goingDown = true;
+            else goingDown = false;
+
+            // Check to see if the floor can hold more people
+            bool floorFull = false;
+            bool floorEmpty = false;
+            int nextFloor;
+            if (goingDown) nextFloor = currentFloor - 1;
+            else nextFloor = currentFloor + 1;
+            if (FloorManager.peopleOnFloors[nextFloor] >= FloorManager.maxPeopleOnFloor - 1) floorFull = true;
+            if (FloorManager.peopleOnFloors[nextFloor] <= 0) floorEmpty = true;
+
+            // Check if there is already a person on the escalator
+            bool anotherPersonOnEscalator = false;
             float xPos = availableEscalators[randomEscalator].transform.position.x;
-            if (goingDown) xPos -= FloorManager.distBetweenEscalators/2;
-            else xPos += FloorManager.distBetweenEscalators/2;
-            transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
+            // float yPos = availableEscalators[randomEscalator].transform.position.y;
+            // float personSize = FloorManager.people[0].GetComponent<SpriteRenderer>().bounds.extents.y * 2;
+            // float yEscalator;
 
-            startFloor = currentFloor;
-            startPosition = transform.position;
-            leftStartFloor = false;
+            // for (int i = 0; i < FloorManager.people.Count; i++) {
+            //     float otherPersonX = FloorManager.people[i].transform.position.x;
+            //     float otherPersonY = FloorManager.people[i].transform.position.y;
 
-            // Add velocity to the person
-            if (goingDown) this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, -FloorManager.personSpeed, 0);
-            else this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, FloorManager.personSpeed, 0);
-        } 
+            //     if (otherPersonX == xPos) {
+            //         if (goingDown) {
+            //             yEscalator = yPos - 2;
+            //             if (otherPersonY >= yEscalator && otherPersonY < yPos) anotherPersonOnEscalator = true;
+            //         } else {
+            //             yEscalator = yPos + 2;
+            //             if (otherPersonY <= yEscalator && otherPersonY > yPos) anotherPersonOnEscalator = true;
+            //         }
+            //     }
+            // }
+
+            // Change floors if these conditions are met
+            if (!floorEmpty && !floorFull && !anotherPersonOnEscalator) {
+
+                transform.position = new Vector3(xPos, transform.position.y, transform.position.z);
+
+                startFloor = currentFloor;
+                startPosition = transform.position;
+                leftStartFloor = false;
+
+                // Add velocity to the person
+                if (goingDown) this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, -FloorManager.personSpeed, 0);
+                else this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, FloorManager.personSpeed, 0);
+
+            } else {
+                // Restart the wait time
+                waitTime = UnityEngine.Random.Range(timeOnFloor[0], timeOnFloor[1]);
+                StartCoroutine(ChangeFloors(waitTime));
+            }
+        } else {
+            // Restart the wait time
+            waitTime = UnityEngine.Random.Range(timeOnFloor[0], timeOnFloor[1]);
+            StartCoroutine(ChangeFloors(waitTime));
+        }
     }
 }

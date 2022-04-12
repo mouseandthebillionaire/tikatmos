@@ -13,6 +13,8 @@ public class TrafficCamera : MonoBehaviour
 
     public Image UIBackground;
 
+    public Image selectedLevel;
+
     public Image[] levelFill;
 
     public float distBetweenLevels;
@@ -35,9 +37,6 @@ public class TrafficCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Determine the starting positions of the UI elements
-        systemStart = systemPower.transform.position - transform.position;
-        systemStart.z = 100;
         customerStart =  levelFill[0].transform.position - transform.position;
         customerStart.z = 100;
         backgroundStart = UIBackground.transform.position - transform.position;
@@ -49,16 +48,12 @@ public class TrafficCamera : MonoBehaviour
     {
         float yPos = transform.position.y;
 
-        if (SerialScript.S.crankUp && yPos + cameraSpeed <= cameraBounds[1]) yPos += cameraSpeed;
-        if (SerialScript.S.crankDown && yPos - cameraSpeed >= cameraBounds[0]) yPos -= cameraSpeed;
+        if (SerialScript.S.knobUp && yPos + cameraSpeed <= cameraBounds[1]) yPos += cameraSpeed;
+        if (SerialScript.S.knobDown && yPos - cameraSpeed >= cameraBounds[0]) yPos -= cameraSpeed;
 
         // Change the position of the camera
         Vector3 targetPosition = new Vector3(transform.position.x, yPos, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed);
-
-        // Reposition the system power indicator
-        systemPower.transform.position = transform.position + systemStart;
-        systemPower.transform.SetAsLastSibling();
 
 
         // Reposition the level fill indicators
@@ -66,6 +61,18 @@ public class TrafficCamera : MonoBehaviour
             yPos = transform.position.y + customerStart.y + (distBetweenLevels*i);
             levelFill[i].transform.position = new Vector3(transform.position.x + customerStart.x, yPos, 10);
             levelFill[i].transform.SetAsLastSibling();
+        }
+
+        // Change the position of the selected level
+        float levelY = this.transform.position.y + 4.75f;
+        for (int i = 1; i < FloorManager.floorNumbers.Count; i++) {
+            if (levelY >= FloorManager.floorNumbers[i].transform.position.y) {
+                float bottomY = levelFill[i-1].transform.position.y;
+                float topY = levelFill[i].transform.position.y;
+                float currentX = selectedLevel.transform.position.x;
+                selectedLevel.transform.position = new Vector3(currentX, bottomY + ((topY - bottomY)/2), 1);
+                FloorManager.selectedFloor = i-1;
+            }
         }
 
         // Change the position of the UI background
@@ -86,11 +93,5 @@ public class TrafficCamera : MonoBehaviour
             levelFill[i].transform.GetChild(0).GetComponentInChildren<Image>().fillAmount = (float) FloorManager.peopleOnFloors[i]/maxPeople;
             levelFill[i].transform.GetChild(0).GetComponentInChildren<Image>().color = levelColor;
         }
-
-        // Display the total number of active escalators
-        systemPower.transform.GetChild(0).GetComponentInChildren<Image>().fillAmount = FloorManager.percentActivated;
-        if (FloorManager.percentActivated >= 1 - dangerThreshold) systemPower.transform.GetChild(0).GetComponentInChildren<Image>().color = danger;
-        else if (FloorManager.percentActivated >= mediumThreshold) systemPower.transform.GetChild(0).GetComponentInChildren<Image>().color = medium;
-        else systemPower.transform.GetChild(0).GetComponentInChildren<Image>().color = safe;
     }
 }
