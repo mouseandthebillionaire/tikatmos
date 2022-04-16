@@ -45,19 +45,12 @@ public class DirectoryManager : MonoBehaviour
     
     void Update()
     {
-        scrollMovement = Input.GetAxisRaw("Vertical");
         
-        //textPosition = textParent.transform.position.y;
-        Debug.Log((textPosition));
-
-        if (scrollMovement > 0 && textPosition < 61.25) 
-        {
+        if(Input.GetKeyDown(GlobalVariables.S.upCrank) && textPosition < 61.25) {
             textPosition += textSpeed;
-            Debug.Log((textPosition));
         }
         
-        else if (scrollMovement < 0 && textPosition > 0) 
-        {
+        if(Input.GetKeyDown(GlobalVariables.S.downCrank) && textPosition >= 0) {
             textPosition -= textSpeed;
         }
         

@@ -36,13 +36,6 @@ public class DeviceManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            currApp = (currApp + 1) % apps.Length;
-            LoadNextApp();
-            //SceneManager.LoadScene(appNames[currApp]);
-        }
-
         for (int i = 0; i < channelCodes.Length; i++) {
             if(Input.GetKeyDown(channelCodes[i]))
             {
