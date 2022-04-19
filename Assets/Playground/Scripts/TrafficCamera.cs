@@ -8,6 +8,7 @@ public class TrafficCamera : MonoBehaviour
     public float cameraSpeed;
     public float lerpSpeed;
     public float[] cameraBounds = new float[2];
+    public float[] escalatorWidth = new float[2];
 
     public Image systemPower;
 
@@ -48,8 +49,8 @@ public class TrafficCamera : MonoBehaviour
     {
         float yPos = transform.position.y;
 
-        if (SerialScript.S.knobUp && yPos + cameraSpeed <= cameraBounds[1]) yPos += cameraSpeed;
-        if (SerialScript.S.knobDown && yPos - cameraSpeed >= cameraBounds[0]) yPos -= cameraSpeed;
+        if (SerialScript.S.crankUp && yPos + cameraSpeed <= cameraBounds[1]) yPos += cameraSpeed;
+        if (SerialScript.S.crankDown && yPos - cameraSpeed >= cameraBounds[0]) yPos -= cameraSpeed;
 
         // Change the position of the camera
         Vector3 targetPosition = new Vector3(transform.position.x, yPos, transform.position.z);
@@ -86,12 +87,23 @@ public class TrafficCamera : MonoBehaviour
         int maxPeople = FloorManager.maxPeopleOnFloor;
         for (int i = 0; i < levelFill.Length; i++) {
             Color levelColor;
-            if (FloorManager.peopleOnFloors[i] <= maxPeople * dangerThreshold) levelColor = danger;
-            else if (FloorManager.peopleOnFloors[i] <= maxPeople * mediumThreshold) levelColor = medium;
+            int safeZone = (int) (FloorManager.maxPeopleOnFloor * mediumThreshold);
+            int dangerZone = (int) (FloorManager.maxPeopleOnFloor * dangerThreshold);
+
+            if (FloorManager.peopleOnFloors[i] <= dangerZone || FloorManager.peopleOnFloors[i] >= FloorManager.maxPeopleOnFloor - dangerZone) levelColor = danger;
+            else if (FloorManager.peopleOnFloors[i] <= safeZone || FloorManager.peopleOnFloors[i] >= FloorManager.maxPeopleOnFloor - safeZone) levelColor = medium;
             else levelColor = safe;
 
             levelFill[i].transform.GetChild(0).GetComponentInChildren<Image>().fillAmount = (float) FloorManager.peopleOnFloors[i]/maxPeople;
             levelFill[i].transform.GetChild(0).GetComponentInChildren<Image>().color = levelColor;
+        }
+
+        // Change the size of the escalators based on their speed
+        for (int i = 0; i < FloorManager.escalators.Count; i++) {
+            float widthRange = escalatorWidth[1] - escalatorWidth[0];
+            float yScale = FloorManager.escalators[i].gameObject.transform.localScale.y;
+            float xScale = escalatorWidth[0] + (FloorManager.escalatorSpeed[i] * widthRange);
+            FloorManager.escalators[i].gameObject.transform.localScale = new Vector3(xScale, yScale, 0);
         }
     }
 }
