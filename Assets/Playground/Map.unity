@@ -672,12 +672,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upCrank: 273
   downCrank: 274
+  knob0_left: 107
+  knob0_right: 108
+  knob1_left: 110
+  knob1_right: 109
+  deviceButton: 32
   leftSlider: 276
   rightSlider: 275
   knobLeft: 44
   knobRight: 46
-  deviceButton: 32
+  deviceChannel: 0
   tuned: 0
+  customerActive: 0
 --- !u!4 &1038005534
 Transform:
   m_ObjectHideFlags: 0
@@ -1261,7 +1267,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1450, y: -600}
+  m_AnchoredPosition: {x: -1100, y: -600}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567908771

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,7 +67,19 @@ public class MapZoom : MonoBehaviour
             floorPlans[floorCounter].SetActive(true);
             
             //NEED TO IMPLEMENT
-            //Highlight ISO floor
+            for (int i = 0; i < floors.Length; i++) {
+                if (i != floorCounter) {
+                    floors[i].transform.localPosition = new Vector2(
+                        -1450,
+                        floors[i].transform.localPosition.y);
+                }
+
+                if (i == floorCounter) {
+                    floors[i].transform.localPosition = new Vector2(
+                        -1100,
+                        floors[i].transform.localPosition.y);
+                }            
+            }
         }
         
         GetComponent<Camera>().orthographicSize = zoom;
