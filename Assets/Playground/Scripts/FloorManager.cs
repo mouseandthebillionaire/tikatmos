@@ -15,8 +15,6 @@ public class FloorManager : MonoBehaviour
     public static float distBetweenFloors = 5;
     public static int maxPeopleOnFloor = 100;
 
-    public static float personSpeed = 1;
-
     public float[] personSpawnRate = new float[2];
 
     public int[] escalatorsPerFloor = new int[2];
@@ -33,6 +31,9 @@ public class FloorManager : MonoBehaviour
     private float time;
     private int currentPerson;
 
+    public float escalatorSpeedIncrease;
+    public float defaultSpeed;
+
     public Canvas canvas;
     public Image floorNumber;
 
@@ -44,6 +45,10 @@ public class FloorManager : MonoBehaviour
     public static int selectedFloor;
 
     public static bool[] escalatorDirectionDown = new bool[0];
+    public static float[] escalatorSpeed = new float[0];
+
+    public static List<GameObject> peopleOnEscalators = new List<GameObject>();
+    public static List<int> usedEscalators = new List<int>();
 
     public Color active, inactive, selected;
 
@@ -66,9 +71,9 @@ public class FloorManager : MonoBehaviour
             floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + (i+1);
 
             // Determine how many people are on each floor
-            peopleOnFloors.Add(UnityEngine.Random.Range(0, maxPeopleOnFloor));
+            peopleOnFloors.Add(UnityEngine.Random.Range(maxPeopleOnFloor/3, maxPeopleOnFloor*2/3));
             if (i != 0) { 
-                if (peopleOnFloors[i - 1] < maxPeopleOnFloor/2) peopleOnFloors[i] = UnityEngine.Random.Range(maxPeopleOnFloor/2, maxPeopleOnFloor);
+                if (peopleOnFloors[i - 1] < maxPeopleOnFloor/2) peopleOnFloors[i] = UnityEngine.Random.Range(maxPeopleOnFloor/2, maxPeopleOnFloor*5/6);
                 else peopleOnFloors[i] = UnityEngine.Random.Range(maxPeopleOnFloor/6, maxPeopleOnFloor/2);
             }
 
@@ -100,6 +105,9 @@ public class FloorManager : MonoBehaviour
         }
 
         Array.Resize(ref escalatorDirectionDown, escalators.Count);
+        Array.Resize(ref escalatorSpeed, escalators.Count);
+        // Default the escalator speed to the default within a range of 0 to 1
+        for (int i = 0; i < escalatorSpeed.Length; i++) escalatorSpeed[i] = defaultSpeed;
 
         // Randomly choose whether the escalators are facing up or down
         for (int i = 0; i < escalators.Count; i++) {
@@ -129,8 +137,11 @@ public class FloorManager : MonoBehaviour
             floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + i;
             floorNumbers[i].fillAmount = (float)peopleOnFloors[i] / 100;
 
-            if (peopleOnFloors[i] <= maxPeopleOnFloor * TrafficCamera.S.dangerThreshold) floorNumbers[i].color = TrafficCamera.S.danger;
-            else if (peopleOnFloors[i] <= maxPeopleOnFloor * TrafficCamera.S.mediumThreshold) floorNumbers[i].color = TrafficCamera.S.medium;
+            int safeZone = (int) (maxPeopleOnFloor * TrafficCamera.S.mediumThreshold);
+            int dangerZone = (int) (maxPeopleOnFloor * TrafficCamera.S.dangerThreshold);
+
+            if (peopleOnFloors[i] <= dangerZone || peopleOnFloors[i] >= maxPeopleOnFloor - dangerZone) floorNumbers[i].color = TrafficCamera.S.danger;
+            else if (peopleOnFloors[i] <= safeZone || peopleOnFloors[i] >= maxPeopleOnFloor - safeZone) floorNumbers[i].color = TrafficCamera.S.medium;
             else floorNumbers[i].color = TrafficCamera.S.safe;
         }
 
@@ -144,6 +155,7 @@ public class FloorManager : MonoBehaviour
         time += Time.deltaTime;
 
         //SpawnPerson();
+        usedEscalators.Clear();
     }
 
     void ManageEscalators() {
@@ -188,10 +200,19 @@ public class FloorManager : MonoBehaviour
             if (escalators[currentEscalator].transform.rotation.z == 0) {
                 escalators[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 180);
                 escalatorDirectionDown[currentEscalator] = true;
+
             } else {
                 escalators[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 0);
                 escalatorDirectionDown[currentEscalator] = false;
             }
+        }
+
+        // Change the speed of the selected escalator
+        if (SerialScript.S.knobUp) {
+            if (escalatorSpeed[currentEscalator] < 1) escalatorSpeed[currentEscalator] += escalatorSpeedIncrease;
+        }
+        if (SerialScript.S.knobDown) {
+            if (escalatorSpeed[currentEscalator] > 0) escalatorSpeed[currentEscalator] -= escalatorSpeedIncrease;
         }
     }
 

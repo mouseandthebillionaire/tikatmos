@@ -10,9 +10,22 @@ Implemented the window kiosk overlay. We've also got the voice recognition worki
 
 <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/window.png" width="60%">
 
+
 ## 03.29.22 - Wit: Great Power...
 
 After trying out coqui for a few weeks, we tried out a new Speech to Text implementation. Facebook's Wit.io seems like a great resource, easy to implement and easy to train. But we shall see!
+
+
+## 03.27.22 - Even More Characters!
+
+Another round of characters have come to life! Rounding out our assortment of beings in this space mall, we now have folks such as the Dad Grill, the Frog Meme Chair, the adorable Vinage Car Couple, and many more. 
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Grill01.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-FrogChair1.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-VintageCarCouple1.png" width="30%">
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Bachelorettes01.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Bench1.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Blender01.png" width="30%">
+
+<img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Dresser1.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Lamp1.png" width="30%"> <img src="https://github.com/mouseandthebillionaire/whaaatStudio_s22/blob/master/Process/Media/Character-Toaster1.png" width="30%">
+
 
 ## 03.06.22 - More Character Explorations!
 
