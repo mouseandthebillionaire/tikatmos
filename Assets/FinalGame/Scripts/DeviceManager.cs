@@ -47,6 +47,8 @@ public class DeviceManager : MonoBehaviour
                 currApp = i;
                 if(i == 6) magnifyingGlass.SetActive(true);
                 else magnifyingGlass.SetActive(false);
+                if (i == 8) deviceCamera.GetComponent<CRTPostProcess>().enabled = true;
+                else deviceCamera.GetComponent<CRTPostProcess>().enabled = false;
                 ResetCamera();
                 LoadNextApp();
             }
