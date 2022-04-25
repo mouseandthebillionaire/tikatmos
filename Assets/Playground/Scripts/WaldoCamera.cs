@@ -79,7 +79,7 @@ public class WaldoCamera : MonoBehaviour
 
 
         // Change the camera speed based on the zoom level
-        float cameraSpeed = map(zoom, zoomMin, zoomMax, speed[1], speed[0]);
+        float cameraSpeed = map(zoom, zoomMin, zoomMax, speed[0], speed[1]);
 
         float xPos = transform.position.x;
         float yPos = transform.position.y;
