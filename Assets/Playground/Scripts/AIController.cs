@@ -7,6 +7,7 @@ public class AIController : MonoBehaviour
 {
     public GameObject person;
     public Text goalMessage;
+    public Image goalMessageBorder;
     private GameObject[] people;
 
     public int numberOfPeople;
@@ -20,11 +21,13 @@ public class AIController : MonoBehaviour
     public Color[] goals;
     public string[] goalMessages;
 
-    public static int goalsCompleted = 0;
+    public static int goalsCompleted = -1;
 
     public Text goalCounter;
 
     public static float goalX, goalY;
+
+    public float startTime, timerDecrease, minimumTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -41,11 +44,15 @@ public class AIController : MonoBehaviour
         }
 
         person.SetActive(false);
+
+        WaldoCamera.timer = startTime;
     }
 
     // Update is called once per frame
     void Update()
     {
+        goalCounter.text = "" + goalsCompleted;
+
         if (goalCompleted) {
             // Determine who was the last person to be a goal
             for (int i = 0; i < people.Length; i++) {
@@ -53,7 +60,6 @@ public class AIController : MonoBehaviour
             }
 
             // Update the goal counter
-            goalCounter.text = "" + goalsCompleted;
             goalsCompleted++;
 
             CreateGoal();
@@ -71,6 +77,13 @@ public class AIController : MonoBehaviour
             }
             goalX = people[currentGoal].gameObject.transform.GetChild(0).transform.position.x;
             goalY = people[currentGoal].gameObject.transform.GetChild(0).transform.position.y;
+        }
+
+        // Decrease the timer each time a goal is completed
+        if (goalsCompleted > 0) {
+            float newtimer = startTime - (goalsCompleted * timerDecrease);
+            if (newtimer > minimumTimer) WaldoCamera.timer = newtimer;
+            else WaldoCamera.timer = minimumTimer;
         }
     }
 
@@ -103,6 +116,7 @@ public class AIController : MonoBehaviour
 
         // Change the goal text
         goalMessage.color = goals[randomGoal];
+        goalMessageBorder.color = goals[randomGoal];
         goalMessage.text = goalMessages[randomGoal];
     }
 }

@@ -1695,7 +1695,7 @@ MonoBehaviour:
   personSpawnRate:
   - 5
   - 30
-  escalatorsPerFloor: 0500000005000000
+  escalatorsPerFloor: 0300000004000000
   despawnChance: 2
   escalatorSpeedIncrease: 0.1
   defaultSpeed: 0.4
@@ -2555,7 +2555,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: 41f5cd416c713c746a1416c5f4c65771, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 12285e9bff117404792cac549d3d61a8, type: 3}
   m_Color: {r: 1, g: 0.69579995, b: 0.069811285, a: 1}
   m_FlipX: 0
   m_FlipY: 0

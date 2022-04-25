@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class WaldoCamera : MonoBehaviour
 {
-    public GameObject magnifyingGlass, recording, battery, temperature;
+    public GameObject magnifyingGlass, recording, temperature;
     public GameObject[] batteryBars = new GameObject[5];
     public GameObject catchTime;
 
@@ -15,9 +15,10 @@ public class WaldoCamera : MonoBehaviour
 
     public Image cameraZoom;
 
+    public float[] speed = new float[2];
+
     public float xBounds, yBounds;
     public float lerpSpeed;
-    public float cameraSpeed;
 
     public float zoomMax, zoomMin;
     public float zoomSpeed;
@@ -35,7 +36,7 @@ public class WaldoCamera : MonoBehaviour
 
     public static bool catchingPerson = false;
 
-    public float timer;
+    public static float timer;
 
     // Start is called before the first frame update
     void Start()
@@ -53,27 +54,6 @@ public class WaldoCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float xPos = transform.position.x;
-        float yPos = transform.position.y;
-
-        // Move the camera UP
-        if (SerialScript.S.knobUp) {
-            if (yPos <= yBounds) yPos += cameraSpeed;
-        }
-        // Move the camera DOWN
-        if (SerialScript.S.knobDown) {
-            if (yPos >= -yBounds) yPos -= cameraSpeed;
-        }
-
-        // Move the camera LEFT
-        if (SerialScript.S.knobLeft) {
-            if (xPos >= -xBounds) xPos -= cameraSpeed;
-        }
-        // Move the camera RIGHT
-        if (SerialScript.S.knobRight) {
-            if (xPos <= xBounds) xPos += cameraSpeed;
-        }
-
         float zoom = GetComponent<Camera>().orthographicSize;
 
         // Zoom OUT the camera
@@ -95,6 +75,32 @@ public class WaldoCamera : MonoBehaviour
         // Change the zoom indicator's position
         float zoomLevel = map(zoom, zoomMin, zoomMax, zoomedOut, zoomedIn);
         cameraZoom.rectTransform.anchoredPosition = new Vector3(cameraZoom.rectTransform.anchoredPosition.x, zoomLevel, 1);
+
+
+
+        // Change the camera speed based on the zoom level
+        float cameraSpeed = map(zoom, zoomMin, zoomMax, speed[1], speed[0]);
+
+        float xPos = transform.position.x;
+        float yPos = transform.position.y;
+
+        // Move the camera UP
+        if (SerialScript.S.knobUp) {
+            if (yPos <= yBounds) yPos += cameraSpeed;
+        }
+        // Move the camera DOWN
+        if (SerialScript.S.knobDown) {
+            if (yPos >= -yBounds) yPos -= cameraSpeed;
+        }
+
+        // Move the camera LEFT
+        if (SerialScript.S.knobLeft) {
+            if (xPos >= -xBounds) xPos -= cameraSpeed;
+        }
+        // Move the camera RIGHT
+        if (SerialScript.S.knobRight) {
+            if (xPos <= xBounds) xPos += cameraSpeed;
+        }
 
 
         // Change the position of the camera
@@ -168,10 +174,10 @@ public class WaldoCamera : MonoBehaviour
             }
 
             // Conditions for changing the battery color
-            if (currentBar <= 4) {
+            if (currentBar <= 3) {
                 for (int j = 0; j <= 3; j++) batteryBars[j].GetComponent<Image>().color = midPower;
             }
-            if (currentBar <= 2) {
+            if (currentBar <= 1) {
                 for (int j = 0; j <= 1; j++) batteryBars[j].GetComponent<Image>().color = lowPower;
             }
         }
@@ -205,7 +211,6 @@ public class WaldoCamera : MonoBehaviour
                     // Reset the battery
                     for (int j = 0; j < batteryBars.Length; j++) {
                         batteryBars[j].GetComponent<Image>().enabled = true;
-                        battery.GetComponent<Image>().enabled = true;
                         batteryBars[j].GetComponent<Image>().color = hiPower;
                         currentBar = batteryBars.Length;
                     }
