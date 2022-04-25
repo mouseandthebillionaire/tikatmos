@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WaldoCamera : MonoBehaviour
+public class WaldoManager : MonoBehaviour
 {
     public GameObject magnifyingGlass, recording, temperature;
     public GameObject[] batteryBars = new GameObject[5];
@@ -18,11 +18,14 @@ public class WaldoCamera : MonoBehaviour
     public float[] speed = new float[2];
 
     public float xBounds, yBounds;
+    private float cameraPos_x, cameraPos_y;
     public float lerpSpeed;
 
     public float zoomMax, zoomMin;
     public float zoomSpeed;
     public float minGlassSize, maxGlassSize;
+
+    private Camera waldoCamera;
 
     private float recordingTimer = 0f;
     public float blinkRate;
@@ -39,6 +42,10 @@ public class WaldoCamera : MonoBehaviour
 
     public static float timer;
 
+    void Awake() {
+        magnifyingGlass.transform.localScale = new Vector3(2, 2, 0);
+    }
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -50,12 +57,17 @@ public class WaldoCamera : MonoBehaviour
             batteryBars[i].GetComponent<Image>().color = hiPower;
             currentBar = batteryBars.Length;
         }
+
+        waldoCamera = GameObject.Find("Camera_Device").GetComponent<Camera>();
+        waldoCamera.orthographicSize = 3f;
+        cameraPos_x = waldoCamera.transform.position.x;
+        cameraPos_y = waldoCamera.transform.position.y;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float zoom = GetComponent<Camera>().orthographicSize;
+        float zoom = waldoCamera.orthographicSize;
 
         // Zoom OUT the camera
         if (Input.GetKeyDown(GlobalVariables.S.upCrank)) {
@@ -67,7 +79,7 @@ public class WaldoCamera : MonoBehaviour
             if (zoom >= zoomMin) zoom -= zoomSpeed;
         }
 
-        GetComponent<Camera>().orthographicSize = zoom;
+        waldoCamera.orthographicSize = zoom;
 
         // Change the size of the player based on the camera's zoom
         float newSize = map(zoom, zoomMin, zoomMax, maxGlassSize, minGlassSize);
@@ -76,41 +88,41 @@ public class WaldoCamera : MonoBehaviour
         // Change the zoom indicator's position
         float zoomLevel = map(zoom, zoomMin, zoomMax, zoomedOut, zoomedIn);
         cameraZoom.rectTransform.anchoredPosition = new Vector3(cameraZoom.rectTransform.anchoredPosition.x, zoomLevel, 1);
-
-
+        
 
         // Change the camera speed based on the zoom level
         float cameraSpeed = map(zoom, zoomMin, zoomMax, speed[0], speed[1]);
 
-        float xPos = transform.position.x;
-        float yPos = transform.position.y;
-
         // Move the camera UP
         if (Input.GetKeyDown(GlobalVariables.S.knob0_left)) {
-            if (yPos <= yBounds) yPos += cameraSpeed;
+            
+            if (cameraPos_y <= yBounds) {
+                cameraPos_y += cameraSpeed;
+            }
         }
         // Move the camera DOWN
         if (Input.GetKeyDown(GlobalVariables.S.knob0_right)) {
-            if (yPos >= -yBounds) yPos -= cameraSpeed;
+            if (cameraPos_y >= -yBounds) cameraPos_y -= cameraSpeed;
         }
 
         // Move the camera LEFT
         if (Input.GetKeyDown(GlobalVariables.S.knob1_left)) {
-            if (xPos >= -xBounds) xPos -= cameraSpeed;
+            if (cameraPos_x >= -xBounds) cameraPos_x -= cameraSpeed;
         }
         // Move the camera RIGHT
         if (Input.GetKeyDown(GlobalVariables.S.knob1_right)) {
-            if (xPos <= xBounds) xPos += cameraSpeed;
+            if (cameraPos_x <= xBounds) cameraPos_x += cameraSpeed;
         }
 
+        
 
         // Change the position of the camera
-        Vector3 targetPosition = new Vector3(xPos, yPos, transform.position.z);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed);
+        Vector3 targetPosition = new Vector3(cameraPos_x, cameraPos_y, -10);
+        waldoCamera.transform.position = Vector3.Lerp(waldoCamera.transform.position, targetPosition, lerpSpeed);
 
         // Move the position of the camera indicator to reflect the camera position
-        float xLoc = map(xPos, -xBounds, xBounds, -gridBounds, gridBounds);
-        float yLoc = map(yPos, -yBounds, yBounds, -gridBounds, gridBounds);
+        float   xLoc        = map(cameraPos_x, -xBounds, xBounds, -gridBounds, gridBounds);
+        float   yLoc        = map(cameraPos_y, -yBounds, yBounds, -gridBounds, gridBounds);
         Vector3 oldPosition = cameraPosition.rectTransform.anchoredPosition;
         Vector3 newPosition = new Vector3(xLoc, yLoc, 1);
         cameraPosition.rectTransform.anchoredPosition = Vector3.Lerp(oldPosition, newPosition, lerpSpeed);
@@ -124,8 +136,8 @@ public class WaldoCamera : MonoBehaviour
         float oldRange = (oldMax - oldMin);
         float newRange = (newMax - newMin);
         float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
-    
-        return(newValue);
+        if (newValue < 0) return (0.2f);
+        else return(newValue);
     }
 
     void CameraUI() {

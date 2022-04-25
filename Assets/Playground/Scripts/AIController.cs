@@ -41,6 +41,7 @@ public class AIController : MonoBehaviour
             person.gameObject.GetComponentInChildren<SpriteRenderer>().color = goals[randomColor];
 
             people[i] = Instantiate(person);
+            people[i].transform.parent = this.transform;
         }
 
         person.SetActive(false);

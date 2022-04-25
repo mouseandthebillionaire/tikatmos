@@ -35,7 +35,6 @@ public class GameManager : MonoBehaviour
     }
 
     private IEnumerator GameLoop() {
-        Debug.Log("running");
         
         // not currently helping anyone
         if (!GlobalVariables.S.customerActive)

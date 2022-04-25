@@ -15,6 +15,10 @@ public class DeviceManager : MonoBehaviour
         KeyCode.Q, KeyCode.W, KeyCode.E, KeyCode.R, KeyCode.T, KeyCode.Y,
         KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H
     };
+
+    public GameObject magnifyingGlass;
+
+    public Camera deviceCamera;
     
     // Load App GAMEOBJECTS rather than scenes
     public GameObject[] apps;
@@ -26,6 +30,7 @@ public class DeviceManager : MonoBehaviour
         currApp = 2;
         // DontDestroyOnLoad(this);
         // SceneManager.LoadScene(appNames[currApp]);
+        deviceCamera = GameObject.Find("Camera_Device").GetComponent<Camera>();
         
         LoadNextApp();
 
@@ -40,6 +45,9 @@ public class DeviceManager : MonoBehaviour
             if(Input.GetKeyDown(channelCodes[i]))
             {
                 currApp = i;
+                if(i == 6) magnifyingGlass.SetActive(true);
+                else magnifyingGlass.SetActive(false);
+                ResetCamera();
                 LoadNextApp();
             }
         }
@@ -50,5 +58,10 @@ public class DeviceManager : MonoBehaviour
             if(i==currApp) apps[i].SetActive(true);
             else apps[i].SetActive(false);
         }
+    }
+
+    public void ResetCamera() {
+        deviceCamera.orthographicSize = 5;
+        deviceCamera.transform.position = new Vector3(0, 0, -10);
     }
 }
