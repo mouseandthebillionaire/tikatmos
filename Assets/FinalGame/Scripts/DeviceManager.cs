@@ -44,6 +44,7 @@ public class DeviceManager : MonoBehaviour
         for (int i = 0; i < channelCodes.Length; i++) {
             if(Input.GetKeyDown(channelCodes[i]))
             {
+                AudioManager.S.ChangeChannel();
                 currApp = i;
                 if(i == 6) magnifyingGlass.SetActive(true);
                 else magnifyingGlass.SetActive(false);
@@ -60,6 +61,7 @@ public class DeviceManager : MonoBehaviour
             if(i==currApp) apps[i].SetActive(true);
             else apps[i].SetActive(false);
         }
+        
     }
 
     public void ResetCamera() {
