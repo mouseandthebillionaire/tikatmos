@@ -23,11 +23,15 @@ public class AIController : MonoBehaviour
 
     public static int goalsCompleted = -1;
 
-    public Text goalCounter;
-
     public static float goalX, goalY;
 
     public float startTime, timerDecrease, minimumTimer;
+
+    private int lastGoal = -1;
+    private int lastLastGoal = -1;
+
+    private bool childFound = false;
+    private int[] previousMessage = new int[7];
 
     // Start is called before the first frame update
     void Start()
@@ -46,14 +50,12 @@ public class AIController : MonoBehaviour
 
         person.SetActive(false);
 
-        WaldoCamera.timer = startTime;
+        WaldoManager.timer = startTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        goalCounter.text = "" + goalsCompleted;
-
         if (goalCompleted) {
             // Determine who was the last person to be a goal
             for (int i = 0; i < people.Length; i++) {
@@ -63,7 +65,7 @@ public class AIController : MonoBehaviour
             // Update the goal counter
             goalsCompleted++;
 
-            CreateGoal();
+            StartCoroutine(CreateGoal());
             goalCompleted = false;
         } else {
             // Reset the last person who was a goal
@@ -83,14 +85,34 @@ public class AIController : MonoBehaviour
         // Decrease the timer each time a goal is completed
         if (goalsCompleted > 0) {
             float newtimer = startTime - (goalsCompleted * timerDecrease);
-            if (newtimer > minimumTimer) WaldoCamera.timer = newtimer;
-            else WaldoCamera.timer = minimumTimer;
+            if (newtimer > minimumTimer) WaldoManager.timer = newtimer;
+            else WaldoManager.timer = minimumTimer;
         }
     }
 
-    void CreateGoal() {
+    IEnumerator CreateGoal() {
+
+        yield return new WaitForSeconds(0f);
+
         // Generate a random goal
         int randomGoal = Random.Range(0, goals.Length);
+
+        // Check to see if the same goal was generated
+        if (randomGoal == lastGoal || randomGoal == lastLastGoal) {
+            if (randomGoal > 0) randomGoal--;
+            else randomGoal++;
+        }
+
+        // Make sure the lost child isn't returned to their parents before they are found
+        if (lastGoal == 2) {
+            childFound = true;
+            randomGoal = 3;
+        }
+        if (lastGoal == 3) childFound = false;
+        if (!childFound && randomGoal == 3) {
+            if (lastLastGoal != 2 && lastGoal != 2) randomGoal = 2;
+            else randomGoal = 6;
+        }
 
         // Determine the number of people who are the goal's color
         List<GameObject> somePeople = new List<GameObject>(0);
@@ -118,6 +140,20 @@ public class AIController : MonoBehaviour
         // Change the goal text
         goalMessage.color = goals[randomGoal];
         goalMessageBorder.color = goals[randomGoal];
-        goalMessage.text = goalMessages[randomGoal];
+
+        int choice = Random.Range(0,3);
+        if (previousMessage[randomGoal] == choice) {
+            if (choice > 0) choice--;
+            else choice++;
+        }
+
+        if (choice == 0) goalMessage.text = goalMessages[randomGoal];
+        else if (choice == 1) goalMessage.text = goalMessages[randomGoal + goals.Length];
+        else goalMessage.text = goalMessages[randomGoal + (goals.Length*2)];
+
+        previousMessage[randomGoal] = choice;
+
+        lastLastGoal = lastGoal;
+        lastGoal = randomGoal;
     }
 }
