@@ -5,15 +5,14 @@ using UnityEngine.UI;
 
 public class WaldoManager : MonoBehaviour
 {
-    public GameObject magnifyingGlass, recording, temperature;
+    public GameObject magnifyingGlass, temperature;
     public GameObject[] batteryBars = new GameObject[5];
-    public GameObject catchTime;
-
-    public Image cameraOff;
 
     public Image cameraPosition;
 
     public Image cameraZoom;
+
+    public Text goalCounter;
 
     public float[] speed = new float[2];
 
@@ -32,17 +31,15 @@ public class WaldoManager : MonoBehaviour
     private float startTime = 0f;
     private int currentBar;
 
-    public float gridBounds;
+    public float gridBoundsX, gridBoundsY;
     public float zoomedOut, zoomedIn;
-    public GameObject maze;
 
     public Color hiPower, midPower, lowPower;
-
-    public static bool catchingPerson = false;
 
     public static float timer;
 
     void Awake() {
+        magnifyingGlass.gameObject.SetActive(true);
         magnifyingGlass.transform.localScale = new Vector3(2, 2, 0);
     }
     
@@ -59,7 +56,7 @@ public class WaldoManager : MonoBehaviour
         }
 
         waldoCamera = GameObject.Find("Camera_Device").GetComponent<Camera>();
-        waldoCamera.orthographicSize = 3f;
+        waldoCamera.orthographicSize = zoomMin + (zoomMax - zoomMin)/2;
         cameraPos_x = waldoCamera.transform.position.x;
         cameraPos_y = waldoCamera.transform.position.y;
     }
@@ -67,16 +64,22 @@ public class WaldoManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Update the score counter
+        goalCounter.text = "" + AIController.goalsCompleted;
+        if (AIController.goalsCompleted > 0) goalCounter.color = Color.white;
+
         float zoom = waldoCamera.orthographicSize;
 
         // Zoom OUT the camera
         if (Input.GetKeyDown(GlobalVariables.S.upCrank)) {
-            if (zoom <= zoomMax) zoom += zoomSpeed;
+            if (zoom + zoomSpeed < zoomMax) zoom += zoomSpeed;
+            else zoom = zoomMax;
         }
 
         // Zoom IN the camera
         if (Input.GetKeyDown(GlobalVariables.S.downCrank)) {
-            if (zoom >= zoomMin) zoom -= zoomSpeed;
+            if (zoom - zoomSpeed > zoomMin) zoom -= zoomSpeed;
+            else zoom = zoomMin;
         }
 
         waldoCamera.orthographicSize = zoom;
@@ -90,39 +93,39 @@ public class WaldoManager : MonoBehaviour
         cameraZoom.rectTransform.anchoredPosition = new Vector3(cameraZoom.rectTransform.anchoredPosition.x, zoomLevel, 1);
         
 
+
         // Change the camera speed based on the zoom level
         float cameraSpeed = map(zoom, zoomMin, zoomMax, speed[0], speed[1]);
 
         // Move the camera UP
         if (Input.GetKeyDown(GlobalVariables.S.knob0_left)) {
-            
-            if (cameraPos_y <= yBounds) {
-                cameraPos_y += cameraSpeed;
-            }
+            if (cameraPos_y + cameraSpeed <= yBounds) cameraPos_y += cameraSpeed;
+            else cameraPos_y = yBounds;
         }
         // Move the camera DOWN
         if (Input.GetKeyDown(GlobalVariables.S.knob0_right)) {
-            if (cameraPos_y >= -yBounds) cameraPos_y -= cameraSpeed;
+            if (cameraPos_y - cameraSpeed > -yBounds) cameraPos_y -= cameraSpeed;
+            else cameraPos_y = -yBounds;
         }
 
         // Move the camera LEFT
         if (Input.GetKeyDown(GlobalVariables.S.knob1_left)) {
-            if (cameraPos_x >= -xBounds) cameraPos_x -= cameraSpeed;
+            if (cameraPos_x - cameraSpeed > -xBounds) cameraPos_x -= cameraSpeed;
+            else cameraPos_x = -xBounds;
         }
         // Move the camera RIGHT
         if (Input.GetKeyDown(GlobalVariables.S.knob1_right)) {
-            if (cameraPos_x <= xBounds) cameraPos_x += cameraSpeed;
-        }
-
-        
+            if (cameraPos_x + cameraSpeed < xBounds) cameraPos_x += cameraSpeed;
+            else cameraPos_x = xBounds;
+        }    
 
         // Change the position of the camera
         Vector3 targetPosition = new Vector3(cameraPos_x, cameraPos_y, -10);
         waldoCamera.transform.position = Vector3.Lerp(waldoCamera.transform.position, targetPosition, lerpSpeed);
 
         // Move the position of the camera indicator to reflect the camera position
-        float   xLoc        = map(cameraPos_x, -xBounds, xBounds, -gridBounds, gridBounds);
-        float   yLoc        = map(cameraPos_y, -yBounds, yBounds, -gridBounds, gridBounds);
+        float xLoc = map(cameraPos_x, -xBounds, xBounds, -gridBoundsX, gridBoundsX);
+        float yLoc = map(cameraPos_y, -yBounds, yBounds, -gridBoundsY, gridBoundsY);
         Vector3 oldPosition = cameraPosition.rectTransform.anchoredPosition;
         Vector3 newPosition = new Vector3(xLoc, yLoc, 1);
         cameraPosition.rectTransform.anchoredPosition = Vector3.Lerp(oldPosition, newPosition, lerpSpeed);
@@ -136,8 +139,8 @@ public class WaldoManager : MonoBehaviour
         float oldRange = (oldMax - oldMin);
         float newRange = (newMax - newMin);
         float newValue = (((value - oldMin) * newRange) / oldRange) + newMin;
-        if (newValue < 0) return (0.2f);
-        else return(newValue);
+
+        return(newValue);
     }
 
     void CameraUI() {
@@ -149,7 +152,7 @@ public class WaldoManager : MonoBehaviour
             int seconds  = (int)(currentTime % 60);
             int fraction = (int)((currentTime * 100) % 100);
 
-            catchTime.GetComponent<Text>().text = string.Format ("{0:00}:{1:00}:{2:00}", minutes, seconds, fraction);
+            //catchTime.GetComponent<Text>().text = string.Format ("{0:00}:{1:00}:{2:00}", minutes, seconds, fraction);
         } 
 
         // Blink the recording light
@@ -159,7 +162,7 @@ public class WaldoManager : MonoBehaviour
             recordingTimer = 0;
 
             // Turn the recording indicator on or off
-            recording.GetComponent<Image>().enabled = !recording.GetComponent<Image>().enabled;
+            //recording.GetComponent<Image>().enabled = !recording.GetComponent<Image>().enabled;
 
             // If low battery, start blinking the battery
             if (currentTime <= (timer/batteryBars.Length)/2) {
@@ -169,8 +172,8 @@ public class WaldoManager : MonoBehaviour
         }
 
         // Change the temperature level
-        float xDistance = this.transform.position.x - AIController.goalX;
-        float yDistance = this.transform.position.y - AIController.goalY;
+        float xDistance = waldoCamera.transform.position.x - AIController.goalX;
+        float yDistance = waldoCamera.transform.position.y - AIController.goalY;
         float distance = Mathf.Sqrt((xDistance*xDistance) + (yDistance*yDistance));
         float maxDistance = Mathf.Sqrt(((xBounds*2)*(xBounds*2)) + ((yBounds*2)*(yBounds*2)));
         temperature.GetComponent<Image>().fillAmount = map(distance, 0, maxDistance, 1, 0);
@@ -199,13 +202,14 @@ public class WaldoManager : MonoBehaviour
         if (currentTime < 0) {
             //cameraOff.gameObject.SetActive(true);
             AIController.goalsCompleted = 0;
+            goalCounter.color = lowPower;
         }
     }
 
     // Check to see if the magnifying glass is on a person
     void CheckOverlap()
     {
-        Vector2 position = new Vector2(transform.position.x,transform.position.y);
+        Vector2 position = new Vector2(waldoCamera.transform.position.x, waldoCamera.transform.position.y);
 
         Collider2D[] colliders;
         colliders = Physics2D.OverlapCircleAll(position, magnifyingGlass.GetComponent<CircleCollider2D>().bounds.extents.x);
@@ -215,6 +219,10 @@ public class WaldoManager : MonoBehaviour
                 if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) {
                     // Goal was completed
                     print("Found Waldo");
+
+                    // Play a sound effect
+                    AudioSource audio = GetComponentInChildren<AudioSource>();
+                    audio.Play();
 
                     AIController.goalCompleted = true;
 
