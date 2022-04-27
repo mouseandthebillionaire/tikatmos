@@ -12443,7 +12443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1707701682
 Transform:
   m_ObjectHideFlags: 0
@@ -12453,7 +12453,7 @@ Transform:
   m_GameObject: {fileID: 1707701681}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_LocalScale: {x: 0.008, y: 0.008, z: 1}
   m_Children:
   - {fileID: 886055883}
   - {fileID: 139204386}
@@ -12477,10 +12477,10 @@ MonoBehaviour:
   blendVal: 0
   filterVal: 0
   timeVal: 0
-  leftKnob: {fileID: 0}
-  rightKnob: {fileID: 0}
-  middleButton: {fileID: 0}
-  needle: {fileID: 0}
+  leftKnob: {fileID: 447172437}
+  rightKnob: {fileID: 510970656}
+  middleButton: {fileID: 1211036512}
+  needle: {fileID: 1630094899}
 --- !u!1 &1716101617
 GameObject:
   m_ObjectHideFlags: 0
