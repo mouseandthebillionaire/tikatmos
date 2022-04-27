@@ -5,7 +5,7 @@ using UnityEngine;
 public class CRTPostProcess : MonoBehaviour
 {
     public Shader shader;
-    public float bend = 4f;
+    public float bend = 2f;
     public float scanlineSize1 = 200;
     public float scanlineSpeed1 = -10;
     public float scanlineSize2 = 20;

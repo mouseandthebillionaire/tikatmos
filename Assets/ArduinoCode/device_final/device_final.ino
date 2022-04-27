@@ -49,7 +49,6 @@ void loop() {
 
   // channel
   channelInput = analogRead(channelChanger); 
-  Serial.println(channelInput);
 
   for(int i=0; i<sizeof(channelCodes); i++){
      if((channelInput >= channelThresholds[i]) && (channelInput < channelThresholds[i+1])){
@@ -105,7 +104,7 @@ void loop() {
   // crank Update
   long newCrankInput = analogRead(crank); 
   Serial.println(newCrankInput);
-  Serial.println(crankInput);
+
   // is it far enough away from the current input (to avoid fluttering)
   if (newCrankInput > crankInput + 5 || newCrankInput < crankInput-5) {
     if(newCrankInput < crankInput+5) {
@@ -118,10 +117,10 @@ void loop() {
   }
 
   // Mic Button
-  micButtonState = digitalRead(micButton);
-  if (micButtonState == HIGH) {
-    Keyboard.write('z');
-  } 
+//  micButtonState = digitalRead(micButton);
+//  if (micButtonState == HIGH) {
+//    Keyboard.write('z');
+//  } 
 
   delay(5);
   

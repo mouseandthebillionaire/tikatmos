@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
     public AudioSource channelChange;
+    public AudioSource bell;
 
     public static AudioManager S;
     
@@ -14,6 +15,10 @@ public class AudioManager : MonoBehaviour {
 
     public void ChangeChannel() {
         channelChange.Play();
+    }
+    
+    public void Bell() {
+        bell.Play();
     }
     
 }
