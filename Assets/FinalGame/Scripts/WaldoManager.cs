@@ -8,6 +8,8 @@ public class WaldoManager : MonoBehaviour
     public GameObject magnifyingGlass, temperature;
     public GameObject[] batteryBars = new GameObject[5];
 
+    public Canvas canvas;
+
     public Image cameraPosition;
 
     public Image cameraZoom;
@@ -144,6 +146,9 @@ public class WaldoManager : MonoBehaviour
     }
 
     void CameraUI() {
+
+        // Reposition the canvas
+        canvas.GetComponent<RectTransform>().position = waldoCamera.transform.position;
 
         // Display the timer
         float currentTime = timer - (Time.time - startTime);

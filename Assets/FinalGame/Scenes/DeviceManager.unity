@@ -5336,8 +5336,8 @@ Canvas:
   m_GameObject: {fileID: 796603943}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1412400168}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -5346,7 +5346,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 11
   m_TargetDisplay: 2
 --- !u!224 &796603947
 RectTransform:
@@ -12309,7 +12309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1707701682
 Transform:
   m_ObjectHideFlags: 0
@@ -14158,6 +14158,7 @@ MonoBehaviour:
   - {fileID: 1772607033}
   - {fileID: 2010981087}
   - {fileID: 1989199263}
+  canvas: {fileID: 796603946}
   cameraPosition: {fileID: 1037170207}
   cameraZoom: {fileID: 990324019}
   goalCounter: {fileID: 977765077}
