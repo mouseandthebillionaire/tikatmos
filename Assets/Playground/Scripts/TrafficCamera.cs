@@ -10,7 +10,7 @@ public class TrafficCamera : MonoBehaviour
     public float[] cameraBounds = new float[2];
     public float[] escalatorWidth = new float[2];
 
-    public Image systemPower;
+    public Image graph;
 
     public Image UIBackground;
 
@@ -22,7 +22,7 @@ public class TrafficCamera : MonoBehaviour
 
     public Color danger, medium, safe;
 
-    private Vector3 systemStart, customerStart, backgroundStart;
+    private Vector3 systemStart, customerStart, backgroundStart, graphStart;
 
     public float dangerThreshold, mediumThreshold;
 
@@ -42,6 +42,8 @@ public class TrafficCamera : MonoBehaviour
         customerStart.z = 100;
         backgroundStart = UIBackground.transform.position - transform.position;
         backgroundStart.z = 100;
+        graphStart = graph.transform.position - transform.position;
+        graphStart.z = 100;
     }
 
     // Update is called once per frame
@@ -49,8 +51,14 @@ public class TrafficCamera : MonoBehaviour
     {
         float yPos = transform.position.y;
 
-        if (SerialScript.S.crankUp && yPos + cameraSpeed <= cameraBounds[1]) yPos += cameraSpeed;
-        if (SerialScript.S.crankDown && yPos - cameraSpeed >= cameraBounds[0]) yPos -= cameraSpeed;
+        if (SerialScript.S.crankUp) {
+            if (yPos + cameraSpeed < cameraBounds[1]) yPos += cameraSpeed;
+            else yPos = cameraBounds[1];
+        } 
+        if (SerialScript.S.crankDown) {
+            if (yPos - cameraSpeed > cameraBounds[0]) yPos -= cameraSpeed;
+            else yPos = cameraBounds[0];
+        }
 
         // Change the position of the camera
         Vector3 targetPosition = new Vector3(transform.position.x, yPos, transform.position.z);
@@ -79,6 +87,9 @@ public class TrafficCamera : MonoBehaviour
         // Change the position of the UI background
         UIBackground.transform.position = transform.position + backgroundStart;
 
+        // Change the position of the graph
+        graph.transform.position = transform.position + graphStart;
+
         UpdateUI();
     }
 
@@ -95,7 +106,7 @@ public class TrafficCamera : MonoBehaviour
             else levelColor = safe;
 
             levelFill[i].transform.GetChild(0).GetComponentInChildren<Image>().fillAmount = (float) FloorManager.peopleOnFloors[i]/maxPeople;
-            levelFill[i].transform.GetChild(0).GetComponentInChildren<Image>().color = levelColor;
+            levelFill[i].transform.GetChild(2).GetComponentInChildren<Image>().color = levelColor;
         }
 
         // Change the size of the escalators based on their speed

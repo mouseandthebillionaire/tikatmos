@@ -5,12 +5,13 @@ using System;
 
 public class TrafficPerson : MonoBehaviour
 {
+    public GameObject sprite;
     public float yOffset;
-
-    public float[] personSpeed = new float[2];
     private float speed;
 
     public float[] timeOnFloor = new float[2];
+
+    public float xVariation;
     public Color[] colors;
 
     private Vector3 startPosition;
@@ -34,7 +35,7 @@ public class TrafficPerson : MonoBehaviour
         startPosition = transform.position;
 
         // Default to half-speed
-        speed = personSpeed[1] + (personSpeed[1] - personSpeed[0])/2;
+        speed = FloorManager.personSpeedMax + (FloorManager.personSpeedMax - FloorManager.personSpeedMin)/2;
         
         // Determine what floor the person started on
         for (int i = 0; i < FloorManager.floors.Count; i++) {
@@ -42,10 +43,6 @@ public class TrafficPerson : MonoBehaviour
         }
 
         currentFloor = startFloor;
-
-        // Randomly choose a color for the person
-        int randomIndex = UnityEngine.Random.Range(0, colors.Length);
-        this.GetComponent<SpriteRenderer>().color = colors[randomIndex];
 
 
         // Wait before the person leaves the floor
@@ -108,8 +105,8 @@ public class TrafficPerson : MonoBehaviour
                 if (currentY < yTop && currentY > yBottom) {
 
                     // Change person's speed to match the escalator's speed
-                    float speedRange = personSpeed[1] - personSpeed[0];
-                    speed = personSpeed[0] + (FloorManager.escalatorSpeed[i] * speedRange);
+                    float speedRange = FloorManager.personSpeedMax - FloorManager.personSpeedMin;
+                    speed = FloorManager.personSpeedMin + (FloorManager.escalatorSpeed[i] * speedRange);
 
                     // If the person's direction doesn't match their escalator's direction
                     if (goingDown && !FloorManager.escalatorDirectionDown[i]) {
@@ -136,6 +133,10 @@ public class TrafficPerson : MonoBehaviour
     }
 
     IEnumerator ChangeFloors(float waitTime) {
+
+        // Vary the x location of the person so they appear more natural on the escalators
+        float randomX = UnityEngine.Random.Range(-xVariation, xVariation);
+        sprite.transform.localPosition = new Vector3(randomX, 0, 0);
         
         firstSpawn = false;
         changedFloors = true;
@@ -180,7 +181,7 @@ public class TrafficPerson : MonoBehaviour
             int nextFloor;
             if (goingDown) nextFloor = currentFloor - 1;
             else nextFloor = currentFloor + 1;
-            if (FloorManager.peopleOnFloors[nextFloor] >= FloorManager.maxPeopleOnFloor - 1) floorFull = true;
+            if (FloorManager.peopleOnFloors[nextFloor] >= FloorManager.maxPeopleOnFloor) floorFull = true;
             if (FloorManager.peopleOnFloors[currentFloor] <= 0) floorEmpty = true;
 
             // Check if there is already a person nearby on the escalator

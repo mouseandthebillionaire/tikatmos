@@ -37,6 +37,15 @@ public class FloorManager : MonoBehaviour
     public Canvas canvas;
     public Image floorNumber;
 
+    public GameObject arrow;
+    public float arrowLoop, arrowOffset;
+    public static float personSpeedMin = 0.5f;
+    public static float personSpeedMax = 1.5f;
+    public static List<GameObject> arrows = new List<GameObject>();
+
+    public Color[] floorColors = new Color[8];
+    public Color[] floorBackgroundColors = new Color[8];
+
     public static List<Image> floorNumbers = new List<Image>();
 
     private int currentEscalator, currentFloor;
@@ -69,6 +78,8 @@ public class FloorManager : MonoBehaviour
 
             floorNumbers[i].transform.SetParent(canvas.transform);
             floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + (i+1);
+            floorNumbers[i].color = floorColors[i];
+            floors[i].GetComponent<SpriteRenderer>().color = floorBackgroundColors[i];
 
             // Determine how many people are on each floor
             peopleOnFloors.Add(UnityEngine.Random.Range(maxPeopleOnFloor/3, maxPeopleOnFloor*2/3));
@@ -79,6 +90,10 @@ public class FloorManager : MonoBehaviour
 
             // Spawn the people
             for (int j = 0; j < peopleOnFloors[i]; j++) {
+                // Randomly choose a color for the person
+                int randomIndex = UnityEngine.Random.Range(0, floorColors.Length);
+                person.GetComponentInChildren<SpriteRenderer>().color = floorColors[randomIndex];
+
                 Vector3 spawnLoc = new Vector3(floors[i].transform.position.x, floors[i].transform.position.y, 0);
                 people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
             }
@@ -98,6 +113,9 @@ public class FloorManager : MonoBehaviour
                 Vector3 loc = new Vector3(xLoc, yLoc, 0);
 
                 escalators.Add(Instantiate(escalator, loc, Quaternion.identity)); 
+
+                // Spawn the arrows 
+                arrows.Add(Instantiate(arrow, loc, Quaternion.identity)); 
             }
 
             // Keep track of how many escalators are on each floor
@@ -114,15 +132,26 @@ public class FloorManager : MonoBehaviour
             int binaryChoice = UnityEngine.Random.Range(0, 2);
             if (binaryChoice == 0) {
                 escalators[i].transform.rotation = Quaternion.Euler(0, 0, 180);
+                arrows[i].transform.rotation = Quaternion.Euler(0, 0, 180);
                 escalatorDirectionDown[i] = true;
+
+                // Reposition the arrows
+                float yPos = escalators[i].transform.position.y + arrowOffset;
+                arrows[i].transform.position = new Vector3(arrows[i].transform.position.x, yPos, 0);
             } else {
                 escalators[i].transform.rotation = Quaternion.Euler(0, 0, 0);
+                arrows[i].transform.rotation = Quaternion.Euler(0, 0, 0);
                 escalatorDirectionDown[i] = false;
+
+                // Reposition the arrows
+                float yPos = escalators[i].transform.position.y - arrowOffset;
+                arrows[i].transform.position = new Vector3(arrows[i].transform.position.x, yPos, 0);
             }
         }
 
         floor.SetActive(false);
         escalator.SetActive(false);
+        arrow.SetActive(false);
         floorNumber.gameObject.SetActive(false);
     }
 
@@ -140,9 +169,9 @@ public class FloorManager : MonoBehaviour
             int safeZone = (int) (maxPeopleOnFloor * TrafficCamera.S.mediumThreshold);
             int dangerZone = (int) (maxPeopleOnFloor * TrafficCamera.S.dangerThreshold);
 
-            if (peopleOnFloors[i] <= dangerZone || peopleOnFloors[i] >= maxPeopleOnFloor - dangerZone) floorNumbers[i].color = TrafficCamera.S.danger;
-            else if (peopleOnFloors[i] <= safeZone || peopleOnFloors[i] >= maxPeopleOnFloor - safeZone) floorNumbers[i].color = TrafficCamera.S.medium;
-            else floorNumbers[i].color = TrafficCamera.S.safe;
+            //if (peopleOnFloors[i] <= dangerZone || peopleOnFloors[i] >= maxPeopleOnFloor - dangerZone) floorNumbers[i].color = TrafficCamera.S.danger;
+            //else if (peopleOnFloors[i] <= safeZone || peopleOnFloors[i] >= maxPeopleOnFloor - safeZone) floorNumbers[i].color = TrafficCamera.S.medium;
+            //else floorNumbers[i].color = TrafficCamera.S.safe;
         }
 
         // Set Level 0 to "Garage"
@@ -154,8 +183,27 @@ public class FloorManager : MonoBehaviour
         if (time == 0) spawnWaitTime = UnityEngine.Random.Range(personSpawnRate[0], personSpawnRate[1]);
         time += Time.deltaTime;
 
-        //SpawnPerson();
         usedEscalators.Clear();
+
+        // Animate the arrows moving
+        for (int i = 0; i < arrows.Count; i++) {
+            float speed = escalatorSpeed[i] * (personSpeedMax - personSpeedMin);
+            AnimateArrows(i, personSpeedMin + speed);
+        }
+    }
+
+    void AnimateArrows(int i, float speed) {
+        float currentY = arrows[i].transform.position.y;
+
+        if (escalatorDirectionDown[i]) {
+            arrows[i].GetComponent<Rigidbody2D>().velocity = new Vector2(0,-speed);
+            if (currentY <= escalators[i].transform.position.y - arrowLoop + arrowOffset) currentY = escalators[i].transform.position.y + arrowOffset;
+        } else {
+            arrows[i].GetComponent<Rigidbody2D>().velocity = new Vector2(0,speed);
+            if (currentY >= escalators[i].transform.position.y + arrowLoop - arrowOffset) currentY = escalators[i].transform.position.y - arrowOffset;
+        }
+
+        arrows[i].transform.position = new Vector3(arrows[i].transform.position.x, currentY, 0);
     }
 
     void ManageEscalators() {
@@ -189,20 +237,26 @@ public class FloorManager : MonoBehaviour
         }
 
         // Deselect all escalators
-        for (int i = 0; i < escalators.Count; i++) escalators[i].GetComponentInChildren<SpriteRenderer>().color = inactive;
+        for (int i = 0; i < arrows.Count; i++) {
+            arrows[i].GetComponent<SpriteRenderer>().color = active;
+            escalators[i].GetComponentsInChildren<SpriteRenderer>()[1].color = active;
+        }
 
         // Highlight the currently selected escalator
-        escalators[currentEscalator].GetComponentInChildren<SpriteRenderer>().color = selected;
+        arrows[currentEscalator].GetComponent<SpriteRenderer>().color = selected;
+        escalators[currentEscalator].GetComponentsInChildren<SpriteRenderer>()[1].color = selected;
 
 
         // Change the direction of the selected escalator
         if (SerialScript.S.deviceButton) {
             if (escalators[currentEscalator].transform.rotation.z == 0) {
                 escalators[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 180);
+                arrows[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 180);
                 escalatorDirectionDown[currentEscalator] = true;
 
             } else {
                 escalators[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 0);
+                arrows[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 0);
                 escalatorDirectionDown[currentEscalator] = false;
             }
         }
@@ -214,80 +268,6 @@ public class FloorManager : MonoBehaviour
         if (SerialScript.S.knobDown) {
             if (escalatorSpeed[currentEscalator] > 0) escalatorSpeed[currentEscalator] -= escalatorSpeedIncrease;
         }
-    }
-
-
-    void SpawnPerson() {
-        // Randomly spawn a person on the garage level
-        if (time >= spawnWaitTime) {
-            if (peopleOnFloors[0] < maxPeopleOnFloor) {
-                // Spawn a person
-                Vector3 spawnLoc = new Vector3(floors[0].transform.position.x, floors[0].transform.position.y, 0);
-                people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
-                peopleOnFloors[0]++;
-            }
-
-            // Occasionally despawn a person if they are on the Garage level
-            bool despawnedPerson = false;
-            for (int i = 0; i < people.Count; i++)
-            if (people[i].transform.position.y == FloorManager.floors[0].transform.position.y && !despawnedPerson) {
-                int randomChance = UnityEngine.Random.Range(0, despawnChance);
-                if (randomChance == 0 && peopleOnFloors[0] > 0) {
-                    // Despawn a person
-                    people[i].gameObject.SetActive(false);
-                    peopleOnFloors[0]--;
-                    despawnedPerson = true;
-                }
-            }
-
-            time = 0;
-        }
-        
-
-        // Spawn a person moving to another floor
-        // if (time >= spawnWaitTime)
-        // {
-        //     int randomEscalator = UnityEngine.Random.Range(0, escalators.Count);
-        //     float xLoc = escalators[randomEscalator].gameObject.transform.position.x;
-        //     float yLoc = escalators[randomEscalator].gameObject.transform.position.y;
-        //     float speed = personSpeed;
-
-        //     // The person is going up
-        //     if (!escalatorDirectionDown[randomEscalator])
-        //     {
-        //         yLoc -= distBetweenFloors / 2;
-        //     }
-        //     // The person is going down
-        //     else
-        //     {
-        //         yLoc += distBetweenFloors / 2;
-        //         speed = -speed;
-        //     }
-
-        //     int spawnFloor = 0;
-        //     // Determine what floor the person will spawn on
-        //     for (int i = 0; i < floors.Count; i++)
-        //     {
-        //         if (floors[i].transform.position.y == yLoc) spawnFloor = i;
-        //     }
-
-        //     // Check to see if the floor can hold more people
-        //     bool floorFull = false;
-        //     bool floorEmpty = false;
-        //     if (peopleOnFloors[spawnFloor] >= maxPeopleOnFloor - 1) floorFull = true;
-        //     if (peopleOnFloors[spawnFloor] <= 0) floorEmpty = true;
-
-        //     if (!floorFull && !floorEmpty)
-        //     {
-        //         Vector3 spawnLoc = new Vector3(xLoc, yLoc, 0);
-        //         people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
-        //         people[currentPerson].GetComponent<Rigidbody2D>().AddForce(new Vector2(0, speed), ForceMode2D.Impulse);
-
-        //         currentPerson++;
-        //     }
-
-        //     time = 0;
-        // }
     }
 
     public float map(float value, float oldMin, float oldMax, float newMin, float newMax){
