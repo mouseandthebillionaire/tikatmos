@@ -10,13 +10,15 @@ public class TrafficCamera : MonoBehaviour
     public float[] cameraBounds = new float[2];
     public float[] escalatorWidth = new float[2];
 
-    public Image graph;
+    public GameObject graph;
 
     public Image UIBackground;
 
     public Image selectedLevel;
 
     public Image[] levelFill;
+    public Image[] levelFillBackground;
+    public float levelStatusOffset;
 
     public float distBetweenLevels;
 
@@ -70,6 +72,7 @@ public class TrafficCamera : MonoBehaviour
             yPos = transform.position.y + customerStart.y + (distBetweenLevels*i);
             levelFill[i].transform.position = new Vector3(transform.position.x + customerStart.x, yPos, 10);
             levelFill[i].transform.SetAsLastSibling();
+            levelFillBackground[i].transform.position = new Vector3(levelFill[i].transform.position.x + levelStatusOffset, levelFill[i].transform.position.y, 0);
         }
 
         // Change the position of the selected level
