@@ -42,14 +42,13 @@ public class DeviceManager : MonoBehaviour
     void Update()
     {
         for (int i = 0; i < channelCodes.Length; i++) {
-            if(Input.GetKeyDown(channelCodes[i]))
-            {
-                AudioManager.S.ChangeChannel();
+            if(Input.GetKeyDown(channelCodes[i])) {
+                AudioManager.S.Bell();
                 currApp = i;
                 if(i == 6) magnifyingGlass.SetActive(true);
                 else magnifyingGlass.SetActive(false);
-                if (i == 8) deviceCamera.GetComponent<CRTPostProcess>().enabled = true;
-                else deviceCamera.GetComponent<CRTPostProcess>().enabled = false;
+                // if (i == 8) deviceCamera.GetComponent<CRTPostProcess>().enabled = true;
+                // else deviceCamera.GetComponent<CRTPostProcess>().enabled = false;
                 ResetCamera();
                 LoadNextApp();
             }

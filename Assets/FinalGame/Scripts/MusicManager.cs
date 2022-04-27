@@ -9,7 +9,9 @@ public class MusicManager : MonoBehaviour
     public LibPdInstance trackPatch;
     public LibPdInstance ambientPatch;
 
-    public float hKnobVal, vKnobVal, crankVal;
+    public float blendVal, filterVal, timeVal;
+
+    public GameObject leftKnob, rightKnob, middleButton, needle;
 
     public static MusicManager S;
 
@@ -21,53 +23,62 @@ public class MusicManager : MonoBehaviour
         trackPatch = GameObject.Find("Tracks").GetComponent<LibPdInstance>();
         
         // initialize values to something more interesting later
-        hKnobVal = 0; //  1-100
-        vKnobVal = 0; //  0-1
-        crankVal = 0; // -200 to 200
+        filterVal = 100; //  1-100
+        blendVal = 0.5f; //  0-1
+        timeVal = 100; // -200 to 200
     }
 
     public void Update()
     {
-        if (Input.GetKey(GlobalVariables.S.knob0_left) && (hKnobVal > 1))
+        // Filter
+        if (Input.GetKey(GlobalVariables.S.knob0_left) && (filterVal > 1))
         {
-            hKnobVal -= .1f;
-            ValueChangeCheckFilter(hKnobVal);
+            filterVal -= 1f;
+            ValueChangeCheckFilter(filterVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.knob0_right) && (hKnobVal < 100))
+        if (Input.GetKey(GlobalVariables.S.knob0_right) && (filterVal < 100))
         {
-            hKnobVal += .1f;
-            ValueChangeCheckFilter(hKnobVal);
+            filterVal += 1f;
+            ValueChangeCheckFilter(filterVal);
         }
 
+        leftKnob.transform.rotation = Quaternion.Euler(0, 0, filterVal * 3f);
 
-        if (Input.GetKey(GlobalVariables.S.upCrank) && (crankVal > -200))
+        // Time
+        if (Input.GetKey(GlobalVariables.S.upCrank) && (timeVal > -200))
         {
-            crankVal -= .1f;
-            ValueChangeCheckTime(crankVal);
+            timeVal -= 1f;
+            ValueChangeCheckTime(timeVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.downCrank) && (crankVal < 200))
+        if (Input.GetKey(GlobalVariables.S.downCrank) && (timeVal < 200))
         {
-            crankVal += .1f;
-            ValueChangeCheckTime(crankVal);
+            timeVal += 1f;
+            ValueChangeCheckTime(timeVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.knob1_left) && (vKnobVal > 0))
+        needle.transform.rotation = Quaternion.Euler(0, 0, timeVal / -5f);
+
+        // Blend
+        if (Input.GetKey(GlobalVariables.S.knob1_left) && (blendVal > 0))
         {
-            vKnobVal -= .001f;
-            ValueChangeCheckVolume(vKnobVal);
+            blendVal -= .001f;
+            ValueChangeCheckVolume(blendVal);
         }
 
-        if (Input.GetKey(GlobalVariables.S.knob1_right) && (vKnobVal < 1))
+        if (Input.GetKey(GlobalVariables.S.knob1_right) && (blendVal < 1))
         {
-            vKnobVal += .001f;
-            ValueChangeCheckVolume(vKnobVal);
+            blendVal += .001f;
+            ValueChangeCheckVolume(blendVal);
         }
+        rightKnob.transform.rotation = Quaternion.Euler(0, 0, blendVal * 360f);
 
+        // Change Track
         if (Input.GetKey(GlobalVariables.S.deviceButton))
         {
             MusicShift();
+            StartCoroutine(ColorPulse());
         }
     }
 
@@ -94,5 +105,11 @@ public class MusicManager : MonoBehaviour
     public void MusicShift() {
         ambientPatch.SendBang("knobOn");
         trackPatch.SendBang("knobOn");
+    }
+
+    private IEnumerator ColorPulse() {
+        middleButton.GetComponent<SpriteRenderer>().color = new Color (1f, 0.5f, 0.5f, 1f);
+        yield return new WaitForSeconds(1);
+        middleButton.GetComponent<SpriteRenderer>().color = new Color (1f, 1f, 1f, 1f);
     }
 }

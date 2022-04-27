@@ -8,7 +8,7 @@ public class MapZoom : MonoBehaviour
 {
     public float zoomMax, zoomMin;
     public float zoomSpeed;
-    private float zoom = 40;
+    private float zoom = 0.4f;
     
     public float xBounds, yBounds;
     [SerializeField] [Range(0f, 5f)] float lerpSpeed;
@@ -72,13 +72,13 @@ public class MapZoom : MonoBehaviour
             for (int i = 0; i < floors.Length; i++) {
                 if (i != floorCounter) {
                     floors[i].transform.localPosition = new Vector2(
-                        -650,
+                        -550,
                         floors[i].transform.localPosition.y);
                 }
 
                 if (i == floorCounter) {
                     floors[i].transform.localPosition = new Vector2(
-                        -550,
+                        -450,
                         floors[i].transform.localPosition.y);
                 }            
             }

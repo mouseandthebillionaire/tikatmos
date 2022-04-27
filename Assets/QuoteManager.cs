@@ -8,7 +8,7 @@ public class QuoteManager : MonoBehaviour {
     private TextAsset quote_asset;
     private string[] quoteList;
 
-    public Image bg;
+    public GameObject bg;
     private float r, g, b;
     
     // Start is called before the first frame update
@@ -48,11 +48,17 @@ public class QuoteManager : MonoBehaviour {
         if (Input.GetKeyDown(GlobalVariables.S.upCrank) && b > 0) b -= .01f;
         if (Input.GetKeyDown(GlobalVariables.S.downCrank) && b < 1) b += .01f;
 
-        bg.color = new Color(r, g, b);
+        bg.GetComponent<SpriteRenderer>().color = new Color(r, g, b, 0.6f);
     }
 
     private void ChangeQuote() {
-        int r = Random.Range(0, quoteList.Length);
-        quote.text = quoteList[r];
+        int rand = Random.Range(0, quoteList.Length);
+        quote.text = quoteList[rand];
+        r = Random.Range(0, 1f);
+        g = Random.Range(0, 1f);
+        b = Random.Range(0, 1f);
+        int    rand_Cat = Random.Range(0, 1705);
+        Sprite s    = Resources.Load ("Cats/ci_" +  rand_Cat, typeof(Sprite)) as Sprite;
+        bg.GetComponent<SpriteRenderer>().sprite = s;
     }
 }
