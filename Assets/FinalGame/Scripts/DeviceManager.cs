@@ -43,7 +43,7 @@ public class DeviceManager : MonoBehaviour
     {
         for (int i = 0; i < channelCodes.Length; i++) {
             if(Input.GetKeyDown(channelCodes[i])) {
-                AudioManager.S.Bell();
+                //AudioManager.S.Bell();
                 currApp = i;
                 if(i == 6) magnifyingGlass.SetActive(true);
                 else magnifyingGlass.SetActive(false);
