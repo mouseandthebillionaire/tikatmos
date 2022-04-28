@@ -48,7 +48,7 @@ public class QuoteManager : MonoBehaviour {
         if (Input.GetKeyDown(GlobalVariables.S.upCrank) && b > 0) b -= .01f;
         if (Input.GetKeyDown(GlobalVariables.S.downCrank) && b < 1) b += .01f;
 
-        bg.GetComponent<SpriteRenderer>().color = new Color(r, g, b, 0.6f);
+        bg.GetComponent<SpriteRenderer>().color = new Color(r, g, b, 0.8f);
     }
 
     private void ChangeQuote() {
