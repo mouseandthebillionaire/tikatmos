@@ -2996,7 +2996,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 05065f719548c3449983d5fb137f0137, type: 3}
+    m_Font: {fileID: 12800000, guid: 76889de5cfdfde145a73bb4fe2a8a5a5, type: 3}
     m_FontSize: 82
     m_FontStyle: 0
     m_BestFit: 0
@@ -3008,7 +3008,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Space Mall Directory
+  m_Text: DIRECTORY
 --- !u!222 &384661713
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10034,7 +10034,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1373488118
 Transform:
   m_ObjectHideFlags: 0
@@ -10044,7 +10044,7 @@ Transform:
   m_GameObject: {fileID: 1373488117}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_LocalScale: {x: 0.008, y: 0.008, z: 1}
   m_Children:
   - {fileID: 1347350741}
   - {fileID: 229369588}
@@ -12638,7 +12638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1735124388
 MonoBehaviour:
   m_ObjectHideFlags: 0
