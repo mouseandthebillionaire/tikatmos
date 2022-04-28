@@ -44,7 +44,11 @@ public class Customer : MonoBehaviour
         Sprite s = Resources.Load ("CharacterSprites/" + currCustomer + "/0", typeof(Sprite)) as Sprite;
         customerImage.GetComponent<Image>().sprite = s;
         dialogue.GetComponentInChildren<Text>().text = customerRequests[currCustomer];
-
+        
+        // Reset the Vocal Tuner
+        Tuner.S.Reset();
+        
+        // Take it Away!
         StartCoroutine(StartCustomer());
     }
 

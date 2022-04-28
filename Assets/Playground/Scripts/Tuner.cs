@@ -13,10 +13,13 @@ public class Tuner : MonoBehaviour {
 
     public Slider[] sliders;
 
-    // Start is called before the first frame update
-    void Start() {
-        hpf = GetComponent<AudioHighPassFilter>();
-        arf = GetComponent<AudioReverbFilter>();
+	public static Tuner S;
+
+	void Awake(){
+		S = this;
+	}
+
+	public void Reset(){
         hpf.cutoffFrequency = 2200;
         noiseAmt = 1;
         noise.volume = 1;
@@ -24,6 +27,13 @@ public class Tuner : MonoBehaviour {
             noiseLocs[i] = UnityEngine.Random.Range(0, 1f);
             sliders[i].value = UnityEngine.Random.Range(0, 1f);
         }
+	} 
+
+    // Start is called before the first frame update
+    void Start() {
+        hpf = GetComponent<AudioHighPassFilter>();
+        arf = GetComponent<AudioReverbFilter>();
+        Reset();
     }
 
     // Update is called once per frame
