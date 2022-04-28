@@ -79,7 +79,6 @@ public class PlantCareManager : MonoBehaviour
         if (arrowRotation >= sunRot - anglePadding && arrowRotation <= sunRot + anglePadding)
         {
             plantHeart1.SetActive(true);
-            Debug.Log("Plant lined up to light!");
         }
         else
         {
@@ -192,7 +191,6 @@ public class PlantCareManager : MonoBehaviour
                  // if we've made it, exit the while loop
                  if (sunRot >= sunRotGoal - anglePadding && sunRot <= sunRotGoal + anglePadding)
                  {
-                     Debug.Log("we made it!");
                      stillRotating = false;
                  }
                  // if the rotation goal is > current rotation

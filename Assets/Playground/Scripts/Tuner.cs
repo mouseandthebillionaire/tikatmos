@@ -16,7 +16,11 @@ public class Tuner : MonoBehaviour {
 	public static Tuner S;
 
 	void Awake(){
-		S = this;
+		if (S == null) {
+            S = this;
+        } else {
+            DestroyObject(gameObject);
+        }
 	}
 
 	public void Reset(){

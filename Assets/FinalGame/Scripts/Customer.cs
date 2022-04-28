@@ -13,11 +13,12 @@ public class Customer : MonoBehaviour
     
     // Customer stufffffff
     private int currCustomer;
-    private string[] customerList = new string[3];
-    private string[] customerRequests = new string[3];
-    private string[] info = new string[3];
-    private string[] customerSuccessResponses = new string[3];
-    private string[] customerSorries = new string[3];
+    private string[] customerScript = new string[6];
+    private string[] customerRequests = new string[6];
+    private string[] responseNeeded = new string[6];
+    private string[] info = new string[6];
+    private string[] customerSuccessResponses = new string[6];
+    private string[] customerSorries = new string[6];
 
     public static Customer S;
 
@@ -25,7 +26,9 @@ public class Customer : MonoBehaviour
         S = this;
     }
 
-    public void Start() {
+    public void Start()
+    {
+        currCustomer = 0;
         GetCustomerFile();
         Reset();
     }
@@ -40,13 +43,14 @@ public class Customer : MonoBehaviour
     // Load the customer to be served and display the tuning dialogue
     public void InitializeCustomer()
     {
-        Random.Range(0, customerList.Length);
+        //currCustomer = Random.Range(0, customerScript.Length);
+        currCustomer = 3;
         Sprite s = Resources.Load ("CharacterSprites/" + currCustomer + "/0", typeof(Sprite)) as Sprite;
         customerImage.GetComponent<Image>().sprite = s;
         dialogue.GetComponentInChildren<Text>().text = customerRequests[currCustomer];
         
         // Reset the Vocal Tuner
-        Tuner.S.Reset();
+        //Tuner.S.Reset();
         
         // Take it Away!
         StartCoroutine(StartCustomer());
@@ -91,14 +95,25 @@ public class Customer : MonoBehaviour
             value = Regex.Replace(_tempValue, @"[^\w\s]", "");
 
             Debug.Log(value);
-            
-            if (value == info[currCustomer]) {
-                // Success
+
+            if (responseNeeded[currCustomer] == "FALSE")
+            {
                 dialogue.GetComponentInChildren<Text>().text = customerSuccessResponses[currCustomer];
                 StartCoroutine(CustomerServed());
             }
-            else {
-                dialogue.GetComponentInChildren<Text>().text = customerSorries[currCustomer];
+            else
+            {
+
+                if (value == info[currCustomer])
+                {
+                    // Success
+                    dialogue.GetComponentInChildren<Text>().text = customerSuccessResponses[currCustomer];
+                    StartCoroutine(CustomerServed());
+                }
+                else
+                {
+                    dialogue.GetComponentInChildren<Text>().text = customerSorries[currCustomer];
+                }
             }
         }
     }
@@ -106,15 +121,17 @@ public class Customer : MonoBehaviour
     private void GetCustomerFile()
     {
         TextAsset customer_file = Resources.Load("Characters") as TextAsset;
-        customerList = customer_file.text.Split('\n');
+        customerScript = customer_file.text.Split('\n');
+        Debug.Log(customerScript[3]);
 
-        for (int i = 0; i < customerList.Length; i++)
+        for (int i = 0; i < customerScript.Length; i++)
         {
-            string[] temp = customerList[i].Split('\t');
+            string[] temp = customerScript[i].Split('\t');
             customerRequests[i] = temp[2];
-            info[i] = temp[3];
-            customerSuccessResponses[i] = temp[4];
-            customerSorries[i] = temp[5];
+            responseNeeded[i] = temp[3];
+            info[i] = temp[4];
+            customerSuccessResponses[i] = temp[5];
+            customerSorries[i] = temp[6];
         }
     }
 
