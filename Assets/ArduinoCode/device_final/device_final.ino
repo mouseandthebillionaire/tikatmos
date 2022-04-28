@@ -35,12 +35,17 @@ int currChannel = -999;
 const int micButton = 7;
 int micButtonState = 0;
 
+// Device Button
+const int deviceButton = 8;
+int deviceButtonState = LOW;
+
 void setup() {
   Serial.begin(9600);
   Serial.println("Basic Encoder Test:");
 
   // Set up inputs
   pinMode(micButton, INPUT);
+  pinMode(deviceButton, INPUT_PULLUP);
 }
 
 
@@ -121,6 +126,12 @@ void loop() {
 //  if (micButtonState == HIGH) {
 //    Keyboard.write('z');
 //  } 
+
+  // Device Button
+  deviceButtonState = digitalRead(micButton);
+  if (deviceButtonState == LOW) {
+    Keyboard.write('x');
+  } 
 
   delay(5);
   
