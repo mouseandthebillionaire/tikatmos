@@ -1443,6 +1443,13 @@ MonoBehaviour:
   customerNotification: {fileID: 689307632}
   customerImage: {fileID: 1252051602}
   dialogue: {fileID: 1395737880}
+  customerSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!224 &288150897888066972
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1708,18 +1715,26 @@ PrefabInstance:
       propertyPath: rightSlider
       value: 108
       objectReference: {fileID: 0}
+    - target: {fileID: 3549319277792187268, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: deviceButton
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 8111755964417516945, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
       propertyPath: m_TargetDisplay
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8111755964503549252, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
       propertyPath: devMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8111755964503549252, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
       propertyPath: customer
       value: 
       objectReference: {fileID: 288150897888066969}
+    - target: {fileID: 8111755964503549252, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8111755964503549252, guid: a619c3197a3754f3084b5765a3752eb4, type: 3}
       propertyPath: customerUI
       value: 

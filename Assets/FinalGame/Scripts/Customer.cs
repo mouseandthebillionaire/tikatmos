@@ -14,6 +14,7 @@ public class Customer : MonoBehaviour
     // Customer stufffffff
     private int currCustomer;
     private string[] customerScript = new string[6];
+    public Sprite[] customerSprites = new Sprite[6];
     private string[] customerRequests = new string[6];
     private string[] responseNeeded = new string[6];
     private string[] info = new string[6];
@@ -33,6 +34,15 @@ public class Customer : MonoBehaviour
         Reset();
     }
 
+    public void Update() {
+        if (Input.GetKeyDown(KeyCode.C)) CorrectInformation();
+    }
+
+    public void CompleteReset() {
+        Reset();
+        currCustomer = 0;
+    }
+
     public void Reset() {
         GlobalVariables.S.customerActive = false;
         customerNotification.SetActive(false);
@@ -41,12 +51,8 @@ public class Customer : MonoBehaviour
     }
 
     // Load the customer to be served and display the tuning dialogue
-    public void InitializeCustomer()
-    {
-        //currCustomer = Random.Range(0, customerScript.Length);
-        currCustomer = 3;
-        Sprite s = Resources.Load ("CharacterSprites/" + currCustomer + "/0", typeof(Sprite)) as Sprite;
-        customerImage.GetComponent<Image>().sprite = s;
+    public void InitializeCustomer() {
+        customerImage.GetComponent<Image>().sprite = customerSprites[currCustomer];
         dialogue.GetComponentInChildren<Text>().text = customerRequests[currCustomer];
         
         // Reset the Vocal Tuner
@@ -82,8 +88,14 @@ public class Customer : MonoBehaviour
         dialogue.SetActive(true);
     }
 
+    private void CorrectInformation() {
+        dialogue.GetComponentInChildren<Text>().text = customerSuccessResponses[currCustomer];
+        StartCoroutine(CustomerServed());
+    }
+
     private IEnumerator CustomerServed() {
         yield return new WaitForSeconds(2);
+        currCustomer = (currCustomer + 1) % customerScript.Length;
         Reset();
     }
     
@@ -107,8 +119,7 @@ public class Customer : MonoBehaviour
                 if (value == info[currCustomer])
                 {
                     // Success
-                    dialogue.GetComponentInChildren<Text>().text = customerSuccessResponses[currCustomer];
-                    StartCoroutine(CustomerServed());
+                    CorrectInformation();
                 }
                 else
                 {
@@ -122,11 +133,11 @@ public class Customer : MonoBehaviour
     {
         TextAsset customer_file = Resources.Load("Characters") as TextAsset;
         customerScript = customer_file.text.Split('\n');
-        Debug.Log(customerScript[3]);
 
         for (int i = 0; i < customerScript.Length; i++)
         {
             string[] temp = customerScript[i].Split('\t');
+            customerSprites[i] = Resources.Load ("CharacterSprites/" + temp[0] + "/0", typeof(Sprite)) as Sprite;
             customerRequests[i] = temp[2];
             responseNeeded[i] = temp[3];
             info[i] = temp[4];

@@ -66,7 +66,9 @@ public class PlantCareManager : MonoBehaviour
     void Update()
     {
         // update the arrows direction based on player input
-        arrowMovement = Input.GetAxisRaw("Horizontal")*-1;
+        if (Input.GetKeyDown(GlobalVariables.S.knob0_left)) arrowMovement =  -1;
+        else if (Input.GetKeyDown(GlobalVariables.S.knob0_right)) arrowMovement = 1;
+        else arrowMovement = 0;
         arrow.transform.Rotate(0, 0, arrowMovement*arrowSpeed*Time.deltaTime);
         float arrowRotation = arrow.transform.rotation.eulerAngles.z;
         if (arrowRotation > 180)
@@ -86,7 +88,7 @@ public class PlantCareManager : MonoBehaviour
         }
         
         // add water when the player presses a button
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(GlobalVariables.S.deviceButton))
         {
             Debug.Log("Add water");
             currentLevel += waterRefillAmount;

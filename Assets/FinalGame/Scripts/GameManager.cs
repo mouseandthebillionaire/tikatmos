@@ -34,8 +34,16 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GameLoop());
     }
 
+    public void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) Reset();
+    }
+
+    private void Reset() {
+        Customer.S.CompleteReset();
+    }
+
     private IEnumerator GameLoop() {
-        
+       
         // not currently helping anyone
         if (!GlobalVariables.S.customerActive)
         {
