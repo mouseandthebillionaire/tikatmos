@@ -10,6 +10,8 @@ public class TrafficCamera : MonoBehaviour
     public float[] cameraBounds = new float[2];
     public float[] escalatorWidth = new float[2];
 
+    public GameObject floor_view;
+    
     public GameObject graph;
 
     public Image UIBackground;
@@ -53,16 +55,16 @@ public class TrafficCamera : MonoBehaviour
     {
         float yPos = transform.position.y;
 
-        if (SerialScript.S.crankUp) {
+        if (Input.GetKeyDown(GlobalVariables.S.upCrank)) {
             if (yPos + cameraSpeed < cameraBounds[1]) yPos += cameraSpeed;
             else yPos = cameraBounds[1];
         } 
-        if (SerialScript.S.crankDown) {
+        if (Input.GetKeyDown(GlobalVariables.S.downCrank)) {
             if (yPos - cameraSpeed > cameraBounds[0]) yPos -= cameraSpeed;
             else yPos = cameraBounds[0];
         }
 
-        // Change the position of the camera
+        // Change the position of the floor_view
         Vector3 targetPosition = new Vector3(transform.position.x, yPos, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed);
 
