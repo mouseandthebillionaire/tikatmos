@@ -70,11 +70,13 @@ public class FloorManager : MonoBehaviour
             Vector3 loc = new Vector3(floor.transform.position.x, yLoc, 0);
 
             floors.Add(Instantiate(floor, loc, Quaternion.identity));
+            floors[i].transform.parent = this.transform;
 
             // Spawn the numbers for each floor
             float floorNumberY = floorNumber.transform.position.y + (distBetweenFloors * i);
             Vector3 floorNumberPosition = new Vector3(floorNumber.transform.position.x, floorNumberY, 0);
             floorNumbers.Add(Instantiate(floorNumber, floorNumberPosition, Quaternion.identity));
+            floorNumbers[i].transform.parent = this.transform;
 
             floorNumbers[i].transform.SetParent(canvas.transform);
             floorNumbers[i].GetComponentInChildren<Text>().text = "Level " + (i+1);
@@ -96,6 +98,7 @@ public class FloorManager : MonoBehaviour
 
                 Vector3 spawnLoc = new Vector3(floors[i].transform.position.x, floors[i].transform.position.y, 0);
                 people.Add(Instantiate(person, spawnLoc, Quaternion.identity));
+                people[j].transform.parent = this.gameObject.transform;
             }
         }
 
@@ -113,9 +116,11 @@ public class FloorManager : MonoBehaviour
                 Vector3 loc = new Vector3(xLoc, yLoc, 0);
 
                 escalators.Add(Instantiate(escalator, loc, Quaternion.identity)); 
+                escalators[i].transform.parent = this.transform;
 
                 // Spawn the arrows 
                 arrows.Add(Instantiate(arrow, loc, Quaternion.identity)); 
+                arrows[i].transform.parent = this.transform;
             }
 
             // Keep track of how many escalators are on each floor
@@ -225,12 +230,12 @@ public class FloorManager : MonoBehaviour
 
 
         // Check to see if the selected escalator was changed
-        if (SerialScript.S.knobLeft) {
+        if (Input.GetKeyDown(GlobalVariables.S.knob0_left)) {
             if (currentEscalator > lowerLimit) {
                 currentEscalator--;
             }
         }
-        if (SerialScript.S.knobRight) {
+        if (Input.GetKeyDown(GlobalVariables.S.knob0_right)) {
             if (currentEscalator < upperLimit - 1) {
                 currentEscalator++;
             }
@@ -248,7 +253,7 @@ public class FloorManager : MonoBehaviour
 
 
         // Change the direction of the selected escalator
-        if (SerialScript.S.deviceButton) {
+        if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) {
             if (escalators[currentEscalator].transform.rotation.z == 0) {
                 escalators[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 180);
                 arrows[currentEscalator].transform.rotation = Quaternion.Euler(0, 0, 180);
@@ -262,10 +267,10 @@ public class FloorManager : MonoBehaviour
         }
 
         // Change the speed of the selected escalator
-        if (SerialScript.S.knobUp) {
+        if (Input.GetKeyDown(GlobalVariables.S.knob1_right)) {
             if (escalatorSpeed[currentEscalator] < 1) escalatorSpeed[currentEscalator] += escalatorSpeedIncrease;
         }
-        if (SerialScript.S.knobDown) {
+        if (Input.GetKeyDown(GlobalVariables.S.knob1_left)) {
             if (escalatorSpeed[currentEscalator] > 0) escalatorSpeed[currentEscalator] -= escalatorSpeedIncrease;
         }
     }
