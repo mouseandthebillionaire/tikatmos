@@ -116,8 +116,14 @@ public class TunerManager : MonoBehaviour
             // We are tuned
             activeBox.transform.position = new Vector3(0, 0, 0);
             // Press the button to make it official?
-            if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) GlobalVariables.S.tuned = true;
-            // Do we want to do any kind of visual change to show that we are tuned? 
+            if (Input.GetKeyDown(GlobalVariables.S.deviceButton))
+            {
+                // Do we want to do any kind of visual change to show that we are tuned? 
+                // Yes todo - change art to reflect tuning change 
+                Debug.Log("tuned");
+                GlobalVariables.S.tuned = true;
+            }
+            
 
         }
         else {
