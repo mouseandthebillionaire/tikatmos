@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AIController : MonoBehaviour
+public class WaldoTaskManager : MonoBehaviour
 {
     public GameObject person;
     public Text goalMessage;
@@ -20,7 +20,7 @@ public class AIController : MonoBehaviour
 
     public Color[] goals;
     public string[] goalMessages;
-
+    
     public static int goalsCompleted = -1;
 
     public static float goalX, goalY;
@@ -44,6 +44,8 @@ public class AIController : MonoBehaviour
             int randomColor = Random.Range(0, goals.Length);
             person.gameObject.GetComponentInChildren<SpriteRenderer>().color = goals[randomColor];
 
+            
+            
             people[i] = Instantiate(person);
             people[i].transform.parent = this.transform;
         }
@@ -141,15 +143,26 @@ public class AIController : MonoBehaviour
         goalMessage.color = goals[randomGoal];
         goalMessageBorder.color = goals[randomGoal];
 
+        // Create a random citizen ID
+        int i_0 = Random.Range(10, 99);
+        int i_1 = Random.Range(10, 99);
+        string st = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        char c_0 = st[Random.Range(0, st.Length)];
+        char c_1 = st[Random.Range(0, st.Length)];
+
+        string cID = i_0.ToString() + c_0 + c_1 + i_1.ToString();
+        
         int choice = Random.Range(0,3);
         if (previousMessage[randomGoal] == choice) {
             if (choice > 0) choice--;
             else choice++;
         }
 
-        if (choice == 0) goalMessage.text = goalMessages[randomGoal];
-        else if (choice == 1) goalMessage.text = goalMessages[randomGoal + goals.Length];
-        else goalMessage.text = goalMessages[randomGoal + (goals.Length*2)];
+        goalMessage.text = "Check in with Citizen #" + cID;
+
+        // if (choice == 0) goalMessage.text = goalMessages[randomGoal];
+        // else if (choice == 1) goalMessage.text = goalMessages[randomGoal + goals.Length];
+        // else goalMessage.text = goalMessages[randomGoal + (goals.Length*2)];
 
         previousMessage[randomGoal] = choice;
 

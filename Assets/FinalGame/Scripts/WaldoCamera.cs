@@ -157,8 +157,8 @@ public class WaldoCamera : MonoBehaviour
         }
 
         // Change the temperature level
-        float xDistance = this.transform.position.x - AIController.goalX;
-        float yDistance = this.transform.position.y - AIController.goalY;
+        float xDistance = this.transform.position.x - WaldoTaskManager.goalX;
+        float yDistance = this.transform.position.y - WaldoTaskManager.goalY;
         float distance = Mathf.Sqrt((xDistance*xDistance) + (yDistance*yDistance));
         float maxDistance = Mathf.Sqrt(((xBounds*2)*(xBounds*2)) + ((yBounds*2)*(yBounds*2)));
         temperature.GetComponent<Image>().fillAmount = map(distance, 0, maxDistance, 1, 0);
@@ -186,7 +186,7 @@ public class WaldoCamera : MonoBehaviour
         // The battery has run out of power
         if (currentTime < 0) {
             //cameraOff.gameObject.SetActive(true);
-            AIController.goalsCompleted = 0;
+            WaldoTaskManager.goalsCompleted = 0;
         }
     }
 
@@ -204,7 +204,7 @@ public class WaldoCamera : MonoBehaviour
                     // Goal was completed
                     print("Found Waldo");
 
-                    AIController.goalCompleted = true;
+                    WaldoTaskManager.goalCompleted = true;
 
                     // Reset the timer
                     startTime = Time.time;
