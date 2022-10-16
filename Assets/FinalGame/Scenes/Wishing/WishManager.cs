@@ -38,7 +38,6 @@ public class WishManager : MonoBehaviour
         if (!running || !c) StartCoroutine(CoinDrop());
 
         upperRandRange = 5 + (5 * Mathf.Sin(Time.time * .1f));
-        Debug.Log(upperRandRange);
     }
 
     public IEnumerator CoinDrop()
