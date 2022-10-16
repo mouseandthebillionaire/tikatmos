@@ -1,4 +1,4 @@
-#TIKATMOS
+# TIKATMOS
 It is the distant future. Humanity has wiped itself out, but every single entity on Earth has become sentient. 
 You run the info booth at the only Mall on Spaceship V, 
 the ark that has left earth carrying one of every single being as they search out another place to call home.
