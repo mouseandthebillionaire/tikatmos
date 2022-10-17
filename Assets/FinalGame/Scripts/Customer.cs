@@ -48,6 +48,7 @@ public class Customer : MonoBehaviour
         customerNotification.SetActive(false);
         customerImage.SetActive(false);
         dialogue.SetActive(false);
+        TunerManager.S.ResetTuning();
     }
 
     // Load the customer to be served and display the tuning dialogue
