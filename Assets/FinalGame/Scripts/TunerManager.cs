@@ -127,7 +127,7 @@ public class TunerManager : MonoBehaviour
 
         }
         else {
-            if (Input.anyKey) activeBox.transform.position = new Vector3(-5, 0, 0);
+            if (Input.anyKey) activeBox.transform.localPosition = new Vector3(-5, 0, 0);
             else activeBox.transform.position = new Vector3(-10, 0, 0);
         } 
 
