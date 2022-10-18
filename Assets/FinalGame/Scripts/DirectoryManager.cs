@@ -17,6 +17,8 @@ public class DirectoryManager : MonoBehaviour
     private float textPosition;
     public float textSpeed;
 
+    public float upperLimit, lowerLimit;
+
     void Start()
     {
         directoryStore_display.text = "";
@@ -46,14 +48,15 @@ public class DirectoryManager : MonoBehaviour
     void Update()
     {
         
-        if(Input.GetKeyDown(GlobalVariables.S.upCrank) && textPosition < 61.25) {
+        if(Input.GetKeyDown(GlobalVariables.S.upCrank) && (textPosition + textSpeed) < lowerLimit) {
             textPosition += textSpeed;
         }
         
-        if(Input.GetKeyDown(GlobalVariables.S.downCrank) && textPosition >= 0) {
+        if(Input.GetKeyDown(GlobalVariables.S.downCrank) && (textPosition  - textSpeed) >= upperLimit) {
             textPosition -= textSpeed;
         }
         
-        textParent.transform.position = new Vector3(0, textPosition, 0);
+        textParent.transform.localPosition = new Vector3(0, textPosition, 0);
+        Debug.Log(textPosition);
     }
 }
