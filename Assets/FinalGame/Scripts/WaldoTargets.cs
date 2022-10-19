@@ -154,4 +154,17 @@ public class WaldoTargets : MonoBehaviour
         if (colliders.Length >= 1) return true;
         else return false;
     }
+
+    public IEnumerator FoundReaction()
+    {
+        GameObject heart = transform.GetChild(0).GetChild(1).gameObject;
+        heart.SetActive(true);
+        for (int i = 0; i < 50; i++)
+        {
+            heart.transform.localPosition = new Vector3(transform.position.x, i / 10f, 0);
+        }
+
+        yield return new WaitForSeconds(1);
+        heart.SetActive(false);
+    }
 }

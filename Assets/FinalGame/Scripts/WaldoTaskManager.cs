@@ -158,7 +158,7 @@ public class WaldoTaskManager : MonoBehaviour
             else choice++;
         }
 
-        goalMessage.text = "Check in with Citizen #" + cID;
+        goalMessage.text = "∂" + cID;
 
         // if (choice == 0) goalMessage.text = goalMessages[randomGoal];
         // else if (choice == 1) goalMessage.text = goalMessages[randomGoal + goals.Length];

@@ -223,10 +223,9 @@ public class WaldoManager : MonoBehaviour
         colliders = Physics2D.OverlapCircleAll(position, magnifyingGlass.GetComponent<CircleCollider2D>().bounds.extents.x);
         for (int i = 0; i < colliders.Length; i++) {
             if (colliders[i].gameObject.layer == 6 && colliders[i].gameObject.tag == "Goal") {
-                Debug.Log("We're over waldo");
                 if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) {
                     // Goal was completed
-                    print("Found Waldo");
+                    colliders[i].gameObject.GetComponentInParent<WaldoTargets>().StartCoroutine("FoundReaction");
 
                     // Play a sound effect
                     AudioSource audio = GetComponentInChildren<AudioSource>();
