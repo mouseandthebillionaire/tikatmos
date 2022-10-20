@@ -7,6 +7,8 @@ public class CalendarManager : MonoBehaviour
 {
     public GameObject calendar;
     public GameObject calEvent;
+
+    public float scrollSpeed = 0.5f;
     
     // Dynamically loaded events
     private TextAsset    calendar_asset;
@@ -55,14 +57,16 @@ public class CalendarManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(GlobalVariables.S.upCrank)) yPos += .1f;
-        if (Input.GetKeyDown(GlobalVariables.S.downCrank)) yPos -= .1f;
+        if (Input.GetKeyDown(GlobalVariables.S.upCrank)) yPos += scrollSpeed;
+        if (Input.GetKeyDown(GlobalVariables.S.downCrank)) yPos -= scrollSpeed;
         
         calendar.transform.position = new Vector3(calendar.transform.position.x, yPos, 0);
+        
     }
 
     public void AddEvent(int itemNumber)
     {
+        // Create an event object
         GameObject e = GameObject.Instantiate(calEvent) as GameObject;
         e.transform.position = new Vector3(-4, -4 * itemNumber, 0);
         e.transform.parent = t;
@@ -70,11 +74,26 @@ public class CalendarManager : MonoBehaviour
         day.text = days[itemNumber];
         Text month = e.transform.GetChild(0).GetChild(1).GetComponent<Text>();
         month.text = months[itemNumber];
-        Text title = e.transform.GetChild(1).GetChild(0).GetComponent<Text>();
-        title.text = titles[itemNumber];
-        Text description = e.transform.GetChild(1).GetChild(1).GetComponent<Text>();
-        description.text = descriptions[itemNumber];
-        Text time = e.transform.GetChild(1).GetChild(2).GetComponent<Text>();
+        // Get the TIKATMOS versions of the info
+        Text title_T = e.transform.GetChild(1).GetChild(0).GetComponent<Text>();
+        title_T.text = titles[itemNumber];
+        Text description_T = e.transform.GetChild(1).GetChild(2).GetComponent<Text>();
+        description_T.text = descriptions[itemNumber];
+        // Get the English versions of the info and hide them
+        Text title_E = e.transform.GetChild(1).GetChild(1).GetComponent<Text>();
+        title_E.text = titles[itemNumber];
+        title_E.gameObject.SetActive(false);
+        Text description_E = e.transform.GetChild(1).GetChild(3).GetComponent<Text>();
+        description_E.text = descriptions[itemNumber];
+        description_E.gameObject.SetActive(false);
+        // Set the time
+        Text time = e.transform.GetChild(1).GetChild(4).GetComponent<Text>();
         time.text = times[itemNumber];
+    }
+    
+    private void DisplayText()
+    {
+        
+
     }
 }
