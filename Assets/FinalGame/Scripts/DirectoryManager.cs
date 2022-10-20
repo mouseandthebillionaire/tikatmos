@@ -34,12 +34,12 @@ public class DirectoryManager : MonoBehaviour
 
     IEnumerator GetTextFromFile()
     {
-        directory_asset = Resources.Load("DirectoryCSV") as TextAsset;
+        directory_asset = Resources.Load("directoryAsset") as TextAsset;
         directoryList = directory_asset.text.Split('\n');
 
         for (int i = 0; i < directoryList.Length; i++)
         {
-            string[] temp = directoryList[i].Split(',');
+            string[] temp = directoryList[i].Split('\t');
             //Debug.Log(temp[0]+" and "+temp[1]);
             storeList.Add(temp[0]);
             codeList.Add(temp[1]);

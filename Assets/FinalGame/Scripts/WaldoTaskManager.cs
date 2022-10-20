@@ -137,7 +137,10 @@ public class WaldoTaskManager : MonoBehaviour
 
         // Display the pointer
         Transform person = somePeople[goalPerson].gameObject.transform.GetChild(0);
-        person.gameObject.transform.GetChild(0).gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        //person.gameObject.transform.GetChild(0).gameObject.GetComponentInChildren<SpriteRenderer>().enabled = true;
+        // OR make them glow?
+        Component halo = person.gameObject.GetComponent("Halo");
+        halo.GetType().GetProperty("enabled").SetValue(halo, true, null); 
 
         // Change the goal text
         goalMessage.color = goals[randomGoal];

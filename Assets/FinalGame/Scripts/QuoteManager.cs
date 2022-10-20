@@ -16,6 +16,7 @@ public class QuoteManager : MonoBehaviour {
     {
         quote.text = "Anyone who stops learning is old, whether at twenty or eighty. Anyone who keeps learning stays young. The greatest thing in life is to keep your mind young.";
         StartCoroutine(GetTextFromFile());
+        ChangeQuote();
     }
     
     IEnumerator GetTextFromFile()

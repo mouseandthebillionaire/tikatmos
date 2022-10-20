@@ -157,12 +157,16 @@ public class WaldoTargets : MonoBehaviour
 
     public IEnumerator FoundReaction()
     {
-        GameObject heart = transform.GetChild(0).GetChild(1).gameObject;
+        // Get the person
+        GameObject person = transform.GetChild(0).gameObject;
+        
+        // Turn off the Target Indicator (GLOW)
+        Component halo = person.GetComponent("Halo");
+        halo.GetType().GetProperty("enabled").SetValue(halo, false, null); 
+        
+        // Create the Heart
+        GameObject heart = person.transform.GetChild(1).gameObject;
         heart.SetActive(true);
-        for (int i = 0; i < 50; i++)
-        {
-            heart.transform.localPosition = new Vector3(transform.position.x, i / 10f, 0);
-        }
 
         yield return new WaitForSeconds(1);
         heart.SetActive(false);
