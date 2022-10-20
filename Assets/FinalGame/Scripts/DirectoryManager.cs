@@ -57,7 +57,7 @@ public class DirectoryManager : MonoBehaviour
     void Update()
     {
         // toggle the text
-        if (Input.GetKey(GlobalVariables.S.deviceButton)) translated = true;
+        if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) translated = true;
         else translated = false;
 
         DisplayText();
