@@ -17972,6 +17972,9 @@ MonoBehaviour:
   blendVal: 0
   filterVal: 0
   timeVal: 0
+  leftKnobSpeed: 0.1
+  rightKnobSpeed: 0.05
+  crankSpeed: 0.1
   leftKnob: {fileID: 447172437}
   rightKnob: {fileID: 510970656}
   middleButton: {fileID: 1211036512}
@@ -18335,7 +18338,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1728099748
 Transform:
   m_ObjectHideFlags: 0
