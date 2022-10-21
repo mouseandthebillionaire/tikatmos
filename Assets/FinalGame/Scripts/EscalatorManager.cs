@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class EscalatorManager : MonoBehaviour
 {
     private float yPos;
-    public  float scrollSpeed = .01f;
+    public  float scrollSpeed = .05f;
+    
+    public  float floorShift  = 2.5f;
 
     public  List<GameObject> escalators;
     private int              escalatorSelected;
@@ -51,16 +53,23 @@ public class EscalatorManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        if (Input.GetKeyDown(GlobalVariables.S.upCrank) && yPos < 0) yPos += scrollSpeed;
-        if (Input.GetKeyDown(GlobalVariables.S.downCrank) && yPos > -14.4) yPos -= scrollSpeed;
+        //if (Input.GetKeyDown(GlobalVariables.S.upCrank) && yPos < 0) yPos += scrollSpeed;
+        //if (Input.GetKeyDown(GlobalVariables.S.downCrank) && yPos > -14.4) yPos -= scrollSpeed;
+        
+        if (Input.GetKeyDown(GlobalVariables.S.downCrank) && escalatorSelected < escalators.Count - 1)
+        {
+            SwitchEscalator(escalatorSelected += 1);
+            if (escalatorSelected % 3 == 0) StartCoroutine(FloorShift("down"));
+        }
 
-        Debug.Log(yPos);
-        this.transform.position = new Vector3(0, yPos, 0);
+        if (Input.GetKeyDown(GlobalVariables.S.upCrank) && escalatorSelected > 0)
+        {
+            SwitchEscalator(escalatorSelected -= 1);
+            if (escalatorSelected % 3 == 2) StartCoroutine(FloorShift("up"));
+        }
 
-        if (Input.GetKeyDown(GlobalVariables.S.downCrank) && escalatorSelected < escalators.Count -1) SwitchEscalator(escalatorSelected += 1);
-        if (Input.GetKeyDown(GlobalVariables.S.upCrank) && escalatorSelected > 0) SwitchEscalator(escalatorSelected -= 1);
     }
 
     private void SwitchEscalator(int escalatorNum)
@@ -69,5 +78,30 @@ public class EscalatorManager : MonoBehaviour
         escalatorSelected = escalatorNum;
         escalators[escalatorSelected].GetComponent<Escalator>().MakeActive();
         previousSelected = escalatorSelected;
+    }
+
+    private IEnumerator FloorShift(string _dir)
+    {
+        int dir;
+        if (_dir == "up") dir = 1;
+        else dir = -1;
+
+        float elapsedTime = 0;
+        float shiftTime = 100f;
+        
+        Vector3 currPos = this.transform.position; 
+        float newY = this.transform.position.y + (floorShift * dir);
+        Debug.Log(newY);
+        Vector3 newPos = new Vector3(this.transform.position.x, newY, 0);
+        while (elapsedTime < shiftTime)
+        {
+            transform.position = Vector3.Lerp(currPos, newPos, (elapsedTime / shiftTime));
+            elapsedTime += Time.time;
+            yield return null;
+        }
+
+        transform.position = newPos;
+        yield return null;
+
     }
 }

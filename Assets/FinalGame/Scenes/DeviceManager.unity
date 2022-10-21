@@ -5061,6 +5061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollSpeed: 0.8
+  floorShift: 2.5
   escalators: []
   floor: {fileID: 6430897813734623148, guid: c1a81d09c6a644ac998ac4709081decb, type: 3}
   floorColors:
@@ -5277,7 +5278,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &513957000
 Transform:
   m_ObjectHideFlags: 0
@@ -12384,7 +12385,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1148377727
 Transform:
   m_ObjectHideFlags: 0
