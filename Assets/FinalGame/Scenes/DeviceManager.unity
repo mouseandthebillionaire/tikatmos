@@ -23049,6 +23049,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coin: {fileID: 745032985423580590, guid: 7d8dff6aecba148bba58dd2bbd837710, type: 3}
+  coinSprite:
+  - {fileID: 21300000, guid: d974d8f6671221645a4036850996bfe7, type: 3}
+  - {fileID: 21300000, guid: a2b443ed9f032481482127707d6736ff, type: 3}
   yes: {fileID: 1242481259}
   no: {fileID: 1005520963}
   sparkles: {fileID: 1600724028}

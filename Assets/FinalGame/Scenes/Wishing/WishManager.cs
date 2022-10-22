@@ -8,6 +8,7 @@ using UnityEngine;
 public class WishManager : MonoBehaviour
 {
     public  GameObject  coin;
+    public  Sprite[]    coinSprite;
     private bool        running;
     private float       upperRandRange;
     public  AudioSource yes, no;
@@ -47,7 +48,10 @@ public class WishManager : MonoBehaviour
     {
         running = true;
         float randX = Random.Range(-5, 5);
-        Instantiate(coin, new Vector3(randX, 6, 0), Quaternion.identity, this.transform);
+        GameObject c = Instantiate(coin, new Vector3(randX, 6, 0), Quaternion.identity, this.transform);
+        int coinChoice = (int)Random.Range(0, 2);
+        Debug.Log(coinChoice);
+        c.GetComponent<SpriteRenderer>().sprite = coinSprite[coinChoice];
         float randTime = Random.Range(0, upperRandRange);
         Debug.Log("We will launch a new coin in " + randTime + " seconds");
         yield return new WaitForSeconds(randTime);
