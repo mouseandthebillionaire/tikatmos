@@ -12,6 +12,8 @@ public class WishManager : MonoBehaviour
     private float       upperRandRange;
     public  AudioSource yes, no;
 
+    public ParticleSystem sparkles;
+    
     public static WishManager S;
 
 
@@ -25,6 +27,7 @@ public class WishManager : MonoBehaviour
     public void WishGranted()
     {
         yes.Play();
+        sparkles.Play();
     }
 
     public void WishDenied()
