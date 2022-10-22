@@ -49,7 +49,7 @@ public class WishManager : MonoBehaviour
         running = true;
         float randX = Random.Range(-5, 5);
         GameObject c = Instantiate(coin, new Vector3(randX, 6, 0), Quaternion.identity, this.transform);
-        int coinChoice = (int)Random.Range(0, 2);
+        int coinChoice = (int)Random.Range(0, coinSprite.Length);
         Debug.Log(coinChoice);
         c.GetComponent<SpriteRenderer>().sprite = coinSprite[coinChoice];
         float randTime = Random.Range(0, upperRandRange);
