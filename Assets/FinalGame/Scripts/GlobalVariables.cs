@@ -13,8 +13,8 @@ public class GlobalVariables : MonoBehaviour
     public KeyCode knob1_left = KeyCode.N;
     public KeyCode knob1_right = KeyCode.M;
     public KeyCode deviceButton = KeyCode.Space;
-    
-    // Get rid of these later
+    //
+    // // Get rid of these later
     public KeyCode leftSlider = KeyCode.K;
     public KeyCode rightSlider = KeyCode.L;
     public KeyCode knobLeft = KeyCode.N;

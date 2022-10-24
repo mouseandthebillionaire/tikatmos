@@ -9,7 +9,8 @@ public class MusicManager : MonoBehaviour
     public LibPdInstance trackPatch;
     public LibPdInstance ambientPatch;
 
-    public float blendVal, filterVal, timeVal;
+    public float blendVal,      filterVal,      timeVal;
+    public float leftKnobSpeed, rightKnobSpeed, crankSpeed;
 
     public GameObject leftKnob, rightKnob, middleButton, needle;
 
@@ -33,13 +34,13 @@ public class MusicManager : MonoBehaviour
         // Filter
         if (Input.GetKey(GlobalVariables.S.knob0_left) && (filterVal > 1))
         {
-            filterVal -= 1f;
+            filterVal -= leftKnobSpeed;
             ValueChangeCheckFilter(filterVal);
         }
 
         if (Input.GetKey(GlobalVariables.S.knob0_right) && (filterVal < 100))
         {
-            filterVal += 1f;
+            filterVal += leftKnobSpeed;
             ValueChangeCheckFilter(filterVal);
         }
 
@@ -48,13 +49,13 @@ public class MusicManager : MonoBehaviour
         // Time
         if (Input.GetKey(GlobalVariables.S.upCrank) && (timeVal > -200))
         {
-            timeVal -= 1f;
+            timeVal -= crankSpeed;
             ValueChangeCheckTime(timeVal);
         }
 
         if (Input.GetKey(GlobalVariables.S.downCrank) && (timeVal < 200))
         {
-            timeVal += 1f;
+            timeVal += crankSpeed;
             ValueChangeCheckTime(timeVal);
         }
 
@@ -63,13 +64,13 @@ public class MusicManager : MonoBehaviour
         // Blend
         if (Input.GetKey(GlobalVariables.S.knob1_left) && (blendVal > 0))
         {
-            blendVal -= .001f;
+            blendVal -= rightKnobSpeed;
             ValueChangeCheckVolume(blendVal);
         }
 
         if (Input.GetKey(GlobalVariables.S.knob1_right) && (blendVal < 1))
         {
-            blendVal += .001f;
+            blendVal += rightKnobSpeed;
             ValueChangeCheckVolume(blendVal);
         }
         rightKnob.transform.rotation = Quaternion.Euler(0, 0, blendVal * 360f);

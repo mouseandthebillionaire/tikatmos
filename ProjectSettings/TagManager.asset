@@ -6,6 +6,8 @@ TagManager:
   tags:
   - SecondaryCamera
   - Goal
+  - UpEscalator
+  - DownEscalator
   layers:
   - Default
   - TransparentFX

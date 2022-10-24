@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Facebook.WitAi;
 using Facebook.WitAi.Lib;
@@ -12,14 +13,17 @@ public class Customer : MonoBehaviour
     public GameObject customerNotification, customerImage, dialogue;
     
     // Customer stufffffff
-    private int currCustomer;
-    private string[] customerScript = new string[6];
-    public Sprite[] customerSprites = new Sprite[6];
-    private string[] customerRequests = new string[6];
-    private string[] responseNeeded = new string[6];
-    private string[] info = new string[6];
-    private string[] customerSuccessResponses = new string[6];
-    private string[] customerSorries = new string[6];
+    private int          currCustomer;
+    private string[]     customerScript           = new string[6];
+    public  Sprite[]     customerSprites          = new Sprite[6];
+    private string[]     customerRequests         = new string[6];
+    private string[]     responseNeeded           = new string[6];
+    private string[]     info                     = new string[6];
+    private string[]     customerSuccessResponses = new string[6];
+    private List<string> customerSorries          = new List<string>();
+    private int          currentSorry; // to keep track and loop current sorries,
+                                       // alternatively w could have the conversation end if you run through all of the sorries
+                                       // ex: "Um, okay, I guess I'll come back later?"
 
     public static Customer S;
 
@@ -48,16 +52,14 @@ public class Customer : MonoBehaviour
         customerNotification.SetActive(false);
         customerImage.SetActive(false);
         dialogue.SetActive(false);
+        TunerManager.S.ResetTuning();
     }
 
     // Load the customer to be served and display the tuning dialogue
     public void InitializeCustomer() {
         customerImage.GetComponent<Image>().sprite = customerSprites[currCustomer];
         dialogue.GetComponentInChildren<Text>().text = customerRequests[currCustomer];
-        
-        // Reset the Vocal Tuner
-        //Tuner.S.Reset();
-        
+
         // Take it Away!
         StartCoroutine(StartCustomer());
     }
@@ -123,7 +125,8 @@ public class Customer : MonoBehaviour
                 }
                 else
                 {
-                    dialogue.GetComponentInChildren<Text>().text = customerSorries[currCustomer];
+                    dialogue.GetComponentInChildren<Text>().text = customerSorries[currentSorry];
+                    currentSorry++;
                 }
             }
         }
@@ -131,6 +134,10 @@ public class Customer : MonoBehaviour
     
     private void GetCustomerFile()
     {
+        // Delete sorries and reset the counter
+        customerSorries.Clear();
+        currentSorry = 0;
+        
         TextAsset customer_file = Resources.Load("Characters") as TextAsset;
         customerScript = customer_file.text.Split('\n');
 
@@ -142,7 +149,12 @@ public class Customer : MonoBehaviour
             responseNeeded[i] = temp[3];
             info[i] = temp[4];
             customerSuccessResponses[i] = temp[5];
-            customerSorries[i] = temp[6];
+            // Get Array of Sorries
+            string[] tempSorries = temp[6].Split('/');
+            for (int j = 0; j < tempSorries.Length; j++)
+            {
+                customerSorries.Add(tempSorries[j % tempSorries.Length]);
+            }
         }
     }
 

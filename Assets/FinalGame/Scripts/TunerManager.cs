@@ -18,6 +18,9 @@ public class TunerManager : MonoBehaviour
     public Image[] indicatorDials;
     public float rAmt, gAmt; 
     
+    // Text Boxes
+    public GameObject[] UI_text;
+    
     // Text Sprites
     public SpriteRenderer activeBox;
 
@@ -32,19 +35,20 @@ public class TunerManager : MonoBehaviour
     // Input Variables
     private float knobVal, sliderVal, crankVal, button;
     
+    // Singleton
+    public static TunerManager S;
+
+    void Awake()
+    {
+        S = this;
+    }
+    
     // Start is called before the first frame update
     void Start() {
         hpf = voice.GetComponent<AudioHighPassFilter>();
         arf = voice.GetComponent<AudioReverbFilter>();
-        hpf.cutoffFrequency = 2200;
-        noiseAmt = 1;
-        noise.volume = 1;
-        for (int i = 0; i < noiseLocs.Length; i++) {
-            noiseLocs[i] = UnityEngine.Random.Range(0, 1f);
-        }
-        
-        // assign random number to the crank
-        crankVal = UnityEngine.Random.Range(0, 1f);
+
+        ResetTuning();
     }
 
     // Get Inputs from Device
@@ -81,7 +85,11 @@ public class TunerManager : MonoBehaviour
 
     void Update()
     {
-        GetInputs();
+        // For Testing
+        if(Input.GetKeyDown(KeyCode.V)) ResetTuning();
+        
+        // Only get th inputs if we aren't already tuned
+        if(GlobalVariables.S.tuned == false) GetInputs();
         
         // Update SineWaves
         amplitude = ((sliderVal * .2f) + (crankVal * .3f) + (knobVal * .5f)) * 3f;
@@ -112,18 +120,42 @@ public class TunerManager : MonoBehaviour
         DrawSine();
 
         // Text Boxes
-        if (noiseAmt < 0.2f) {
+        if (noiseAmt < 0.2f && GlobalVariables.S.tuned == false) {
             // We are tuned
             activeBox.transform.position = new Vector3(0, 0, 0);
             // Press the button to make it official?
-            if (Input.GetKeyDown(GlobalVariables.S.deviceButton)) GlobalVariables.S.tuned = true;
-            // Do we want to do any kind of visual change to show that we are tuned? 
+            if (Input.GetKeyDown(GlobalVariables.S.deviceButton))
+            {
+                // Change art to reflect tuning change 
+                UI_text[2].SetActive(true);
+                activeBox.transform.localPosition = new Vector3(-10, 0, 0);
+                GlobalVariables.S.tuned = true;
+            }
+            
 
         }
         else {
-            if (Input.anyKey) activeBox.transform.position = new Vector3(-5, 0, 0);
+            if (Input.anyKey && GlobalVariables.S.tuned == false) activeBox.transform.localPosition = new Vector3(-5, 0, 0);
             else activeBox.transform.position = new Vector3(-10, 0, 0);
         } 
 
+    }
+
+    public void ResetTuning()
+    {
+        hpf.cutoffFrequency = 2200;
+        noiseAmt = 1;
+        noise.volume = 1;
+        
+        for (int i = 0; i < noiseLocs.Length; i++) {
+            noiseLocs[i] = UnityEngine.Random.Range(0, 1f);
+        }
+        
+        // assign random number to the crank
+        crankVal = UnityEngine.Random.Range(0, 1f);
+        
+        // Reset Tuning as False
+        GlobalVariables.S.tuned = false;
+        UI_text[2].SetActive(false);
     }
 }

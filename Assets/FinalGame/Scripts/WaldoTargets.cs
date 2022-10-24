@@ -154,4 +154,21 @@ public class WaldoTargets : MonoBehaviour
         if (colliders.Length >= 1) return true;
         else return false;
     }
+
+    public IEnumerator FoundReaction()
+    {
+        // Get the person
+        GameObject person = transform.GetChild(0).gameObject;
+        
+        // Turn off the Target Indicator (GLOW)
+        Component halo = person.GetComponent("Halo");
+        halo.GetType().GetProperty("enabled").SetValue(halo, false, null); 
+        
+        // Create the Heart
+        GameObject heart = person.transform.GetChild(1).gameObject;
+        heart.SetActive(true);
+
+        yield return new WaitForSeconds(1);
+        heart.SetActive(false);
+    }
 }
