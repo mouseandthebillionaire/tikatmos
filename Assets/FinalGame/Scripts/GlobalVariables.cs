@@ -13,6 +13,9 @@ public class GlobalVariables : MonoBehaviour
     public KeyCode knob1_left = KeyCode.N;
     public KeyCode knob1_right = KeyCode.M;
     public KeyCode deviceButton = KeyCode.Space;
+
+    public KeyCode customerServedCorrectly = KeyCode.C;
+    public KeyCode loadNextCustomer = KeyCode.Period;
     //
     // // Get rid of these later
     public KeyCode leftSlider = KeyCode.K;

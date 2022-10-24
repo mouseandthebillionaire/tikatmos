@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
             // wait between one and three minutes
             // float waitTime = Random.Range(60, 180);
             // Quicker for testing
-            float waitTime = Random.Range(6, 18);
+            float waitTime = Random.Range(120, 180);
             yield return new WaitForSeconds(waitTime);
 
             // Reset the tuner

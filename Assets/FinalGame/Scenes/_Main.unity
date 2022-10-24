@@ -1315,7 +1315,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_TargetDisplay: 0
+  m_TargetDisplay: 1
 --- !u!224 &1560049364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1450,6 +1450,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  scriptAdvance: 46
 --- !u!224 &288150897888066972
 RectTransform:
   m_ObjectHideFlags: 0

@@ -14,17 +14,19 @@ public class Customer : MonoBehaviour
     
     // Customer stufffffff
     private int          currCustomer;
-    private string[]     customerScript           = new string[6];
-    public  Sprite[]     customerSprites          = new Sprite[6];
-    private string[]     customerRequests         = new string[6];
-    private string[]     responseNeeded           = new string[6];
-    private string[]     info                     = new string[6];
-    private string[]     customerSuccessResponses = new string[6];
+    private string[]     customerScript           = new string[10];
+    public  Sprite[]     customerSprites          = new Sprite[10];
+    private string[]     customerRequests         = new string[10];
+    private string[]     responseNeeded           = new string[10];
+    private string[]     info                     = new string[10];
+    private string[]     customerSuccessResponses = new string[10];
     private List<string> customerSorries          = new List<string>();
     private int          currentSorry; // to keep track and loop current sorries,
                                        // alternatively w could have the conversation end if you run through all of the sorries
                                        // ex: "Um, okay, I guess I'll come back later?"
 
+    public KeyCode           scriptAdvance;
+                                       
     public static Customer S;
 
     public void Awake() {
@@ -39,7 +41,8 @@ public class Customer : MonoBehaviour
     }
 
     public void Update() {
-        if (Input.GetKeyDown(KeyCode.C)) CorrectInformation();
+        if (Input.GetKeyDown(GlobalVariables.S.customerServedCorrectly)) CorrectInformation();
+        if (Input.GetKeyDown(GlobalVariables.S.loadNextCustomer)) InitializeCustomer();
     }
 
     public void CompleteReset() {
