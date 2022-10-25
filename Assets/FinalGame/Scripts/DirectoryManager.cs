@@ -48,6 +48,7 @@ public class DirectoryManager : MonoBehaviour
             {
                 directoryStore_display[j].text += storeList[i] + '\n';
                 directoryCode_display[j].text += codeList[i] + '\n';
+                GlobalVariables.S.StoreCodes.Add(codeList[i]);
             }
         }
 

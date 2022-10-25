@@ -35,6 +35,9 @@ public class GlobalVariables : MonoBehaviour
     // Is there currently a customer
     public bool customerActive;
     
+    // Store Codes?
+    public List<string> StoreCodes;
+    
     // Singleton
     public static GlobalVariables S;
     

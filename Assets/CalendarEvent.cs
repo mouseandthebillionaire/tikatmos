@@ -7,8 +7,8 @@ public class CalendarEvent : MonoBehaviour
 {
     private GameObject[] event_title = new GameObject[2];
     private GameObject[] event_description = new GameObject[2];
-    
-    private bool         translated;
+
+    private bool translated = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,10 +24,21 @@ public class CalendarEvent : MonoBehaviour
     void Update()
     {
         // toggle the text
-        if (Input.GetKey(GlobalVariables.S.deviceButton)) translated = true;
-        else translated = false;
+        if (Input.GetKey(GlobalVariables.S.deviceButton))
+        {
+            Debug.Log("X");
+            translated = true;
+        }
+        else
+        {
+            translated = false;
+        }
+        
+        
 
         DisplayText();
+
+
     }
 
     public void DisplayText()
