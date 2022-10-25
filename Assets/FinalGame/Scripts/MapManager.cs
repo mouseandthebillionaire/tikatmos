@@ -8,7 +8,7 @@ public class MapManager : MonoBehaviour
 {
     public float zoomMax, zoomMin;
     public float zoomSpeed;
-    private float zoom = 1f;
+    private float zoom = 1.5f;
     
     public float xBounds, yBounds;
     [SerializeField] [Range(0f, 5f)] float lerpSpeed;
@@ -62,7 +62,6 @@ public class MapManager : MonoBehaviour
             if (zoom >= zoomMin) zoom -= zoomSpeed;
         }
 
-        Debug.Log(zoom);
         map.transform.localScale = new Vector3(zoom, zoom, map.transform.localScale.z);
         
         //Change floor plan displayed

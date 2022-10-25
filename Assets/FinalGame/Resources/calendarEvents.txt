@@ -1,6 +1,60 @@
-JUN	07	09:00 AM - 11:00 AM	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
-JUN	07	5:00 PM - 7:00 PM	Tiffany Lamp, in Concert	Everyone's favourite heart-throb will play her extensive catalog, including "I Think We're A Dome Now"
-JUN	08	ALL DAY	Earth Exhibit	In the central atrium come see our special exhibit on the history of EARTH. Can't quite remember why we left? Be reminded!
-JUN	08	09:00 AM - 11:00 AM	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
-JUN	08	5:00 PM - 7:00 PM	Cannonball Jeans, In Conert	World famous jazz pianist Cannonball Jeans duets with his trusty piano Steve for a night of classic vibes and smooth tunes
-JUN	08	6:00 PM - 8:000 PM	Networking Evening	Calling all modems for a special networking event. Come connect with others and explore future possibilities!
+TQ5	07	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	07	09h00 - 21h00	The Yogfather GRAND OPENING	Oooh baby! There's a new Frozen Yogurt in town and it's delish-delosh!
+TQ5	07	17h00 - 19h00	Tiffany Lamp, in Concert	Everyone's favourite heart-throb will play her extensive catalog, including "I Think We're A Dome Now"
+TQ5	08	07h00 - 21h00	Earth Exhibit	In the central atrium come see our special exhibit on the history of EARTH. Can't quite remember why we left? Be reminded!
+TQ5	08	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	08	17h00 - 19h00	Cannonball Jeans, In Concert	World famous jazz pianist Cannonball Jeans duets with his trusty piano Steve for a night of classic vibes and smooth tunes
+TQ5	08	18h00 - 20h00	Networking Evening	Calling all modems for a special networking event. Come connect with others and explore future possibilities!
+TQ5	09	09h00 - 21h00	I Can Believe It's Not Yogurt GRAND OPENING	What the mall needs now is Frozen Yogurt, sweet Frozen Yogurt. It's the only thing that there's just too little of
+TQ5	09	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	09	10h00 - 16h00	Annual Around the Mall 5K	Sneakers, jogging pants, headbands, water bottles, and smart watches. You won't want to miss this !
+TQ5	09	08h00 - 14h00	Blood Drive?	Wondering what they use blood for? So are we! Do you even have blood? We don't know! Stop by and do your part!
+TQ5	10	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	10	18h00 - 21h00	Dan's Party	It's a party, for Dan! Absolutely no dancing allowed.
+TQ5	11	09h00 - 21h00	The Yogfather 50% OFF CLOSING BONANZA	Come and get it before they shut their doors for good this evening!
+TQ5	11	09h00 - 21h00	SPA Day, but for actual spa products?	
+TQ5	11	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	11	16h00 - 17h00	Build-A-Bear Gym Career Fair	Do you have what it takes to be a bear trainer? Can you inspire and motivate other floppy weaklings to become their best bear? COME PROVE IT! Bring your resume.
+TQ5	12	07h00 - 09h00	Pancake Breakfast	Come by the International Brotherhood of Pancakes for a special breakfast thanking you for your service.
+TQ5	12	09h00 - 21h00	Love, Fro Me to Yo(gurt) GRAND OPENING	Yummy yum yum yum. Frozen Yogurt!
+TQ5	12	09h00 - 21h00	I Can Believe It's Not Yogurt FINAL BONANZA	All yogurt free until the last delicious taste!
+TQ5	12	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	12	09h00 - 10h00	Furby Sing-A-Long	For Furbys in the stage 2 drug recovery program only.
+TQ5	12	15h00 - 17h00	Makeup Tutorials	Eyeliner, Blush, Mascara, and more. The MAKEUP STORE are hosting several pro skills workshops. Improve your speaking, listening, and other job-related skills. 
+TQ5	12	18h00 - 21h00	Town Mall	Segway Cop will talk about the state of the Mall, including stats on recent punk activity, and announcing another Frozen Yogurt shop closure. We will also be accepting suggestions for future events!
+TQ5	13	09h00 - 21h00	ColdBowl GRAND OPENING	Do you know what time it is?! Time for some delicious frozen yogurt!
+TQ5	13	09h00 - 21h00	Love, Fro Me to Yo(gurt) STORE CLOSING	It feels like we hardly knew you, but we thank you for every delicious bite we've enjoyed while you've been here.
+TQ5	13	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	13	11h00 - 11h30	Coffee Break	Being a cup of coffee isn't always easy. Get your not-so-ugly mug down here and take a break with some fellow Joes! 
+TQ5	13	18h00 - 21h00	LL Stool J Comedy Show!	You've heard of standup comedy, but how about SIT DOWN COMEDY? LL Stool J presents his latest special LIVE!
+TQ5	13	18h00 - 21h00	Fashion Show	Tonight's special event brought to you by Linda Black Dress. Who will be crowned Miss ATMOS?
+TQ5	13	09h00 - 21h00	Fro-yo Ma GRAND OPENING	What a special day. We've got 3 new yogurt stores joining us. Try them all and pick your fave!
+TQ5	13	09h00 - 21h00	Gurt Don't Hurt GRAND OPENING	What a special day. We've got 3 new yogurt stores joining us. Try them all and pick your fave!
+TQ5	13	09h00 - 21h00	Uptown Swirl GRAND OPENING	What a special day. We've got 3 new yogurt stores joining us. Try them all and pick your fave!
+TQ5	14	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	14	10h00 - 16h00	Electronics Fixit Clinic	Are you feeling sluggish? Does your battery not have enough juice? The Fixit Friends are here to help. Free consultations all day.
+TQ5	14	10h00 - 16h00	Girl Scout Cookie Sale	Girl Scout Cookie Troop 143 is raffling off tickets to win a free ski date!
+TQ5	14	10h00 - 16h00	Joe's Tents Tent Sale	Calling all tents! Do you need a new rain fly for the coming months? Do you have a tear in your backside? Let Joe's Tents help spruce you up!
+TQ5	15	09h00 - 21h00	Fro-yo Ma FINAL DAY!	Get your gurt on before it's gone!
+TQ5	15	09h00 - 21h00	Gurt Don't Hurt FINAL DAY!	Get your gurt on before it's gone!
+TQ5	15	09h00 - 21h00	Uptown Swirl FINAL DAY!	Get your gurt on before it's gone!
+TQ5	15	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	15	18h00 - 21h00	DIY Bath Bombs (CANCELLED)	We deeply apologise to all of our bath customers for what was a thoughtlessly named event. We strive to do better. We will do better. We also fired Michael. It was his idea.
+TQ5	16	09h00 - 21h00	SprinkleTown GRAND OPENING	It'll be great. We promise. Come get some!
+TQ5	16	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	16	10h00 - 16h00	School Suppplies Fundraiser	Those little protractors, rulers, colored pencils and play-doh need your suport. Do your part!
+TQ5	16	18h00 - 21h00	Mall-oween	Celebrate this archaic Earth tradition by dressing up as your favorite creature! 
+TQ5	17	09h00 - 21h00	Afroyo Beat GRAND OPENING	Froyo with a twist. Yooooou'll see.
+TQ5	17	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	17	09h00 - 11h00	Bear Dad Walk	Come walk and talk with other Bear Dads! Talk about your feelings, all the stuffing you've got inside of you!
+TQ5	17	15h00 - 17h00	Tik Tok for Clocks	It sells itself!
+TQ5	17	18h00 - 21h00	Magical Shrubbery Stunts w/Bookie & Snookie	Watch galaxy-famous magicians Bookie & Snookie wrangle with the most dangerous and exciting flora this side of Alchemar!
+TQ5	18	09h00 - 21h00	Yo! MTV Gurts GRAND OPENING	Fab Flave Freezie's newest frozen yogurt experience is sure to be a crowd-pleaser!
+TQ5	18	09h00 - 21h00	Yogurta Try This GRAND OPENING	Okay, even we're not sure about this one.
+TQ5	18	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	18	18h00 - 21h00	Sweetie's Yodeling Extravaganza	Everyone's favorite armchair is back, and she's ready for a rootin', tootin' singalong! Featuring 4 new songs!
+TQ5	19	09h00 - 21h00	Frozen Goat FroYo To Go, Yo! GRAND OPENING	How do you spell delicious withouth Goat FroYo? You can't!
+TQ5	19	09h00 - 21h00	Grozen Frogurt GRAND OPENING	Oh boy oh boy oh boy oh boy oh boy oh boy oh boy oh boy oh boy oh boy
+TQ5	19	09h00 - 11h00	Stroller Stroll	Every day, come join some other fun strollers and stroll around the mall. For your health!
+TQ5	19	10h00 - 16h00	PEACH TRUCK	Hey everyone! The PEACH TRUCK is back! It's not every day you get to ride around in a truck made out of peach!
+TQ5	19	12h00 - 14h00	Crunchy Leaf Pit	Join us on floor 5 for an opportunity to get in on the ground level with CRUNCHY LEAVES! This is definitely not a pyramid scheme. 

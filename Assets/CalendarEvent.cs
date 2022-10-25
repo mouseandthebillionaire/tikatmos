@@ -26,7 +26,6 @@ public class CalendarEvent : MonoBehaviour
         // toggle the text
         if (Input.GetKey(GlobalVariables.S.deviceButton))
         {
-            Debug.Log("X");
             translated = true;
         }
         else
