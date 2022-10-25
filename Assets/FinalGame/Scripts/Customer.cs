@@ -20,6 +20,7 @@ public class Customer : MonoBehaviour
     private string[]     responseNeeded           = new string[10];
     private string[]     info                     = new string[10];
     private string[]     customerSuccessResponses = new string[10];
+    private string[]     customerSorryList        = new string[10];
     private List<string> customerSorries          = new List<string>();
     private int          currentSorry; // to keep track and loop current sorries,
                                        // alternatively w could have the conversation end if you run through all of the sorries
@@ -43,6 +44,7 @@ public class Customer : MonoBehaviour
     public void Update() {
         if (Input.GetKeyDown(GlobalVariables.S.customerServedCorrectly)) CorrectInformation();
         if (Input.GetKeyDown(GlobalVariables.S.loadNextCustomer)) InitializeCustomer();
+        
     }
 
     public void CompleteReset() {
@@ -77,6 +79,17 @@ public class Customer : MonoBehaviour
         // show the Customer Notification
         customerNotification.SetActive(true);
         
+        // Get their Sorry dialogues
+        // Delete sorries and reset the counter
+        customerSorries.Clear();
+        currentSorry = 0;
+        string[] tempSorries = customerSorryList[currCustomer].Split('/');
+        for (int i = 0; i < tempSorries.Length; i++)
+        {
+            customerSorries.Add(tempSorries[i % tempSorries.Length]);
+            Debug.Log(tempSorries[i]);
+        }
+        
         // wait for the tuner to be tuned
         while (!GlobalVariables.S.tuned)
         {
@@ -91,6 +104,7 @@ public class Customer : MonoBehaviour
     public void Request() {
         customerNotification.SetActive(false);
         dialogue.SetActive(true);
+        Debug.Log(customerSuccessResponses[currCustomer]);
     }
 
     private void CorrectInformation() {
@@ -137,15 +151,13 @@ public class Customer : MonoBehaviour
     
     private void GetCustomerFile()
     {
-        // Delete sorries and reset the counter
-        customerSorries.Clear();
-        currentSorry = 0;
-        
+
         TextAsset customer_file = Resources.Load("Characters") as TextAsset;
         customerScript = customer_file.text.Split('\n');
 
         for (int i = 0; i < customerScript.Length; i++)
         {
+
             string[] temp = customerScript[i].Split('\t');
             customerSprites[i] = Resources.Load ("CharacterSprites/" + temp[0] + "/0", typeof(Sprite)) as Sprite;
             customerRequests[i] = temp[2];
@@ -153,11 +165,7 @@ public class Customer : MonoBehaviour
             info[i] = temp[4];
             customerSuccessResponses[i] = temp[5];
             // Get Array of Sorries
-            string[] tempSorries = temp[6].Split('/');
-            for (int j = 0; j < tempSorries.Length; j++)
-            {
-                customerSorries.Add(tempSorries[j % tempSorries.Length]);
-            }
+            customerSorryList[i] = temp[6];
         }
     }
 

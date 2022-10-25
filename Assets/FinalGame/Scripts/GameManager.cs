@@ -55,9 +55,13 @@ public class GameManager : MonoBehaviour
 
             // Reset the tuner
             GlobalVariables.S.tuned = false;
-            
-            // And start the customer interaction
-            Customer.S.InitializeCustomer();
+
+            // And if we STILL aren't with a customer
+            if (!GlobalVariables.S.customerActive){
+                // And start the customer interaction
+                Customer.S.InitializeCustomer();
+            }
+            // Otherwise we reloop
             StartCoroutine(GameLoop());
         }
         else {
