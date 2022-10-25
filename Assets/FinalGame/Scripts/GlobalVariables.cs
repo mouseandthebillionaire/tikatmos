@@ -35,8 +35,12 @@ public class GlobalVariables : MonoBehaviour
     // Is there currently a customer
     public bool customerActive;
     
-    // Store Codes?
-    public List<string> StoreCodes;
+    // Store Codes
+    private TextAsset    directory_asset;
+    public  string[]     directoryList;
+    public  List<string> StoreCodes = new List<string>();
+    public List<string> StoreList  = new List<string>();
+
     
     // Singleton
     public static GlobalVariables S;
@@ -50,5 +54,24 @@ public class GlobalVariables : MonoBehaviour
         } else {
             DestroyObject(gameObject);
         }
+    }
+
+    void Start()
+    {
+        StartCoroutine(GetStores());
+    }
+
+    private IEnumerator GetStores()
+    {
+        directory_asset = Resources.Load("directoryAsset") as TextAsset;
+        directoryList = directory_asset.text.Split('\n');
+
+        for (int i = 0; i < directoryList.Length; i++)
+        { 
+            string[] temp = directoryList[i].Split('\t'); 
+            StoreList.Add(temp[0]); 
+            StoreCodes.Add(temp[1]);
+        }
+        yield return null;
     }
 }

@@ -7,10 +7,6 @@ public class DirectoryManager : MonoBehaviour
 {
     public Text[] directoryStore_display;
     public Text[] directoryCode_display;
-    private TextAsset directory_asset;
-    private string[] directoryList;
-    private List<string> storeList = new List<string>();
-    private List<string> codeList = new List<string>();
 
     private bool translated = false;
 
@@ -29,26 +25,17 @@ public class DirectoryManager : MonoBehaviour
             directoryCode_display[i].text = "";
         }
         
-        StartCoroutine(GetTextFromFile());
+        StartCoroutine(LoadStores());
     }
 
-    IEnumerator GetTextFromFile()
+    IEnumerator LoadStores()
     {
-        directory_asset = Resources.Load("directoryAsset") as TextAsset;
-        directoryList = directory_asset.text.Split('\n');
-
-        for (int i = 0; i < directoryList.Length; i++)
+        for (int i = 0; i < directoryStore_display.Length; i++)
         {
-            string[] temp = directoryList[i].Split('\t');
-            //Debug.Log(temp[0]+" and "+temp[1]);
-            storeList.Add(temp[0]);
-            codeList.Add(temp[1]);
-            
-            for (int j = 0; j < directoryStore_display.Length; j++)
+            for (int j = 0; j < GlobalVariables.S.StoreList.Count; j++)
             {
-                directoryStore_display[j].text += storeList[i] + '\n';
-                directoryCode_display[j].text += codeList[i] + '\n';
-                GlobalVariables.S.StoreCodes.Add(codeList[i]);
+                directoryStore_display[i].text += GlobalVariables.S.StoreList[j] + '\n';
+                directoryCode_display[i].text += GlobalVariables.S.StoreCodes[j] + '\n';
             }
         }
 
