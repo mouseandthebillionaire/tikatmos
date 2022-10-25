@@ -51,9 +51,4 @@ public class GlobalVariables : MonoBehaviour
             DestroyObject(gameObject);
         }
     }
-
-    void Update()
-    {
-        Debug.Log(customerActive);
-    }
 }

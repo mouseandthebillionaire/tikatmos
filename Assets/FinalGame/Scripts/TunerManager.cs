@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using Facebook.WitAi;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class TunerManager : MonoBehaviour
@@ -25,7 +28,7 @@ public class TunerManager : MonoBehaviour
     public SpriteRenderer activeBox;
 
     // Sound Control Variables
-    public AudioSource voice, noise;
+    public AudioSource tone, noise, voice, whale, chime;
     public float pitch, filter, distortion, noiseAmt;
     public float[] noiseLocs = new float[3];
     public float[] noiseAmts = new float[3];
@@ -34,6 +37,9 @@ public class TunerManager : MonoBehaviour
     
     // Input Variables
     private float knobVal, sliderVal, crankVal, button;
+    
+    // Snapshots
+    public AudioMixerSnapshot[] mixerEffectSnapshots;
     
     // Singleton
     public static TunerManager S;
@@ -45,8 +51,8 @@ public class TunerManager : MonoBehaviour
     
     // Start is called before the first frame update
     void Start() {
-        hpf = voice.GetComponent<AudioHighPassFilter>();
-        arf = voice.GetComponent<AudioReverbFilter>();
+        hpf = tone.GetComponent<AudioHighPassFilter>();
+        arf = tone.GetComponent<AudioReverbFilter>();
 
         ResetTuning();
     }
@@ -88,7 +94,7 @@ public class TunerManager : MonoBehaviour
         // For Testing
         if(Input.GetKeyDown(KeyCode.V)) ResetTuning();
         
-        // Only get th inputs if we aren't already tuned
+        // Only get the inputs if we aren't already tuned
         if(GlobalVariables.S.tuned == false) GetInputs();
         
         // Update SineWaves
@@ -103,10 +109,16 @@ public class TunerManager : MonoBehaviour
 
         // Update Sounds
         hpf.cutoffFrequency = noiseAmts[0] * 2200;
-        voice.pitch = 1 + (noiseAmts[1] * 3f);
+        tone.pitch = 1 + (noiseAmts[1] * 3f);
         arf.dryLevel = 0 - (noiseAmts[2] * 10000);
         arf.reverbLevel = 0 + (noiseAmts[2] * 500);
         arf.room = -10000 + (noiseAmts[2] * 10000);
+        
+        // Update Voices
+        float voiceVol = 0.5f - ((noiseAmts[0] * 100f) * .01f);
+        voice.volume = voiceVol;
+        Debug.Log(noiseAmts[0]);
+        whale.volume = 0.2f - (noiseAmts[1] * 0.5f);
 
         noiseAmt = (noiseAmts[0] + noiseAmts[1] + noiseAmts[2]);
         noise.volume = noiseAmt;
@@ -129,6 +141,11 @@ public class TunerManager : MonoBehaviour
                 // Change art to reflect tuning change 
                 UI_text[2].SetActive(true);
                 activeBox.transform.localPosition = new Vector3(-10, 0, 0);
+                
+                // Fire a pitch drop effect
+                chime.Play();
+                mixerEffectSnapshots[1].TransitionTo(1.5f);
+                
                 GlobalVariables.S.tuned = true;
             }
             
@@ -153,6 +170,9 @@ public class TunerManager : MonoBehaviour
         
         // assign random number to the crank
         crankVal = UnityEngine.Random.Range(0, 1f);
+        
+        // Reset Pitches
+        mixerEffectSnapshots[0].TransitionTo(.1f);
         
         // Reset Tuning as False
         GlobalVariables.S.tuned = false;
