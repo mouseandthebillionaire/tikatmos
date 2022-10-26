@@ -1,5 +1,13 @@
 # Process Documentation
 
+## 09.27.22 - IndieCade Nomination
+
+[TIKATMOS was nominated for IndieCade!](https://www.indiecade.com/festival-2022/nominees/)
+
+<img src="https://pixelkin.org/wp-content/uploads/2016/06/indiecade.jpg" width="80%"> 
+
+We are so excited to have TIKATMOS at IndieCade 2022! More updates to the game coming soon!
+
 ## 04.28.22 - ATLAS Expo 2022
 
 And here we are! The culmination of a semester's worth of weird energy and game development. Our team got to present at the annual ATLAS Institute Expo along with dozens of other incredible people showing off their hard work and wacky projects. 
