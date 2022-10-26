@@ -14,13 +14,13 @@ public class Customer : MonoBehaviour
     
     // Customer stufffffff
     private int          currCustomer;
-    private string[]     customerScript           = new string[10];
-    public  Sprite[]     customerSprites          = new Sprite[10];
-    private string[]     customerRequests         = new string[10];
-    private string[]     responseNeeded           = new string[10];
-    private string[]     info                     = new string[10];
-    private string[]     customerSuccessResponses = new string[10];
-    private string[]     customerSorryList        = new string[10];
+    private string[]     customerScript           = new string[11];
+    public  Sprite[]     customerSprites          = new Sprite[11];
+    private string[]     customerRequests         = new string[11];
+    private string[]     responseNeeded           = new string[11];
+    private string[]     info                     = new string[11];
+    private string[]     customerSuccessResponses = new string[11];
+    private string[]     customerSorryList        = new string[11];
     private List<string> customerSorries          = new List<string>();
     private int          currentSorry; // to keep track and loop current sorries,
                                        // alternatively w could have the conversation end if you run through all of the sorries
@@ -87,7 +87,6 @@ public class Customer : MonoBehaviour
         for (int i = 0; i < tempSorries.Length; i++)
         {
             customerSorries.Add(tempSorries[i % tempSorries.Length]);
-            Debug.Log(tempSorries[i]);
         }
         
         // wait for the tuner to be tuned
@@ -113,7 +112,7 @@ public class Customer : MonoBehaviour
     }
 
     private IEnumerator CustomerServed() {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         currCustomer = (currCustomer + 1) % customerScript.Length;
         Reset();
     }
@@ -143,7 +142,14 @@ public class Customer : MonoBehaviour
                 else
                 {
                     dialogue.GetComponentInChildren<Text>().text = customerSorries[currentSorry];
-                    currentSorry++;
+                    if (currentSorry + 1 < customerSorries.Count)
+                    {
+                        currentSorry++;
+                    }
+                    else
+                    {
+                        StartCoroutine(CustomerServed());
+                    }
                 }
             }
         }

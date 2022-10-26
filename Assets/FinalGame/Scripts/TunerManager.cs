@@ -117,7 +117,6 @@ public class TunerManager : MonoBehaviour
         // Update Voices
         float voiceVol = 0.5f - ((noiseAmts[0] * 100f) * .01f);
         voice.volume = voiceVol;
-        Debug.Log(noiseAmts[0]);
         whale.volume = 0.2f - (noiseAmts[1] * 0.5f);
 
         noiseAmt = (noiseAmts[0] + noiseAmts[1] + noiseAmts[2]);
