@@ -161,8 +161,8 @@ public class WaldoTargets : MonoBehaviour
         GameObject person = transform.GetChild(0).gameObject;
         
         // Turn off the Target Indicator (GLOW)
-        Component halo = person.GetComponent("Halo");
-        halo.GetType().GetProperty("enabled").SetValue(halo, false, null); 
+        GameObject halo = person.transform.GetChild(2).gameObject;
+        halo.SetActive(false); 
         
         // Create the Heart
         GameObject heart = person.transform.GetChild(1).gameObject;

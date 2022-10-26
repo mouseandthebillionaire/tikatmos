@@ -24,20 +24,10 @@ public class CalendarEvent : MonoBehaviour
     void Update()
     {
         // toggle the text
-        if (Input.GetKey(GlobalVariables.S.deviceButton))
-        {
-            translated = true;
-        }
-        else
-        {
-            translated = false;
-        }
-        
-        
+        if (Input.GetKey(GlobalVariables.S.deviceButton)) translated = true;
+        else translated = false;
 
         DisplayText();
-
-
     }
 
     public void DisplayText()

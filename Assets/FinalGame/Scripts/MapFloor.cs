@@ -18,10 +18,5 @@ public class MapFloor : MonoBehaviour
             t.gameObject.GetComponent<Text>().text = GlobalVariables.S.StoreCodes[r];
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }
