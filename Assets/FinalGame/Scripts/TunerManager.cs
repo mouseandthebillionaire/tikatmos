@@ -17,9 +17,10 @@ public class TunerManager : MonoBehaviour
     public float moveSpeed;
 
     // Circle Image
-    public SpriteRenderer[] indicators;
-    public Image[] indicatorDials;
-    public float rAmt, gAmt; 
+    public  SpriteRenderer[] indicators;
+    public  Image[]          indicatorDials;
+    private float[]          indicatorDialStart = new float[3];
+    public  float            rAmt, gAmt; 
     
     // Text Boxes
     public GameObject[] UI_text;
@@ -125,7 +126,7 @@ public class TunerManager : MonoBehaviour
         // Update the Indicators
         for (int i = 0; i < indicators.Length; i++) {
             indicators[i].color = new Color(1 - noiseAmts[i], 1 - noiseAmts[i], 01 - noiseAmts[i]);
-            indicatorDials[i].fillAmount = 1 - noiseAmts[i];
+            indicatorDials[i].fillAmount = indicatorDialStart[i] - noiseAmts[i];
         }
 
         DrawSine();
@@ -165,6 +166,7 @@ public class TunerManager : MonoBehaviour
         
         for (int i = 0; i < noiseLocs.Length; i++) {
             noiseLocs[i] = UnityEngine.Random.Range(0, 1f);
+            indicatorDialStart[i] = Random.Range(0.5f, 1f);
         }
         
         // assign random number to the crank
