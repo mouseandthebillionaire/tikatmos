@@ -1,5 +1,52 @@
 # Process Documentation
 
+## 04.28.22 - ATLAS Expo 2022
+
+And here we are! The culmination of a semester's worth of weird energy and game development. Our team got to present at the annual ATLAS Institute Expo along with dozens of other incredible people showing off their hard work and wacky projects. 
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-FullSetUp.jpg" width="80%"> 
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-Interface.jpg" width="35%"> <img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-Mic.jpg" width="56%">
+
+
+We learned a lot from the showcase, mostly that people love the retro futurism vibe, and our odd little interface games. 
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Showcase-01.png" width="35%"> <img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Showcase-02.jpg" width="55%">
+
+There is definitely more work to be done if we want to continue pushing this project forward, but it really came together.
+
+
+## 04.28.22 - Maps and Catspiration!
+
+The next update to the list of interface scenes includes 2 absolute bangers. First, the mall map, obvs. Which will need some context or lables to make sense in the context of the window kiosk interactions but it's great to have in there.
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Map-Scene.png" width="60%">
+
+And secondly, the CATSPIRATION generator. Which, is in fact as great as we all imagined it would be.
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Catspiration02.png" width="45%"> <img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Catspiration03.png" width="45%">
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Catspiration01.png" width="60%"> 
+
+## 04.25.22 - Waldo Updates and Escalator Traffic Minigame Scenes 
+
+The Waldo Minigame scene finally made it into the project, though the visuals have been added to and have changed slightly throughout the development process but here we are!
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Waldo-Scene.png" width="60%">
+
+Also we have a new addition to the interface list with another minigame, this time about adjusting the traffic flow up and down floors of the mall via escalator management. It's been a little tricky to tune and get balanced but we're working on it.
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Escalator-Scene.png" width="60%">
+
+
+## 04.18.22 - Security Cam Scene + Organizational Updates
+
+This week we added more scenes to the interface channel changer including an older mall concept piece in as a 'security cam' footage scene with an old CRT tv/scan lines effect. We may end up using the effect on more scenes but for now, we get another look into the space mall!
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Scene-SecurityCam.gif" width="60%">
+
+Other updates around keypress button choices and organizing things in the project.
+
+
 ## 04.06.22 - USE MICROPHONE!
 
 Note: for anyone who ever wants to use microphone control in their game. To make this work you need to go to Player Settings > Configuration > And literally type in "use microphone" into the "Microphone Usage Description" text field. Our work here is done.
