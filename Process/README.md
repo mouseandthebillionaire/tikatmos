@@ -1,5 +1,70 @@
 # Process Documentation
 
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-Banner.png" width="90%">
+
+# 10.26.22 - IndieCade - Beyond the Screen Interview!
+
+[IndieCade Twitch Link](https://www.twitch.tv/videos/1635139465?filter=archives&sort=time)
+
+And we did it! The TIKATMOS interview is live on twitch! Feel free to check that out and see our lovely faces talk about our weird and wonderful creation!
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/IndieCade-Stream.png" width="90%">
+
+And a huge thanks to IndieCade and the Beyond the Screens team for having us on the show!
+
+## 10.25.22 - New Knobs!
+
+With final touches, comes the new and improved playful kiosk knobs! 
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/NewKnobs.jpg" width="40%">
+
+
+## 10.24.22 - New Characters Implementation
+
+Adding in more characters has always been a goal but this time, we got in a whole new set! Each arc of the game might have new characters, returning ones, or multiple paths for you to help them down. It's up to you, the fearless information kiosk helper to do your best to assist all patrons of the Mall of Space.
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Window-FrogChair.png" width="19%"><img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Window-Stroller.png" width="19%"><img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Window-Chair.png" width="19%"><img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Window-SegwayCop.png" width="19%"><img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Window-Dresser.png" width="19%">
+
+
+## 10.22.22 - Wishing Fountain Graphics Pass
+
+As promised, an updated graphics pass on the Wishing Fountain Scene, with added sparkle particles!
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-FountainScene.gif" width="60%">
+
+
+## 10.19.22 - Standby Scene
+
+With the addition of the new font, we decided it was probably high time to update that old classic standby screen to something a little more custom. It also involves more animations that really bring the interface screen to life. 
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-StandbyScene.gif" width="60%">
+
+
+## 10.18.22 - Alien Font Update
+
+Just an alien font, for all your alien font needs!
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-Font.png" width="60%">
+
+Below the new font can be seen implemented across a few different interface scenes, adding the additional task of 'translating' the written text to be able to read it inside the game.
+
+We didn't want the font to be ~too~ difficult to approach, with fun shapes combining to create letter forms similar to the latin alphabet equivalent, but it does a lot to bring the overall aesthetic of the game further into that retro-futuristic look that we have been going for.
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Font-Directory.gif" width="60%">
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Font-Events.gif" width="60%">
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Font-Tuning.gif" width="60%">
+
+If you'd like to download the font for your own alien needs, check it out inside the [project files!](https://github.com/mouseandthebillionaire/tikatmos/blob/master/Assets/FinalGame/Fonts/TIKATMOS-Font-TEST.ttf)
+
+## 10.11.22 - Wishing Fountain Scene
+
+One update from the refinment pass we are taking on the game is to change from the old pong game to a similar but different idea - granting and denying the wishes that come through the coins tossed in the mall's various fountains. 
+
+This is still a concept being tested and a final graphics pass should help link this game in with the other interface screens, but conecptually we are very excited about it. 
+
+<img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/Scene-FountainV1.gif" width="60%">
+
+
 ## 09.27.22 - IndieCade Nomination
 
 [TIKATMOS was nominated for IndieCade!](https://www.indiecade.com/festival-2022/nominees/)
