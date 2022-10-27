@@ -15,3 +15,5 @@ Using your speech translator, you will tune into the unique language of every cu
 [itch.io Game Page](https://z-sheikh.itch.io/tikatmos)
 
 [IndieCade 2022 Nominations](https://www.indiecade.com/festival-2022/nominees/)
+
+[IndieCade Beyond the Screen Interview](https://www.twitch.tv/videos/1635139465?filter=archives&sort=time)
