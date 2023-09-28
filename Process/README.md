@@ -2,6 +2,12 @@
 
 <img src="https://github.com/mouseandthebillionaire/tikatmos/blob/master/Process/Media/TIKATMOS-Banner.png" width="90%">
 
+# 11.5.22 - IndieCade - Live Action Award Winner!
+
+We really did it this time! TIKATMOS is proud to have been awarded the Live Action Award from IndieCade 2022! Thanks so much to everyone who played, reviewed and watched our interview!! It's been an amazing ride and the whole team is stoked to have been able to be a part of this years awards!
+
+[IndieCade 2022 Awards](https://www.indiecade.com/festival-2022/awards/winners/)
+
 # 10.26.22 - IndieCade - Beyond the Screen Interview!
 
 [IndieCade Twitch Link](https://www.twitch.tv/videos/1635139465?filter=archives&sort=time)
